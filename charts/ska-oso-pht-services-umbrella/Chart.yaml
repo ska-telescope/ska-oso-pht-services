@@ -1,0 +1,14 @@
+apiVersion: v2
+name: ska-oso-pht-services-umbrella
+description: Helm umbrella chart for the PHT Services
+type: application
+version: 0.0.0
+appVersion: 0.0.0
+icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
+dependencies:
+- name: ska-oso-pht-services
+  version: 0.0.0
+  repository: file://../ska-oso-pht-services
+- name: ska-ser-skuid
+  version: 0.3.0
+  repository: https://artefact.skao.int/repository/helm-internal

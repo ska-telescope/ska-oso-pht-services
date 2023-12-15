@@ -1,0 +1,20 @@
+ExecutionBlock:
+  type: object
+  required:
+    - interface
+    - eb_id
+    - metadata
+    - telescope
+  properties:
+    interface:
+      type: string
+    eb_id:
+      type: string
+    metadata:
+      $ref: 'common-openapi-v1.yaml#/Metadata'
+    telescope:
+      $ref: 'common-openapi-v1.yaml#/Telescope'
+    sbd_id:
+      type: string
+    sbd_version:
+      type: integer

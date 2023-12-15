@@ -1,0 +1,18 @@
+{
+  "interface": "https://schema.skao.int/ska-oso-pdm-sbi/0.1",
+  "sbi_id": "sbi-mvp01-20220923-00001",
+  "telescope": "ska_mid",
+  "sbd_id": "sbd-mvp01-20220923-00001",
+  "sbd_version": 1,
+  "metadata": {
+    "version": 1,
+    "created_by": "TestUser",
+    "created_on": "2022-09-23T15:43:53.971548+00:00",
+    "last_modified_on": "2022-09-23T15:43:53.971548+00:00",
+    "last_modified_by": "TestUser"
+  },
+  "executed_on": "2022-09-23T15:43:53.971548+00:00",
+  "subarray_id": 3,
+  "runtime_args": {
+  }
+}

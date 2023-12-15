@@ -1,0 +1,58 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm {
+	package entities {
+        package "<<//name of SB category//>>" as entity.py <<Rectangle>> {
+            class Entity
+            note top of Entity
+                Object model for
+                logical group or
+                entity in the SB
+                data model
+            end note
+        }
+	}
+
+	package schemas {
+        package "<<//name of SB category//>>" as schema.py <<Rectangle>> {
+            class EntitySchema
+            note top of EntitySchema
+                Marshmallow schema
+                for converting the
+                Entity object to
+                and from JSON
+            end note
+        }
+	}
+
+    note as N1
+        One Python module per
+        category (CSP, DISH, etc.),
+        or alternatively a Python
+        package if the data model
+        for the category is complex.
+    end note
+
+	note as N2
+		Classes in the
+		""ska_oso_pdm.schemas""
+		package transform their
+		namesakes in the
+		""ska_oso_pdm.entities""
+		package to and from JSON.
+	end note
+
+    entity.py -[hidden]- schema.py
+	entity.py ... N1
+	Entity .. N2
+	N2 .. EntitySchema
+}
+
+package marshmallow {
+	class Schema
+}
+
+EntitySchema -|> Schema
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm.entities.common {
+    class ScanDefinitionID
+    class SBDefinitionID
+
+    package procedures {
+        note as N1
+            See common.procedures
+            docs for details
+        end note
+    }
+    package target {
+        note as N2
+            See common.target
+            docs for details
+        end note
+    }
+    package sb_definition {
+        note as N3
+            See common.sb_definition
+            docs for details
+        end note
+    }
+        package scan_definition {
+        note as N4
+            See common.scan_definition
+            docs for details
+        end note
+    }
+
+    target -[hidden]up-> sb_definition
+    procedures -[hidden]up-> scan_definition
+}
+@enduml

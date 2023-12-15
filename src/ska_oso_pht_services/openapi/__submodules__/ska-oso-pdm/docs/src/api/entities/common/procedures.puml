@@ -1,0 +1,37 @@
+@startuml
+
+package ska_oso_pdm.entities.common{
+package procedures <<Rectangle>> {
+        class PythonArguments {
+            args: List
+            kwargs: Dict
+        }
+
+        class FilesystemScript {
+            kind : string = "filesystem"
+            path: str
+        }
+
+        class InlineScript {
+            kind : string = "inline"
+            content: str
+        }
+
+        class GitScript {
+            kind : string = "git"
+            repo: str
+            branch: Optional[str]
+            commit: Optional[str]
+        }
+
+        abstract class PythonProcedure {
+            kind : string
+            function_args: dict[str, PythonArguments]
+        }
+    }
+
+        PythonProcedure <|-- InlineScript
+        PythonProcedure <|-- FilesystemScript
+        FilesystemScript <|-- GitScript
+}
+@enduml
