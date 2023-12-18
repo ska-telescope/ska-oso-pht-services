@@ -56,9 +56,13 @@ info-integration:
 info-staging:
   script:
     - *info_script
+  needs:
+    - oci-image-build
 
 deploy-dev-environment:
   <<: *dev_env
+  script:
+    - make k8s-install-chart
   needs:
     - oci-image-build
 
