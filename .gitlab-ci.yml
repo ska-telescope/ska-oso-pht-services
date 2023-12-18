@@ -8,6 +8,14 @@
 # In this case we use the latest python docker image to build and test this project.
 image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 
+default:
+  tags:
+    - k8srunner
+
+# Standardised included jobs
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 stages:
   - build
   - test
