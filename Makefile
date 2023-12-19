@@ -16,6 +16,11 @@ DOCS_SPHINXOPTS ?= -W --keep-going
 IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST)/$(strip $(OCI_IMAGE)):$(VERSION)
 K8S_CHART = ska-oso-pht-services-umbrella
 
+ifeq ($(strip $(firstword $(MAKECMDGOALS))),k8s-test)
+PYTHON_VARS_BEFORE_PYTEST = KUBE_NAMESPACE=$(KUBE_NAMESPACE)
+endif
+
+
 # For the test, dev and integration environment, use the freshly built image in the GitLab registry
 ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')
 ifneq ($(ENV_CHECK),)
