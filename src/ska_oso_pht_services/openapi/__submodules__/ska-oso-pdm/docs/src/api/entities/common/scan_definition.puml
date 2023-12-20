@@ -1,0 +1,18 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm.entities.common {
+    package scan_definition <<Rectangle>> {
+        class ScanDefinitionID
+        class ScanDefinition {
+            scan_definition_id: ScanDefinitionID
+            scan_duration: datetime.timedelta
+            target_beam_configurations: List[TargetBeamConfigurationID]
+            csp_configuration: CSPConfigurationID
+            target: TargetID
+            dish_configuration: DishConfigurationID
+            scan_type: ScanType
+        }
+    }
+}
+@enduml

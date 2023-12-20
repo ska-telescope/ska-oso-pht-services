@@ -1,0 +1,13 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm.entities.dish {
+    package dish_allocation <<Rectangle>> {
+
+        class DishAllocation {
+            receptor_ids: List[str]
+        }
+
+    }
+}
+@enduml

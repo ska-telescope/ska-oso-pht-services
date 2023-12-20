@@ -1,0 +1,46 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm.entities.common.sdp {
+    package sdp_configuration <<Rectangle>> {
+        class SDPConfiguration
+    }
+
+    package scan_type <<Rectangle>> {
+        class ScanType
+        class Channel
+    }
+
+    package processing_block <<Rectangle>> {
+        class ProcessingBlock
+        class Workflow
+        class PBDependency
+    }
+}
+
+
+package ska.cdm.schemas.common.sdp {
+    package processing_block as P9 <<Rectangle>> {
+        class ProcessingBlockSchema
+        class WorkflowSchema
+        class PBDependencySchema
+    }
+
+    package scan_type as P10 <<Rectangle>> {
+        class ScanTypeSchema
+        class ChannelSchema
+    }
+
+    package sdp_configuration as P11 <<Rectangle>> {
+        class SDPConfigurationSchema
+    }
+}
+
+ProcessingBlock --- ProcessingBlockSchema
+Workflow --- WorkflowSchema
+PBDependency --- PBDependencySchema
+ScanType --- ScanTypeSchema
+Channel --- ChannelSchema
+SDPConfiguration --- SDPConfigurationSchema
+
+@enduml

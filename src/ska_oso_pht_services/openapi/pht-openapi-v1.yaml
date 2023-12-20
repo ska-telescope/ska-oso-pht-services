@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: Observation Design Tool Service API
+  description: 'This OpenAPI document defines the API for the Observation Design Tool (pht) backend service'
+  license:
+    name: BSD-3-Clause
+    url: https://opensource.org/licenses/BSD-3-Clause
+  version: 1.0.0
+servers:
+# This default is overwritten when the application is deployed to include the actual namespace if it is different to the 'ska-oso-pht-services' default
+- url: /ska-oso-pht-services/pht/api/v1/
+paths:
+  /hello-world:
+    get:
+      summary: Basic endpoint
+      description: |
+        Hello world style example endpoint
+      operationId: ska_oso_pht_services.api.hello_world
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

@@ -1,0 +1,17 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm.entities.mccs {
+      package subarray_beam_configuration <<Rectangle>> {
+      class SubarrayBeamConfigurationID
+
+      class SubarrayBeamConfiguration {
+          subarray_beam_configuration_id: SubarrayBeamConfigurationID
+          update_rate: float
+          antenna_weights: List[float]
+          phase_centre: List[float]
+          channels: List[List[int]]
+          }
+    }
+}
+@enduml

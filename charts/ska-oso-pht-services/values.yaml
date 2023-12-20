@@ -1,0 +1,42 @@
+# Default values for oet.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+minikube: true
+
+system: TM-mid
+telescope: SKA-mid
+subsystem: ska-oso-pht-services
+
+global:
+  minikube: true
+
+rest:
+  component: rest
+  function: pht-services
+  domain: operations
+  logLevel: info
+  enabled: true
+  image:
+    registry: artefact.skao.int
+    image: ska-oso-pht-services
+    tag: 0.0.0
+    pullPolicy: IfNotPresent
+  oda:
+    backendType: filesystem
+    url:
+  use_skuid: true
+  resources:
+    requests:
+      cpu:  100m
+      memory: 1024Mi
+    limits:
+      cpu:  1000m
+      memory: 1024Mi
+  ingress:
+    enabled: true
+
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: []

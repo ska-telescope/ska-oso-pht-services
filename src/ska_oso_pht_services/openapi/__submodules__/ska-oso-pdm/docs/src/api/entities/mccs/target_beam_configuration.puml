@@ -1,0 +1,14 @@
+@startuml
+hide empty members
+
+package ska_oso_pdm.entities.mccs {
+        package target_beam_configuration <<Rectangle>> {
+            class TargetBeamConfigurationID
+
+            class TargetBeamConfiguration {
+                target_beam_id: TargetBeamConfigurationID,
+                subarray_beam_configuration: SubarrayBeamConfigurationID
+            }
+        }
+}
+@enduml

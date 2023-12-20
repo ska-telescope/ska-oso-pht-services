@@ -1,0 +1,47 @@
+Project:
+  type: object
+  required:
+    - interface
+    - prj_id
+    - metadata
+    - telescope
+  properties:
+    interface:
+      type: string
+    prj_id:
+      type: string
+    metadata:
+      $ref: 'common-openapi-v1.yaml#/Metadata'
+    telescope:
+      $ref: 'common-openapi-v1.yaml#/Telescope'
+    author:
+      $ref: '#/Author'
+    obs_programmes:
+      type: array
+      items:
+        $ref: '#/ObservingProgramme'
+
+Author:
+  type: object
+  properties:
+    pis:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    cois:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+
+ObservingProgramme:
+  type: object
+  properties:
+    name:
+      type: string
+    sbd_ids:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
