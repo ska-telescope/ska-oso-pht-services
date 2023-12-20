@@ -3,18 +3,14 @@ These functions map to the API paths, with the returned value being the API resp
 
 Connexion maps the function name to the operationId in the OpenAPI document path
 """
-import datetime
-import json
+
 import logging
-import os
 import traceback
 from functools import wraps
 from http import HTTPStatus
 from typing import Callable, Tuple, Union
 
-
 from ska_oso_pdm.generated.models.sb_definition import SBDefinition
-
 
 Response = Tuple[Union[SBDefinition], int]
 
@@ -47,6 +43,7 @@ def hello_world() -> Response:
     """
     return "Hello, world!"
 
+
 def error_response(err: Exception) -> Response:
     """
     Creates a general sever error response, without exposing internals to client
@@ -54,15 +51,15 @@ def error_response(err: Exception) -> Response:
     :return: HTTP response server error
     """
     LOGGER.exception("Exception occurred while executing API function")
-    response_body = ErrorResponse(
-        status=HTTPStatus.INTERNAL_SERVER_ERROR,
-        title="Internal Server Error",
-        detail=str(err.args),
-        traceback=ErrorResponseTraceback(
-            key=err.args[0],
-            type=str(type(err)),
-            full_traceback=traceback.format_exc(),
-        ),
-    )
+    response_body = {
+        "status": HTTPStatus.INTERNAL_SERVER_ERROR,
+        "title": "Internal Server Error",
+        "detail": str(err.args),
+        "traceback": {
+            "key": err.args[0],
+            "type": str(type(err)),
+            "full_traceback": traceback.format_exc(),
+        },
+    }
 
     return response_body, HTTPStatus.INTERNAL_SERVER_ERROR

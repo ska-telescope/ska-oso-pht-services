@@ -8,7 +8,6 @@ import prance
 from connexion import App
 from ska_db_oda.rest.flask_oda import FlaskODA
 
-
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 
 oda = FlaskODA()

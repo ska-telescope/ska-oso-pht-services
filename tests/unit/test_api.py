@@ -5,6 +5,7 @@ Unit tests for ska_oso_pht_services.api
 
 from http import HTTPStatus
 
+
 def test_hello_world(client):
     """
     TODO
