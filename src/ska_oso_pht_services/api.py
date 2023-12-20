@@ -41,7 +41,15 @@ def hello_world() -> Response:
     """
     Function that requests to /hello-world are mapped to
     """
-    return "Hello, world!"
+    return "Hello, world!!"
+
+
+@error_handler
+def proposal_edit() -> Response:
+    """
+    Function that requests to /proposal are mapped to
+    """
+    return "put /proposal"
 
 
 def error_response(err: Exception) -> Response:

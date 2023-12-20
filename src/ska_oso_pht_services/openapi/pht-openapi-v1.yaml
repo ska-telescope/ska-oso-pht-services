@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Observation Design Tool Service API
-  description: 'This OpenAPI document defines the API for the Observation Design Tool (pht) backend service'
+  title: Proposal Handling Tool Services API
+  description: 'This OpenAPI document defines the API for the Proposal Handling Tool Services (PHT) backend service'
   license:
     name: BSD-3-Clause
     url: https://opensource.org/licenses/BSD-3-Clause
@@ -16,6 +16,19 @@ paths:
       description: |
         Hello world style example endpoint
       operationId: ska_oso_pht_services.api.hello_world
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /proposal:
+    put:
+      summary: Edit a proposal
+      description: |
+        Edit a proposal
+      operationId: ska_oso_pht_services.api.proposal_edit
       responses:
         "200":
           description: OK
