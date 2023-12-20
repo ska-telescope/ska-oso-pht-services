@@ -27,8 +27,6 @@ stages:
   - staging
   - pages
   - scan
-  
-allow_failure: true
 
 .info_script: &info_script
     - |-
