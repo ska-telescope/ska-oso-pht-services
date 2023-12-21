@@ -70,7 +70,7 @@ paths:
                 type: string
   /proposal/list:
     get:
-      summary: Validate a proposal
+      summary: Get a list of proposal
       description: |
         Validate a proposal
       operationId: ska_oso_pht_services.api.proposal_get_list

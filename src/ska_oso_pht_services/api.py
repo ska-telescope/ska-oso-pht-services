@@ -70,7 +70,7 @@ def proposal_get() -> Response:
 @error_handler
 def proposal_get_list() -> Response:
     """
-    Function that requests to /proposal are mapped to
+    Function that requests to /proposal/list are mapped to
     """
     MOCKED_DATA = load_string_from_file("constants/data.json")
     data = json.loads(MOCKED_DATA)
@@ -88,7 +88,7 @@ def proposal_edit() -> Response:
 @error_handler
 def proposal_validate() -> Response:
     """
-    Function that requests to /proposal validate are mapped to
+    Function that requests to /proposal/validate are mapped to
     """
     return "post /proposal/validate"
 
