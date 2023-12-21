@@ -21,4 +21,4 @@ def test_hello_world():
     print(PHT_URL)
     print(response.text)
     assert response.status_code == HTTPStatus.OK
-    assert response.text == "Hello, world!!"
+    assert response.text == "Hello, world!"

@@ -1,0 +1,94 @@
+{
+  "meta_data": {
+    "skauuid": "d7f66ca1-cb5d-47ca-b6b9-86bdae775d2b",
+    "created_by": "next",
+    "submitted_by": "next",
+    "updated_by": "next",
+    "created_date": "2022-10-03T01:23:45.678Z",
+    "last_updated_date": "2022-10-03T01:23:45.678Z",
+    "submitted_date": "2022-10-03T01:23:45.678Z",
+    "status": "submitted"
+  },
+  "proposal": {
+    "skao_proposal_id": "SKA2388",
+    "title": "The Milky Way View",
+    "cycle": "SKA_5000_2023",
+    "abstract": "Pretty Looking frontend depends on hard work put into good wireframing and requirement gathering",
+    "proposal_type": "Standard Proposal",
+    "sub_proposal_type": "Coordinated Proposal",
+    "science_category": "gjhjkhklj",
+    "science_subcategory": "gjhjkhklj",
+    "science_justification": {
+      "document_id": "ghfhjgh",
+      "document_name": "scienceJustification",
+      "link": "http//:bhjbjgjrsdjbfjkjjnkjnjknknn"
+    },
+    "technical_justification": {
+      "document_id": "ghfhjgh",
+      "document_name": "technicalJustification",
+      "link": "http//:bhjbjgjrsdjbfjkiguhkjhjkhkhjk"
+    },
+    "targets": [
+      {
+        "target_id": "target1",
+        "name": "M28",
+        "right_ascension": "01:00:00",
+        "declination": "00:00:00",
+        "velocity": "4543"
+      },
+      {
+        "target_id": "target2",
+        "name": "M1",
+        "right_ascension": "01:00:00",
+        "declination": "00:00:00",
+        "velocity": "4543"
+      }
+    ],
+    "investigator": [
+      {
+        "investigator_id": "user1",
+        "first_name": "Van Loo",
+        "last_name": "Cheng",
+        "email": "ask.lop@map.com",
+        "country": "Lagoon",
+        "organization_id": "University of Free Town",
+        "for_phd": "No",
+        "has_phd": "No",
+        "principal_investigator": "yes"
+      },
+      {
+        "investigator_id": "user1",
+        "first_name": "Van Loo",
+        "last_name": "Cheng",
+        "email": "ask.lop@map.com",
+        "country": "Lagoon",
+        "organization_id": "University of Free Town",
+        "for_phd": "No",
+        "has_phd?": "No",
+        "principal_investigator": "no"
+      }
+    ],
+    "science_goals": [
+      {
+        "science_goal_id": "goal1",
+        "array": "MID",
+        "subarray": "subarray 1",
+        "linked": "4",
+        "observation_type": "Continuum",
+        "observing_band": "ghjghghg"
+      },
+      {
+        "science_goal_id": "goal2",
+        "array": "MID",
+        "subarray": "subarray 1",
+        "linked": "4",
+        "observation_type": "Continuum",
+        "observing_band": "ghjghghg"
+      }
+    ],
+    "data": {
+      "sdp": [{ "pipeline": "jhghgjghj" }, { "pramters": "gjkhjhjh" }],
+      "src_net": [{ "pipeline": "hgfgjhkhkl" }, { "parameters": "gfhgjhkjlh" }]
+    }
+  }
+}

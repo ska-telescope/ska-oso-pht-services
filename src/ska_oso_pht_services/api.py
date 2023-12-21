@@ -4,7 +4,9 @@ These functions map to the API paths, with the returned value being the API resp
 Connexion maps the function name to the operationId in the OpenAPI document path
 """
 
+import json
 import logging
+import os.path
 import traceback
 from functools import wraps
 from http import HTTPStatus
@@ -15,6 +17,17 @@ from ska_oso_pdm.generated.models.sb_definition import SBDefinition
 Response = Tuple[Union[SBDefinition], int]
 
 LOGGER = logging.getLogger(__name__)
+
+
+def load_string_from_file(filename):
+    """
+    Return a file from the current directory as a string
+    """
+    cwd, _ = os.path.split(__file__)
+    path = os.path.join(cwd, filename)
+    with open(path, "r", encoding="utf-8") as json_file:
+        json_data = json_file.read()
+        return json_data
 
 
 def error_handler(api_fn: Callable[[str], Response]) -> Callable[[str], Response]:
@@ -41,7 +54,27 @@ def hello_world() -> Response:
     """
     Function that requests to /hello-world are mapped to
     """
-    return "Hello, world!!"
+    return "Hello, world!"
+
+
+@error_handler
+def proposal_get() -> Response:
+    """
+    Function that requests to /proposal are mapped to
+    """
+    MOCKED_DATA = load_string_from_file("constants/data.json")
+    data = json.loads(MOCKED_DATA)
+    return data
+
+
+@error_handler
+def proposal_get_list() -> Response:
+    """
+    Function that requests to /proposal are mapped to
+    """
+    MOCKED_DATA = load_string_from_file("constants/data.json")
+    data = json.loads(MOCKED_DATA)
+    return [data for x in range(5)]
 
 
 @error_handler
@@ -50,6 +83,14 @@ def proposal_edit() -> Response:
     Function that requests to /proposal are mapped to
     """
     return "put /proposal"
+
+
+@error_handler
+def proposal_validate() -> Response:
+    """
+    Function that requests to /proposal validate are mapped to
+    """
+    return "post /proposal/validate"
 
 
 def error_response(err: Exception) -> Response:

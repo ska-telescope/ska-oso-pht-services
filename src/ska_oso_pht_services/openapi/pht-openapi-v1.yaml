@@ -24,11 +24,26 @@ paths:
               schema:
                 type: string
   /proposal:
+    get:
+      summary: Get a proposal
+      description: |
+        Get a proposal
+      operationId: ska_oso_pht_services.api.proposal_get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
     put:
       summary: Edit a proposal
       description: |
         Edit a proposal
       operationId: ska_oso_pht_services.api.proposal_edit
+      requestBody:
+        content:
+          application/json:
+            schema: {}
       responses:
         "200":
           description: OK
@@ -36,3 +51,32 @@ paths:
             text/plain:
               schema:
                 type: string
+  /proposal/validate:
+    post:
+      summary: Validate a proposal
+      description: |
+        Validate a proposal
+      operationId: ska_oso_pht_services.api.proposal_validate
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /proposal/list:
+    get:
+      summary: Validate a proposal
+      description: |
+        Validate a proposal
+      operationId: ska_oso_pht_services.api.proposal_get_list
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
