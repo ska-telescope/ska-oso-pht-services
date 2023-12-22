@@ -1,5 +1,5 @@
 from astroquery.simbad import Simbad
-from astroquery.ned import Ned
+from astroquery.ipac.ned import Ned
 
 def convert_deg_to_hms(degrees):
     """
@@ -15,8 +15,23 @@ def convert_deg_to_hms(degrees):
     remainder = (degrees / 15 - hours) * 60
     minutes = int(remainder)
     seconds = (remainder - minutes) * 60
-
     return hours, minutes, seconds
+
+def convert_deg_to_dms(degrees):
+    """
+    Convert degrees to degree, minutes, and seconds format.
+
+    Parameters:
+    degrees (float): Value in degrees to convert.
+
+    Returns:
+    tuple: Degree, minutes, and seconds.
+    """
+    degree = int(degrees)
+    remainder = abs(degrees - degree) * 60
+    minutes = int(remainder)
+    seconds = (remainder - minutes) * 60
+    return degree, minutes, seconds
 
 def get_coordinates(name: str) -> str:
     """
@@ -50,7 +65,7 @@ def get_coordinates(name: str) -> str:
 
             # Convert RA and DEC degrees to hours, minutes, and seconds
             ra_hours, ra_minutes, ra_seconds = convert_deg_to_hms(ra_degrees)
-            dec_hours, dec_minutes, dec_seconds = convert_deg_to_hms(dec_degrees)
+            dec_hours, dec_minutes, dec_seconds = convert_deg_to_dms(dec_degrees)
 
             # Format coordinates in hours, minutes, and seconds
             coordinates = f"{ra_hours}h {ra_minutes}m {ra_seconds:.2f}s {dec_hours}d {dec_minutes}m {dec_seconds:.2f}s"

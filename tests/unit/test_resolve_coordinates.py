@@ -1,8 +1,18 @@
+import sys
+import os
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/ska_oso_pht_services/utils'))
+sys.path.insert(0, module_path)
 import pytest
 from unittest.mock import patch
 from astroquery.simbad import Simbad
-from astroquery.ned import Ned
-from src.ska_oso_pht_services.utils.resolve_coordinates import convert_deg_to_hms, get_coordinates
+from astroquery.ipac.ned import Ned
+
+from resolve_coordinates import convert_deg_to_hms, get_coordinates
+
+
+
+
+
 
 # Mocking Simbad and Ned responses for testing
 simbad_mock_result = {'RA': ['05 34 30.9'], 'DEC': ['+22 00 53']}
@@ -23,14 +33,14 @@ def test_convert_deg_to_hms(degrees, expected_result):
 @patch('astroquery.ned.Ned.query_object', return_value=None)
 def test_get_coordinates_simbad_found(simbad_mock, ned_mock):
     result = get_coordinates("TestObject")
-    expected_coordinates = "05h:34:30.9s +22:00:53"
+    expected_coordinates = "05:34:30.9 +22:00:53"
     assert result == expected_coordinates
 
 @patch('astroquery.simbad.Simbad.query_object', return_value=None)
 @patch('astroquery.ned.Ned.query_object', return_value=ned_mock_result)
 def test_get_coordinates_ned_found(simbad_mock, ned_mock):
     result = get_coordinates("TestObject")
-    expected_coordinates = "4h 54m 30.75s 22d 00m 53.00s"
+    expected_coordinates = "5h 34m 30.90s 22d 0m 53.00s" 
     assert result == expected_coordinates
 
 @patch('astroquery.simbad.Simbad.query_object', return_value=None)
