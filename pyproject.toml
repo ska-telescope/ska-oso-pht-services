@@ -38,6 +38,7 @@ ska-ser-logging = "^0.4.1"
 ska-ser-skuid = "^3.3.3"
 ska-db-oda = "^1.9.0"
 ska-oso-pdm = "^11.1.1"
+astroquery = "^0.4.6"
 prance = {version = "^23.6.21.0", extras = ["osv"]}
 
 
