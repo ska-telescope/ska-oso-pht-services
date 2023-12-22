@@ -3,22 +3,46 @@
 # queries.yaml
 
 queries:
-  - query_name: "get_users"
-    table_name: "users"
+  - query_name: select_proposals_by_investigator
+    table_name: proposal
     columns:
-      - "id"
-      - "username"
+      - '*'  # Selecting all columns
+    conditions:
+      - column: investigators
+        operator: '&&'  # This operator checks for overlap between arrays
+        value: &investigator ['kik']  # Array of specific values to search for
+
+
+  - query_name: "get_proposal"
+    table_name: "proposal"
+    columns:
+      - "skauuid"
+      - "created_date"
       - "email"
     conditions:
-      - column: "age"
+      - column: "date"
         operator: ">"
-        value: 18
+        value: 18-09-2023
       - column: "is_active"
         operator: "="
         value: true
 
-  - query_name: "get_products"
-    table_name: "products"
+  - query_name: "get_proposals"
+    table_name: "proposal"
+    columns:
+      - "skauuid"
+      - "created_date"
+      - "email"
+    conditions:
+      - column: "date"
+        operator: ">"
+        value: 18-09-2023
+      - column: "is_active"
+        operator: "="
+        value: true
+
+  - query_name: "get_investigatots"
+    table_name: "users"
     columns:
       - "product_id"
       - "name"
@@ -30,3 +54,62 @@ queries:
       - column: "stock_quantity"
         operator: ">"
         value: 0
+
+  - query_name: "get_science_category"
+    table_name: "science_category"
+    columns:
+      - "product_id"
+      - "name"
+      - "price"
+    conditions:
+      - column: "category"
+        operator: "IN"
+        value: ["Electronics", "Clothing"]
+      - column: "stock_quantity"
+        operator: ">"
+        value: 0
+
+  - query_name: get_users
+    table_name: users
+    columns:
+      - id
+      - name
+      - email
+    conditions:
+      - column: id
+        operator: '>'
+        value: 100
+
+  - query_name: update_user_details
+    table_name: users
+    update:
+      - column: email
+        value: 'new_email@example.com'
+      - column: phone
+        value: '123456789'
+      - column: address
+        value: '123 Main St'
+    conditions:
+      - column: id
+        operator: '='
+        value: 105
+
+  - query_name: update_user_email
+    table_name: users
+    update:
+      - column: email
+        value: 'new_email@example.com'
+    conditions:
+      - column: id
+        operator: '='
+        value: 105
+
+  - query_name: insert_new_user
+    table_name: users
+    columns:
+      - name
+      - email
+    values:
+      - ['John Doe', 'john@example.com']
+      - ['Alice Smith', 'alice@example.com']
+

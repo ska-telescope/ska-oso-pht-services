@@ -1,38 +1,41 @@
-from utils.utils import QueryGenerator
+from utils.utils import QueryRunner
 import yaml
 
 
 
-class QueryRunner:
-    def __init__(self, queries_file):
-        """
-        Initializes the QueryRunner class with the provided queries file.
 
-        Args:
-        - queries_file (str): The path to the YAML file containing queries.
-        """
-        self.query_generator = QueryGenerator(queries_file)
-
-    def get_specific_query(self, query_name):
-        """
-        Retrieves a specific query and prints the generated SQL query.
-
-        Args:
-        - query_name (str): The name of the query to retrieve.
-        """
-        try:
-            sql_query = self.query_generator.generate_query(query_name)
-            return sql_query
-        except (KeyError, Exception) as e:
-            print(f"Error: {e}")
-
-# Usage
-queries_file = './constants/queries.yaml'
-query_runner = QueryRunner(queries_file)
-pop = query_runner.get_specific_query("get_users")
+query_runner = QueryRunner('./constants/queries.yaml')
+pop = query_runner.execute_query("select_proposals_by_investigator", operation='select')
 print(pop)
+# select_sql_query = query_runner.execute_query("get_users", operation='select')
+# print("SELECT Query:")
+# print(select_sql_query)
+# select_sql_query = query_generator.execute_query("get_users", operation='select')
+# print("SELECT Query:")
+# print(select_sql_query)
 
+# # Example usage for UPDATE query
+# update_sql_query = query_generator.generate_query("update_user_email", operation='update')
+# print("\nUPDATE Query:")
+# print(update_sql_query)
 
+# # Example usage for INSERT query
+# insert_sql_query = query_generator.generate_query("insert_new_user", operation='insert')
+# print("\nINSERT Query:")
+# print(insert_sql_query)
+
+# Usage example:
+
+# converter = CoordinateConverter()
+
+# try:
+#     ra_input = "10:30:15"  # Replace with your RA in HH:mm:ss
+#     dec_input = "+40:25:30"  # Replace with your Dec in DD:mm:ss
+
+#     galactic_coords = converter.equatorial_to_galactic(ra_input, dec_input)
+#     print("Galactic Coordinates (l, b):", galactic_coords)
+# except ValueError as e:
+#     print("Error:", e)
 
 
 # import psycopg2

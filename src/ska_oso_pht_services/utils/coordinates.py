@@ -68,15 +68,3 @@ class CoordinateConverter:
         except ValueError:
             raise ValueError("Invalid input format or values for RA and Dec.")
 
-# Usage example:
-
-# converter = CoordinateConverter()
-
-# try:
-#     ra_input = "10:30:15"  # Replace with your RA in HH:mm:ss
-#     dec_input = "+40:25:30"  # Replace with your Dec in DD:mm:ss
-
-#     galactic_coords = converter.equatorial_to_galactic(ra_input, dec_input)
-#     print("Galactic Coordinates (l, b):", galactic_coords)
-# except ValueError as e:
-#     print("Error:", e)
