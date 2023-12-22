@@ -16,6 +16,7 @@ def test_hello_world(client):
     result = client.get("/ska-oso-pht-services/pht/api/v1/hello-world")
 
     assert result.status_code == HTTPStatus.OK
+    print(result.status_code)
     assert result.text == "Hello, world!"
 
 
