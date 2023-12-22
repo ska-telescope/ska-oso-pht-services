@@ -5,9 +5,10 @@
     "submitted_by": "next",
     "updated_by": "next",
     "created_date": "2022-10-03T01:23:45.678Z",
-    "last_updated_date": "2022-10-03T01:23:45.678Z",
+    "updated_date": "2022-10-03T01:23:45.678Z",
     "submitted_date": "2022-10-03T01:23:45.678Z",
-    "status": "submitted"
+    "status": "submitted",
+    "investigators": ["123","444", "767", "777" ]
   },
   "proposal": {
     "skao_proposal_id": "SKA2388",
