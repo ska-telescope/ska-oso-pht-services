@@ -13,9 +13,6 @@ from .util import (
 
 
 def test_hello_world(client):
-    """
-    TODO
-    """
 
     result = client.get("/ska-oso-pht-services/pht/api/v1/hello-world")
 
@@ -24,9 +21,6 @@ def test_hello_world(client):
 
 
 def test_proposal_get(client):
-    """
-    TODO
-    """
 
     result = client.get("/ska-oso-pht-services/pht/api/v1/proposal")
 
@@ -35,9 +29,6 @@ def test_proposal_get(client):
 
 
 def test_proposal_get_list(client):
-    """
-    TODO
-    """
 
     result = client.get("/ska-oso-pht-services/pht/api/v1/proposal/list")
 
@@ -46,9 +37,6 @@ def test_proposal_get_list(client):
 
 
 def test_proposal_edit(client):
-    """
-    TODO
-    """
 
     result = client.put("/ska-oso-pht-services/pht/api/v1/proposal", data={})
 
@@ -57,9 +45,6 @@ def test_proposal_edit(client):
 
 
 def test_proposal_validate(client):
-    """
-    TODO
-    """
 
     result = client.post("/ska-oso-pht-services/pht/api/v1/proposal/validate", data={})
 
@@ -68,9 +53,6 @@ def test_proposal_validate(client):
 
 
 def test_upload_pdf(client):
-    """
-    TODO
-    """
 
     result = client.post("/ska-oso-pht-services/pht/api/v1/upload/pdf", data={})
 
