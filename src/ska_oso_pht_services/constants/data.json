@@ -5,7 +5,7 @@
     "submitted_by": "next",
     "updated_by": "next",
     "created_date": "2022-10-03T01:23:45.678Z",
-    "last_updated_date": "2022-10-03T01:23:45.678Z",
+    "updated_date": "2022-10-03T01:23:45.678Z",
     "submitted_date": "2022-10-03T01:23:45.678Z",
     "status": "submitted"
   },
@@ -47,7 +47,7 @@
     "investigator": [
       {
         "investigator_id": "user1",
-        "first_name": "Van Loo",
+        "first_name": "Danny Loo",
         "last_name": "Cheng",
         "email": "ask.lop@map.com",
         "country": "Lagoon",
@@ -57,14 +57,14 @@
         "principal_investigator": "yes"
       },
       {
-        "investigator_id": "user1",
+        "investigator_id": "user2",
         "first_name": "Van Loo",
         "last_name": "Cheng",
         "email": "ask.lop@map.com",
         "country": "Lagoon",
         "organization_id": "University of Free Town",
         "for_phd": "No",
-        "has_phd?": "No",
+        "has_phd": "No",
         "principal_investigator": "no"
       }
     ],
@@ -85,10 +85,6 @@
         "observation_type": "Continuum",
         "observing_band": "ghjghghg"
       }
-    ],
-    "data": {
-      "sdp": [{ "pipeline": "jhghgjghj" }, { "pramters": "gjkhjhjh" }],
-      "src_net": [{ "pipeline": "hgfgjhkhkl" }, { "parameters": "gfhgjhkjlh" }]
-    }
+    ]
   }
 }

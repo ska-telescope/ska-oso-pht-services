@@ -1,0 +1,32 @@
+# SELECT * FROM public.proposal WHERE 'kik' = ANY(investigators);
+
+# queries.yaml
+
+queries:
+  - query_name: "get_users"
+    table_name: "users"
+    columns:
+      - "id"
+      - "username"
+      - "email"
+    conditions:
+      - column: "age"
+        operator: ">"
+        value: 18
+      - column: "is_active"
+        operator: "="
+        value: true
+
+  - query_name: "get_products"
+    table_name: "products"
+    columns:
+      - "product_id"
+      - "name"
+      - "price"
+    conditions:
+      - column: "category"
+        operator: "IN"
+        value: ["Electronics", "Clothing"]
+      - column: "stock_quantity"
+        operator: ">"
+        value: 0
