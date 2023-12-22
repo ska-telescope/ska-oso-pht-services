@@ -1,12 +1,12 @@
 """
-Defines the models for the proposal preparation tool.
+Defines the basic data models for the proposal preparation tool.
 """
 
 from pydantic import BaseModel, conint, confloat, EmailStr
 from datetime import datetime as dt
 from typing import List, Set, Optional
-import datetime
 
+# TO DO: Add validations where necessary
 
 class MetaData(BaseModel):
     skauuid: str
@@ -81,12 +81,12 @@ class Proposal(BaseModel):
     # data: DataSection
 
 
+# class ProposalDefinition(BaseModel):
+#     meta_data: MetaData
+#     proposal: Proposal
+
+
 class ProposalDefinition(BaseModel):
-    meta_data: MetaData
-    proposal: Proposal
-
-
-class PayLoad(BaseModel):
     meta_data: MetaData
     investigator: Set[str]
     proposal: dict
