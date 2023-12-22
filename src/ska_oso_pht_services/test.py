@@ -5,7 +5,7 @@ import yaml
 
 
 query_runner = QueryRunner('./constants/queries.yaml')
-pop = query_runner.execute_query("select_proposals_by_investigator", operation='select')
+pop = query_runner.execute_query("get_proposal", operation='select')
 print(pop)
 # select_sql_query = query_runner.execute_query("get_users", operation='select')
 # print("SELECT Query:")

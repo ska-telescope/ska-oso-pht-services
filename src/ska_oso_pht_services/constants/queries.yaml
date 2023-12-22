@@ -1,85 +1,49 @@
-# SELECT * FROM public.proposal WHERE 'kik' = ANY(investigators);
-
-# queries.yaml
-
 queries:
   - query_name: select_proposals_by_investigator
     table_name: proposal
     columns:
-      - '*'  # Selecting all columns
+      - id
+      - title
+      - investigators
     conditions:
       - column: investigators
-        operator: '&&'  # This operator checks for overlap between arrays
-        value: &investigator ['kik']  # Array of specific values to search for
-
-
+        operator: '@>'
+        value: &investigator 'kik'
   - query_name: "get_proposal"
     table_name: "proposal"
     columns:
-      - "skauuid"
-      - "created_date"
-      - "email"
+      - "*"
     conditions:
-      - column: "date"
-        operator: ">"
-        value: 18-09-2023
-      - column: "is_active"
+      - column: "status"
         operator: "="
-        value: true
-
-  - query_name: "get_proposals"
+        value: ""
+      - column: "proposal_id"
+        operator: "="
+        value: "8977666-y87888-7878787"
+  - query_name: "get_proposal_by_date"
     table_name: "proposal"
     columns:
-      - "skauuid"
-      - "created_date"
-      - "email"
+      - "*"
     conditions:
-      - column: "date"
+      - column: "created_date"
         operator: ">"
         value: 18-09-2023
       - column: "is_active"
         operator: "="
         value: true
-
-  - query_name: "get_investigatots"
+  - query_name: "get_investigators"
     table_name: "users"
     columns:
-      - "product_id"
+      - "user_id"
       - "name"
-      - "price"
     conditions:
-      - column: "category"
+      - column: "organization"
         operator: "IN"
-        value: ["Electronics", "Clothing"]
-      - column: "stock_quantity"
+        value: ["UNiversity of Bristol", "UNiversity of Manchester"]
+      - column: "created_date"
         operator: ">"
         value: 0
-
-  - query_name: "get_science_category"
-    table_name: "science_category"
-    columns:
-      - "product_id"
-      - "name"
-      - "price"
-    conditions:
-      - column: "category"
-        operator: "IN"
-        value: ["Electronics", "Clothing"]
-      - column: "stock_quantity"
-        operator: ">"
-        value: 0
-
-  - query_name: get_users
-    table_name: users
-    columns:
-      - id
-      - name
-      - email
-    conditions:
-      - column: id
-        operator: '>'
-        value: 100
-
+# sample to update proposal
   - query_name: update_user_details
     table_name: users
     update:
@@ -103,7 +67,7 @@ queries:
       - column: id
         operator: '='
         value: 105
-
+# sample to insert new proposal
   - query_name: insert_new_user
     table_name: users
     columns:
