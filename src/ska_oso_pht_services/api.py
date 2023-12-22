@@ -93,6 +93,14 @@ def proposal_validate() -> Response:
     return "post /proposal/validate"
 
 
+@error_handler
+def upload_pdf() -> Response:
+    """
+    Function that requests to /upload/pdf are mapped to
+    """
+    return "post /upload/pdf"
+
+
 def error_response(err: Exception) -> Response:
     """
     Creates a general sever error response, without exposing internals to client

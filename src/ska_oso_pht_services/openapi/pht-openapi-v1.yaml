@@ -80,3 +80,20 @@ paths:
           content:
             application/json:
               schema: {}
+  /upload/pdf:
+    post:
+      summary: Upload a pdf
+      description: |
+        Upload a pdf
+      operationId: ska_oso_pht_services.api.upload_pdf
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

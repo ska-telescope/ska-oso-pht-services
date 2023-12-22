@@ -65,3 +65,14 @@ def test_proposal_validate(client):
 
     assert result.status_code == HTTPStatus.OK
     assert result.text == "post /proposal/validate"
+
+
+def test_upload_pdf(client):
+    """
+    TODO
+    """
+
+    result = client.post("/ska-oso-pht-services/pht/api/v1/upload/pdf", data={})
+
+    assert result.status_code == HTTPStatus.OK
+    assert result.text == "post /upload/pdf"
