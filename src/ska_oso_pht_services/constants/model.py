@@ -2,10 +2,9 @@
 Defines the basic data models for the proposal preparation tool.
 """
 
+from pydantic import BaseModel, conint, confloat, EmailStr
 from datetime import datetime as dt
-from typing import List, Optional, Set
-
-from pydantic import BaseModel, EmailStr, confloat
+from typing import List, Set, Optional
 
 # TO DO: Add validations where necessary
 
