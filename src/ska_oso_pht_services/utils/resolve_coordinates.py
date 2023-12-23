@@ -33,7 +33,7 @@ def convert_deg_to_dms(degrees):
     seconds = (remainder - minutes) * 60
     return degree, minutes, seconds
 
-def get_coordinates(name: str) -> str:
+def get_coordinates(name: str, metadata_map=None) -> str:
     """
     Retrieve formatted coordinates (RA and DEC) for a given astronomical object name.
     Queries Simbad first, and if no results are found, queries NED.
@@ -41,18 +41,22 @@ def get_coordinates(name: str) -> str:
 
     Parameters:
     name (str): Name or identifier of the astronomical object to query.
+    metadata_map (dict, optional): A dictionary to store metadata. Default is None.
 
     Returns:
     str: Formatted coordinates (e.g., '05h:34:30.9s +22:00:53s').
     If the object is not found in both databases, returns 'Not found'.
     If an error occurs during the query process, returns 'Error fetching coordinates'.
     """
+    if metadata_map is None:
+        metadata_map = {}
+
     try:
-        #Query Simbad first
+        # Query Simbad first
         result_table = Simbad.query_object(name)
         if result_table is not None:
-            ra = result_table['RA'][0]
-            dec = result_table['DEC'][0]
+            ra = result_table["RA"][0]
+            dec = result_table["DEC"][0]
             # Format coordinates with colons instead of spaces
             coordinates = f"{ra.replace(' ', ':')} {dec.replace(' ', ':')}"
             return coordinates
@@ -60,17 +64,23 @@ def get_coordinates(name: str) -> str:
         # If not found in Simbad, query NED
         ned_data = Ned.query_object(name)
         if ned_data is not None:
-            ra_degrees = ned_data['RA(deg)'][0]
-            dec_degrees = ned_data['DEC(deg)'][0]
+            ra_degrees = ned_data["RA(deg)"][0]
+            dec_degrees = ned_data["DEC(deg)"][0]
 
             # Convert RA and DEC degrees to hours, minutes, and seconds
             ra_hours, ra_minutes, ra_seconds = convert_deg_to_hms(ra_degrees)
             dec_hours, dec_minutes, dec_seconds = convert_deg_to_dms(dec_degrees)
 
             # Format coordinates in hours, minutes, and seconds
-            coordinates = f"{ra_hours}h {ra_minutes}m {ra_seconds:.2f}s {dec_hours}d {dec_minutes}m {dec_seconds:.2f}s"
+            coordinates = (
+                f"{ra_hours}h {ra_minutes}m {ra_seconds:.2f}s {dec_hours}d"
+                f" {dec_minutes}m {dec_seconds:.2f}s"
+            )
+
+            # Example of updating metadata_map
+            metadata_map['source'] = 'NED'
             return coordinates
-        
+
         return "Not found"
 
     except Exception as e:
