@@ -1,0 +1,79 @@
+queries:
+  - query_name: select_proposals_by_investigator
+    table_name: proposal
+    columns:
+      - id
+      - title
+      - investigators
+    conditions:
+      - column: investigators
+        operator: '@>'
+        value: &investigator 'kik'
+  - query_name: "get_proposal"
+    table_name: "proposal"
+    columns:
+      - "*"
+    conditions:
+      - column: "status"
+        operator: "="
+        value: ""
+      - column: "proposal_id"
+        operator: "="
+        value: "8977666-y87888-7878787"
+  - query_name: "get_proposal_by_date"
+    table_name: "proposal"
+    columns:
+      - "*"
+    conditions:
+      - column: "created_date"
+        operator: ">"
+        value: 18-09-2023
+      - column: "is_active"
+        operator: "="
+        value: true
+  - query_name: "get_investigators"
+    table_name: "users"
+    columns:
+      - "user_id"
+      - "name"
+    conditions:
+      - column: "organization"
+        operator: "IN"
+        value: ["UNiversity of Bristol", "UNiversity of Manchester"]
+      - column: "created_date"
+        operator: ">"
+        value: 0
+# sample to update proposal
+  - query_name: update_user_details
+    table_name: users
+    update:
+      - column: email
+        value: 'new_email@example.com'
+      - column: phone
+        value: '123456789'
+      - column: address
+        value: '123 Main St'
+    conditions:
+      - column: id
+        operator: '='
+        value: 105
+
+  - query_name: update_user_email
+    table_name: users
+    update:
+      - column: email
+        value: 'new_email@example.com'
+    conditions:
+      - column: id
+        operator: '='
+        value: 105
+# sample to insert new proposal
+  - query_name: insert_new_user
+    table_name: users
+    columns:
+      - name
+      - email
+    values:
+      - ['John Doe', 'john@example.com']
+      - ['Alice Smith', 'alice@example.com']
+
