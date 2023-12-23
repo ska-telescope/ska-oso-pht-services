@@ -1,7 +1,11 @@
-import pytest
 from unittest.mock import patch
-from ska_oso_pht_services.utils.resolve_coordinates \
-    import convert_deg_to_hms, get_coordinates
+
+import pytest
+
+from ska_oso_pht_services.utils.resolve_coordinates import (
+    convert_deg_to_hms,
+    get_coordinates,
+)
 
 simbad_mock_result = {'RA': ['05 34 30.9'], 'DEC': ['+22 00 53']}
 ned_mock_result = {'RA(deg)': [83.62875], 'DEC(deg)': [22.01472222]}
