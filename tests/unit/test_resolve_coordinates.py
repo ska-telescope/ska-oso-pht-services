@@ -1,9 +1,5 @@
-import sys
-import os
 import pytest
 from unittest.mock import patch
-from astroquery.simbad import Simbad
-from astroquery.ipac.ned import Ned
 from ska_oso_pht_services.utils.resolve_coordinates \
     import convert_deg_to_hms, get_coordinates
 
