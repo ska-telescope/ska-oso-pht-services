@@ -4,8 +4,6 @@ pytest fixtures to be used by unit tests
 import sys
 import os
 
-module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../src"))
-sys.path.insert(0, module_path)
 import pytest
 
 from ska_oso_pht_services import create_app, resolve_openapi_spec
