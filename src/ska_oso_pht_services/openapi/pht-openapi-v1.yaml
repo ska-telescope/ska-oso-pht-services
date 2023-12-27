@@ -97,3 +97,24 @@ paths:
             text/plain:
               schema:
                 type: string
+  /utils/get_coordinates/{identifier}:
+    get:
+      summary: resolve coordinates
+      description: |
+        resolve coordinates
+      operationId: ska_oso_pht_services.api.get_coordinates
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

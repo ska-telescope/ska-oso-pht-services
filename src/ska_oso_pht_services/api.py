@@ -14,6 +14,8 @@ from typing import Callable, Tuple, Union
 
 from ska_oso_pdm.generated.models.sb_definition import SBDefinition
 
+from ska_oso_pht_services.utils import resolve_coordinates
+
 Response = Tuple[Union[SBDefinition], int]
 
 LOGGER = logging.getLogger(__name__)
@@ -99,6 +101,14 @@ def upload_pdf() -> Response:
     Function that requests to /upload/pdf are mapped to
     """
     return "post /upload/pdf"
+
+
+@error_handler
+def get_coordinates(identifier: str) -> Response:
+    """
+    Function that requests to /utils/get_coordinates are mapped to
+    """
+    return resolve_coordinates.get_coordinates(identifier)
 
 
 def error_response(err: Exception) -> Response:

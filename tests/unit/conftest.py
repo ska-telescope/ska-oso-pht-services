@@ -1,8 +1,8 @@
 """
 pytest fixtures to be used by unit tests
 """
-import sys
 import os
+import sys
 
 import pytest
 
