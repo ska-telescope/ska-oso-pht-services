@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 import pytest
+from astroquery.exceptions import RemoteServiceError
 
 from ska_oso_pht_services.utils.resolve_coordinates import (
     convert_deg_to_hms,
@@ -28,7 +29,8 @@ def test_convert_deg_to_hms(degrees, expected_result):
 
 @patch("astroquery.simbad.Simbad.query_object", return_value=simbad_mock_result)
 @patch("astroquery.ipac.ned.Ned.query_object", return_value=None)
-def test_get_coordinates_simbad_found():
+def test_get_coordinates_simbad_found(simbad_mock, ned_mock):
+    # pylint: disable=W0612,W0613
     result = get_coordinates("TestObject")
     expected_coordinates = "05:34:30.9 +22:00:53"
     assert result == expected_coordinates
@@ -36,7 +38,8 @@ def test_get_coordinates_simbad_found():
 
 @patch("astroquery.simbad.Simbad.query_object", return_value=None)
 @patch("astroquery.ipac.ned.Ned.query_object", return_value=ned_mock_result)
-def test_get_coordinates_ned_found():
+def test_get_coordinates_ned_found(simbad_mock, ned_mock):
+    # pylint: disable=W0612,W0613
     result = get_coordinates("TestObject")
     expected_coordinates = "5h 34m 30.90s 22d 0m 53.00s"
     assert result == expected_coordinates
@@ -44,20 +47,28 @@ def test_get_coordinates_ned_found():
 
 @patch("astroquery.simbad.Simbad.query_object", return_value=None)
 @patch("astroquery.ipac.ned.Ned.query_object", return_value=None)
-def test_get_coordinates_not_found():
+def test_get_coordinates_not_found(simbad_mock, ned_mock):
+    # pylint: disable=W0612,W0613
     result = get_coordinates("NonExistentObject")
     assert result == "Not found"
 
 
-@patch("astroquery.simbad.Simbad.query_object", side_effect=Exception("Simbad error"))
+@patch(
+    "astroquery.simbad.Simbad.query_object",
+    side_effect=RemoteServiceError("Simbad error"),
+)
 @patch("astroquery.ipac.ned.Ned.query_object", return_value=None)
-def test_get_coordinates_error_simbad():
+def test_get_coordinates_error_simbad(simbad_mock, ned_mock):
+    # pylint: disable=W0612,W0613
     result = get_coordinates("ErrorObject")
     assert result == "Error fetching coordinates"
 
 
 @patch("astroquery.simbad.Simbad.query_object", return_value=None)
-@patch("astroquery.ipac.ned.Ned.query_object", side_effect=Exception("NED error"))
-def test_get_coordinates_error_ned():
+@patch(
+    "astroquery.ipac.ned.Ned.query_object", side_effect=RemoteServiceError("NED error")
+)
+def test_get_coordinates_error_ned(simbad_mock, ned_mock):
+    # pylint: disable=W0612,W0613
     result = get_coordinates("ErrorObject")
     assert result == "Error fetching coordinates"
