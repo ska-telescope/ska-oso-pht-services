@@ -1,3 +1,4 @@
+from astroquery.exceptions import RemoteServiceError
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
@@ -79,6 +80,6 @@ def get_coordinates(name: str) -> str:
 
         return "Not found"
 
-    except Exception as e:
+    except RemoteServiceError as e:
         print(f"Error occurred: {e}")
         return "Error fetching coordinates"

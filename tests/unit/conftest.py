@@ -1,9 +1,6 @@
 """
 pytest fixtures to be used by unit tests
 """
-import os
-import sys
-
 import pytest
 
 from ska_oso_pht_services import create_app, resolve_openapi_spec
