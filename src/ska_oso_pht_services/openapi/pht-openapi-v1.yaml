@@ -118,3 +118,23 @@ paths:
             text/plain:
               schema:
                 type: string
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        title:
+          type: string
+        detail:
+          type: string
+        traceback:
+          type: object
+          properties:
+            key:
+              type: string
+            type:
+              type: string
+            full_traceback:
+              type: string
