@@ -118,6 +118,6 @@ def upload_pdf() -> Response:
 @error_handler
 def get_coordinates(identifier: str) -> Response:
     """
-    Function that requests to /coordinates are mapped to
+    Function that requests to /utils/get_coordinates are mapped to
     """
     return resolve_coordinates.get_coordinates(identifier)

@@ -97,7 +97,7 @@ paths:
             text/plain:
               schema:
                 type: string
-  /coordinates/{identifier}:
+  /get-coordinates/{identifier}:
     get:
       summary: resolve coordinates
       description: |
