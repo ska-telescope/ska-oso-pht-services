@@ -29,7 +29,7 @@ def resolve_openapi_spec() -> Dict[str, Any]:
 class CustomRequestBodyValidator:  # pylint: disable=too-few-public-methods
     """
         There is a (another) issue with Connexion where it cannot validate against a
-        spec with polymorphism, like the SBDefinition.
+        spec with polymorphism,.
     See https://github.com/spec-first/connexion/issues/1569
     As a temporary hack, this basically turns off the validation
     """
