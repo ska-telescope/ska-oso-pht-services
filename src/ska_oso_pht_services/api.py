@@ -16,7 +16,7 @@ from flask import jsonify
 from ska_oso_pht_services.constants.model import ProposalDefinition
 from ska_oso_pht_services.utils import resolve_coordinates
 
-Response = ProposalDefinition
+Response = Tuple[Union[ProposalDefinition], int]
 
 LOGGER = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ def load_string_from_file(filename):
         return json_data
 
 
-def error_handler(api_func):
+def error_handler(f):
     """
     A decorator that wraps the passed in function and executes it.
     Any unhandled exceptions that are raised within the function are caught
@@ -40,25 +40,25 @@ def error_handler(api_func):
     and HTTP status code.
 
     Args:
-        api_func (function): The function to be wrapped by the decorator.
+        f (function): The function to be wrapped by the decorator.
 
     Returns:
         function: The decorated function which includes error handling.
     """
 
-    @wraps(api_func)
+    @wraps(f)
     def decorated_function(*args, **kwargs):
         try:
             return f(*args, **kwargs)
         except RemoteServiceError as ve:
             return (
-                jsonify({"error": "Get Coordinates Value Error", "status" :400,  "message": str(ve)}),
+                jsonify({"error": "Get Coordinates Value Error", "message": str(ve)}),
                 400,
             )
         except ValueError as ve:
-            return jsonify({"error": "Value Error", "status" :400, "message": str(ve)}), 400
+            return jsonify({"error": "Value Error", "message": str(ve)}), 400
         except Exception as e:  # pylint: disable=broad-except
-            return jsonify({"error": "Internal Server Error", "status" :500, "message": str(e)}), 500
+            return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
 
     return decorated_function
 
@@ -118,6 +118,7 @@ def upload_pdf() -> Response:
 @error_handler
 def get_coordinates(identifier: str) -> Response:
     """
-    Function that requests to /coordinates are mapped to
+    Function that requests to /utils/get_coordinates are mapped to
     """
+
     return resolve_coordinates.get_coordinates(identifier)
