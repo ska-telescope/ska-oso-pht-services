@@ -59,6 +59,6 @@ def test_get_coordinates(client):
     result = client.get(
         f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}"
     )
-    
+
     assert result.status_code == HTTPStatus.OK
     assert result.text == "12:38:49.0984 -38:22:53.670"

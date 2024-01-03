@@ -13,12 +13,12 @@ PHT_URL = getenv(
 )
 
 
-# def test_hello_world():
-#     """
-#     TODO
-#     """
-#     response = requests.get(f"{PHT_URL}/hello-world")
-#     print(PHT_URL)
-#     print(response.text)
-#     assert response.status_code == HTTPStatus.OK
-#     assert response.text == "Hello, world!"
+def test_hello_world():
+    """
+    TODO
+    """
+    response = requests.get(f"{PHT_URL}/hello-world")
+    print(PHT_URL)
+    print(response.text)
+    assert response.status_code == HTTPStatus.OK
+    assert response.text == "Hello, world!"
