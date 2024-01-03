@@ -17,9 +17,9 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
+  - build
   - integration
   - staging
-  - build
   - test
   - deploy # this is the name of the dev environment stage in the ST template
   - cleanup
