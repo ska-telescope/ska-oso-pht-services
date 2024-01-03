@@ -5,8 +5,6 @@ import json
 import os.path
 
 from deepdiff import DeepDiff
-from ska_oso_pdm.entities.common.sb_definition import SBDefinition
-from ska_oso_pdm.schemas import CODEC
 
 
 def assert_json_is_equal(json_a, json_b):
