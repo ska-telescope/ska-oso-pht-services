@@ -8,7 +8,6 @@ import json
 import logging
 import os.path
 from functools import wraps
-from typing import Tuple, Union
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
@@ -32,7 +31,7 @@ def load_string_from_file(filename):
         return json_data
 
 
-def error_handler(f):
+def error_handler(api_func):
     """
     A decorator that wraps the passed in function and executes it.
     Any unhandled exceptions that are raised within the function are caught
@@ -46,29 +45,35 @@ def error_handler(f):
         function: The decorated function which includes error handling.
     """
 
-    @wraps(f)
+    @wraps(api_func)
     def decorated_function(*args, **kwargs):
         try:
-            return f(*args, **kwargs)
+            return api_func(*args, **kwargs)
         except RemoteServiceError as ve:
             return (
-                jsonify({"error": "Get Coordinates Value Error", "message": str(ve)}),
+                jsonify(
+                    {
+                        "error": "Get Coordinates Value Error",
+                        "status": 400,
+                        "message": str(ve),
+                    }
+                ),
                 400,
             )
         except ValueError as ve:
-            return jsonify({"error": "Value Error", "message": str(ve)}), 400
+            return (
+                jsonify({"error": "Value Error", "status": 400, "message": str(ve)}),
+                400,
+            )
         except Exception as e:  # pylint: disable=broad-except
-            return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
+            return (
+                jsonify(
+                    {"error": "Internal Server Error", "status": 500, "message": str(e)}
+                ),
+                500,
+            )
 
     return decorated_function
-
-
-@error_handler
-def hello_world() -> Response:
-    """
-    Function that requests to /hello-world are mapped to
-    """
-    return "Hello, world!"
 
 
 @error_handler

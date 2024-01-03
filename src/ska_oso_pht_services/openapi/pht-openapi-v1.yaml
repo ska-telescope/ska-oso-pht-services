@@ -10,19 +10,6 @@ servers:
 # This default is overwritten when the application is deployed to include the actual namespace if it is different to the 'ska-oso-pht-services' default
 - url: /ska-oso-pht-services/pht/api/v1/
 paths:
-  /hello-world:
-    get:
-      summary: Basic endpoint
-      description: |
-        Hello world style example endpoint
-      operationId: ska_oso_pht_services.api.hello_world
-      responses:
-        "200":
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
   /proposal:
     get:
       summary: Get a proposal
