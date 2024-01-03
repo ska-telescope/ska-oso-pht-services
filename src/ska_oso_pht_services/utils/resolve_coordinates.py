@@ -36,8 +36,7 @@ def convert_deg_to_dms(degrees):
     seconds = (remainder - minutes) * 60
     return degree, minutes, seconds
 
-
-def get_coordinates(name: str) -> str:
+def get_coordinates(name: str, metadata_map=None) -> str:
     """
     Retrieve formatted coordinates (RA and DEC) for a given astronomical object name.
     Queries Simbad first, and if no results are found, queries NED.
@@ -45,12 +44,16 @@ def get_coordinates(name: str) -> str:
 
     Parameters:
     name (str): Name or identifier of the astronomical object to query.
+    metadata_map (dict, optional): A dictionary to store metadata. Default is None.
 
     Returns:
     str: Formatted coordinates (e.g., '05h:34:30.9s +22:00:53s').
     If the object is not found in both databases, returns 'Not found'.
     If an error occurs during the query process, returns 'Error fetching coordinates'.
     """
+    if metadata_map is None:
+        metadata_map = {}
+
     try:
         # Query Simbad first
         result_table = Simbad.query_object(name)
@@ -76,6 +79,9 @@ def get_coordinates(name: str) -> str:
                 f"{ra_hours}h {ra_minutes}m {ra_seconds:.2f}s {dec_hours}d"
                 f" {dec_minutes}m {dec_seconds:.2f}s"
             )
+
+            # Example of updating metadata_map
+            metadata_map['source'] = 'NED'
             return coordinates
 
         return "Not found"
