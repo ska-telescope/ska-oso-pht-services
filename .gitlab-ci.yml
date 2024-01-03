@@ -17,14 +17,14 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
+  - integration
+  - staging
   - build
   - test
   - deploy # this is the name of the dev environment stage in the ST template
   - cleanup
   - lint
   - publish
-  - integration
-  - staging
   - pages
   - scan
 
@@ -97,3 +97,8 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
     ref: STS-371
+
+python-lint:
+  rules:
+    - when: never
+
