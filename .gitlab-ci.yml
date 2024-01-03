@@ -96,3 +96,4 @@ include:
   # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    ref: STS-371
