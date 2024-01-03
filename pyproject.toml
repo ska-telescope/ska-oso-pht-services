@@ -26,8 +26,7 @@ classifiers = [
 [[tool.poetry.source]]
 name = 'ska-nexus'
 url = 'https://artefact.skao.int/repository/pypi-internal/simple'
-default = false
-secondary = false
+priority = 'primary'
 
 [tool.poetry.dependencies]
 python = "^3.10"

@@ -16,7 +16,7 @@ from flask import jsonify
 from ska_oso_pht_services.constants.model import ProposalDefinition
 from ska_oso_pht_services.utils import resolve_coordinates
 
-Response = Tuple[Union[ProposalDefinition], int]
+Response = ProposalDefinition
 
 LOGGER = logging.getLogger(__name__)
 
@@ -118,7 +118,7 @@ def upload_pdf() -> Response:
 @error_handler
 def get_coordinates(identifier: str) -> Response:
     """
-    Function that requests to /utils/get_coordinates are mapped to
+    Function that requests to /coordinates are mapped to
     """
 
     return resolve_coordinates.get_coordinates(identifier)
