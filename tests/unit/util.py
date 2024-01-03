@@ -38,13 +38,6 @@ def load_string_from_file(filename):
         return json_data
 
 
-VALID_MID_SBDEFINITION_JSON = load_string_from_file("testfile_sample_mid_sb.json")
-valid_mid_sbdefinition = CODEC.loads(SBDefinition, VALID_MID_SBDEFINITION_JSON)
-
-INVALID_MID_SBDEFINITION_JSON = CODEC.dumps(
-    SBDefinition(sbd_id="sbi-mvp01-20200325-00001")
-)
-
 VALID_MOCKED_DATA_JSON = load_string_from_file("testfile_sample_data.json")
 VALID_MOCKED_DATA_LIST_JSON = load_string_from_file(
     "testfile_sample_data_get_list.json"
