@@ -1,4 +1,3 @@
-from astroquery.exceptions import RemoteServiceError
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
@@ -35,6 +34,7 @@ def convert_deg_to_dms(degrees):
     minutes = int(remainder)
     seconds = (remainder - minutes) * 60
     return degree, minutes, seconds
+
 
 def get_coordinates(name: str) -> str:
     """
