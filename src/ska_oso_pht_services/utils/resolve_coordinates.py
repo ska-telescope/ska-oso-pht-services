@@ -50,32 +50,30 @@ def get_coordinates(name: str) -> str:
     If the object is not found in both databases, returns 'Not found'.
     If an error occurs during the query process, returns 'Error fetching coordinates'.
     """
-    try:
-        #Query Simbad first
-        result_table = Simbad.query_object(name)
-        if result_table is not None:
-            ra = result_table['RA'][0]
-            dec = result_table['DEC'][0]
-            # Format coordinates with colons instead of spaces
-            coordinates = f"{ra.replace(' ', ':')} {dec.replace(' ', ':')}"
-            return coordinates
+    # Query Simbad first
+    result_table = Simbad.query_object(name)
+    if result_table is not None:
+        ra = result_table["RA"][0]
+        dec = result_table["DEC"][0]
+        # Format coordinates with colons instead of spaces
+        coordinates = f"{ra.replace(' ', ':')} {dec.replace(' ', ':')}"
+        return coordinates
 
-        # If not found in Simbad, query NED
-        ned_data = Ned.query_object(name)
-        if ned_data is not None:
-            ra_degrees = ned_data['RA(deg)'][0]
-            dec_degrees = ned_data['DEC(deg)'][0]
+    # If not found in Simbad, query NED
+    ned_data = Ned.query_object(name)
+    if ned_data is not None:
+        ra_degrees = ned_data["RA(deg)"][0]
+        dec_degrees = ned_data["DEC(deg)"][0]
 
-            # Convert RA and DEC degrees to hours, minutes, and seconds
-            ra_hours, ra_minutes, ra_seconds = convert_deg_to_hms(ra_degrees)
-            dec_hours, dec_minutes, dec_seconds = convert_deg_to_dms(dec_degrees)
+        # Convert RA and DEC degrees to hours, minutes, and seconds
+        ra_hours, ra_minutes, ra_seconds = convert_deg_to_hms(ra_degrees)
+        dec_hours, dec_minutes, dec_seconds = convert_deg_to_dms(dec_degrees)
 
-            # Format coordinates in hours, minutes, and seconds
-            coordinates = f"{ra_hours}h {ra_minutes}m {ra_seconds:.2f}s {dec_hours}d {dec_minutes}m {dec_seconds:.2f}s"
-            return coordinates
-        
-        return "Not found"
+        # Format coordinates in hours, minutes, and seconds
+        coordinates = (
+            f"{ra_hours}h {ra_minutes}m {ra_seconds:.2f}s {dec_hours}d"
+            f" {dec_minutes}m {dec_seconds:.2f}s"
+        )
+        return coordinates
 
-    except RemoteServiceError as e:
-        print(f"Error occurred: {e}")
-        return "Error fetching coordinates"
+    return "Not found"
