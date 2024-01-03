@@ -1,6 +1,6 @@
 apiVersion: v2
 name: ska-oso-pht-services
-description: A Helm chart for deploying the Observation Design Tool Services on Kubernetes
+description: A Helm chart for deploying the Proposal Handling Tool Services on Kubernetes
 type: application
 version: 0.0.0
 appVersion: 0.0.0

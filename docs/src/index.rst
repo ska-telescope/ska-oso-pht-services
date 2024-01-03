@@ -1,4 +1,4 @@
-SKA OSO Observation Design Tool Services
+SKA OSO Proposal Handling Tool Services
 ========================================
 
 The SKA OSO PHT is a tool currently under development which allows users to design observations for the SKA,

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ska-oso-pht-services"
 version = "0.0.0"
-description = "SKA OSO Observation Design Tool backend services"
+description = "SKA OSO Proposal Handling Tool backend services"
 authors = ["Team Stargazers"]
 license = "BSD-3-Clause"
 readme = "README.md"
