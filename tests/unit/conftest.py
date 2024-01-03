@@ -1,41 +1,41 @@
-# """
-# pytest fixtures to be used by unit tests
-# """
-# import sys
-# import os
+"""
+pytest fixtures to be used by unit tests
+"""
+import sys
+import os
 
-# module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../src"))
-# sys.path.insert(0, module_path)
-# import pytest
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../src"))
+sys.path.insert(0, module_path)
+import pytest
 
-# from ska_oso_pht_services import create_app, resolve_openapi_spec
-
-
-# @pytest.fixture(scope="module")
-# def spec():
-#     """
-#     Module scoped fixture so $refs are only resolved once
-#     """
-#     return resolve_openapi_spec()
+from ska_oso_pht_services import create_app, resolve_openapi_spec
 
 
-# @pytest.fixture()
-# def test_app(spec):  # pylint: disable=redefined-outer-name
-#     """
-#     Fixture to configure a test app instance
-#     """
-#     connexion = create_app(spec)
-#     connexion.app.config.update(
-#         {
-#             "TESTING": True,
-#         }
-#     )
-#     yield connexion.app
+@pytest.fixture(scope="module")
+def spec():
+    """
+    Module scoped fixture so $refs are only resolved once
+    """
+    return resolve_openapi_spec()
 
 
-# @pytest.fixture()
-# def client(test_app):  # pylint: disable=redefined-outer-name
-#     """
-#     Create a test client from the app instance, without running a live server
-#     """
-#     return test_app.test_client()
+@pytest.fixture()
+def test_app(spec):  # pylint: disable=redefined-outer-name
+    """
+    Fixture to configure a test app instance
+    """
+    connexion = create_app(spec)
+    connexion.app.config.update(
+        {
+            "TESTING": True,
+        }
+    )
+    yield connexion.app
+
+
+@pytest.fixture()
+def client(test_app):  # pylint: disable=redefined-outer-name
+    """
+    Create a test client from the app instance, without running a live server
+    """
+    return test_app.test_client()
