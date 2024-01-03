@@ -7,16 +7,16 @@ Connexion maps the function name to the operationId in the OpenAPI document path
 import json
 import logging
 import os.path
+import traceback
 from functools import wraps
-from typing import Tuple, Union
+from http import HTTPStatus
+from typing import Callable, Tuple, Union
 
-from astroquery.exceptions import RemoteServiceError
-from flask import jsonify
+from ska_oso_pdm.generated.models.sb_definition import SBDefinition
 
-from ska_oso_pht_services.constants.model import ProposalDefinition
 from ska_oso_pht_services.utils import resolve_coordinates
 
-Response = ProposalDefinition
+Response = Tuple[Union[SBDefinition], int]
 
 LOGGER = logging.getLogger(__name__)
 
@@ -32,35 +32,23 @@ def load_string_from_file(filename):
         return json_data
 
 
-def error_handler(api_func):
+def error_handler(api_fn: Callable[[str], Response]) -> Callable[[str], Response]:
     """
-    A decorator that wraps the passed in function and executes it.
-    Any unhandled exceptions that are raised within the function are caught
-    and handled by returning a JSON response with an appropriate error message
-    and HTTP status code.
+    A decorator function to catch general errors and wrap in the correct HTTP response,
+    otherwise Flask just returns a generic error messgae which isn't very useful.
 
-    Args:
-        api_func (function): The function to be wrapped by the decorator.
-
-    Returns:
-        function: The decorated function which includes error handling.
+    :param api_fn: A function which an HTTP request is mapped
+        to and returns an HTTP response
     """
 
-    @wraps(api_func)
-    def decorated_function(*args, **kwargs):
+    @wraps(api_fn)
+    def wrapper(*args, **kwargs):
         try:
-            return f(*args, **kwargs)
-        except RemoteServiceError as ve:
-            return (
-                jsonify({"error": "Get Coordinates Value Error", "status" :400,  "message": str(ve)}),
-                400,
-            )
-        except ValueError as ve:
-            return jsonify({"error": "Value Error", "status" :400, "message": str(ve)}), 400
-        except Exception as e:  # pylint: disable=broad-except
-            return jsonify({"error": "Internal Server Error", "status" :500, "message": str(e)}), 500
+            return api_fn(*args, **kwargs)
+        except Exception as err:  # pylint: disable=broad-except
+            return error_response(err)
 
-    return decorated_function
+    return wrapper
 
 
 @error_handler
@@ -121,3 +109,24 @@ def get_coordinates(identifier: str) -> Response:
     Function that requests to /utils/get_coordinates are mapped to
     """
     return resolve_coordinates.get_coordinates(identifier)
+
+
+def error_response(err: Exception) -> Response:
+    """
+    Creates a general sever error response, without exposing internals to client
+
+    :return: HTTP response server error
+    """
+    LOGGER.exception("Exception occurred while executing API function")
+    response_body = {
+        "status": HTTPStatus.INTERNAL_SERVER_ERROR,
+        "title": "Internal Server Error",
+        "detail": str(err.args),
+        "traceback": {
+            "key": err.args[0],
+            "type": str(type(err)),
+            "full_traceback": traceback.format_exc(),
+        },
+    }
+
+    return response_body, HTTPStatus.INTERNAL_SERVER_ERROR
