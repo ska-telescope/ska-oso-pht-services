@@ -99,9 +99,9 @@ paths:
                 type: string
   /coordinates/{identifier}:
     get:
-      summary: resolve coordinates
+      summary: get coordinates
       description: |
-        resolve coordinates
+        get coordinates
       operationId: ska_oso_pht_services.api.get_coordinates
       parameters:
       - name: identifier

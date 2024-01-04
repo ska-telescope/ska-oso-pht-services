@@ -13,7 +13,7 @@ from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
 
 from ska_oso_pht_services.constants.model import ProposalDefinition
-from ska_oso_pht_services.utils import resolve_coordinates
+from ska_oso_pht_services.utils import coordinates
 
 Response = ProposalDefinition
 
@@ -134,4 +134,4 @@ def get_coordinates(identifier: str) -> Response:
     Function that requests to /coordinates are mapped to
     """
 
-    return resolve_coordinates.get_coordinates(identifier)
+    return coordinates.get_coordinates(identifier)
