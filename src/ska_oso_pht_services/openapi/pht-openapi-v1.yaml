@@ -35,6 +35,22 @@ paths:
           content:
             application/json:
               schema: {}
+    post:
+      summary: Create a proposal
+      description: |
+        Create a proposal
+      operationId: ska_oso_pht_services.api.proposal_create
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
     put:
       summary: Edit a proposal
       description: |

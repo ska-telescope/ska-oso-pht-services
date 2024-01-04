@@ -33,6 +33,13 @@ def test_proposal_get_list(client):
     assert_json_is_equal(result.text, VALID_MOCKED_DATA_LIST_JSON)
 
 
+def test_proposal_post(client):
+    result = client.post("/ska-oso-pht-services/pht/api/v1/proposal", data={})
+
+    assert result.status_code == HTTPStatus.OK
+    assert result.text == "post /proposal"
+
+
 def test_proposal_edit(client):
     result = client.put("/ska-oso-pht-services/pht/api/v1/proposal", data={})
 

@@ -105,6 +105,14 @@ def proposal_get_list() -> Response:
 
 
 @error_handler
+def proposal_create() -> Response:
+    """
+    Function that requests to /proposal are mapped to
+    """
+    return "post /proposal"
+
+
+@error_handler
 def proposal_edit() -> Response:
     """
     Function that requests to /proposal are mapped to
