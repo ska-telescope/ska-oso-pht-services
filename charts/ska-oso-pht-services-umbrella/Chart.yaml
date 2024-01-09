@@ -10,5 +10,5 @@ dependencies:
   version: 0.1.0
   repository: file://../ska-oso-pht-services
 - name: ska-ser-skuid
-  version: 0.3.0
+  version: 3.3.3
   repository: https://artefact.skao.int/repository/helm-internal
