@@ -30,7 +30,7 @@ ifneq ($(ENV_CHECK),)
 endif
 
 # unset defaults so settings in pyproject.toml take effect
-PYTHON_SWITCHES_FOR_BLACK =
+PYTHON_SWITCHES_FOR_BLACK = --extend-exclude "(src/ska_oso_pht_services/generated|src/ska_oso_pht_services/openapi/__submodules__)"
 PYTHON_SWITCHES_FOR_ISORT =
 PYTHON_SWITCHES_FOR_PYLINT =
 

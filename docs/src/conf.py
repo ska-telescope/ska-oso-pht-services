@@ -20,10 +20,6 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
-import sphinx_rtd_theme
-
-def setup(app):
-    app.add_css_file('css/custom.css')
 
 # -- General configuration ------------------------------------------------
 
@@ -46,9 +42,6 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
               'myst_parser',
               "sphinxcontrib.openapi"]
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -97,7 +90,7 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'ska_ser_sphinx_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -108,23 +101,6 @@ html_theme_options = {
     #'logo_only' : 'ska_logo.jpg',
     #'logo' : 'ska_logo.jpg',
 }
-
-html_context = {
-    'favicon': 'img/favicon.ico',
-    'logo': 'img/logo.jpg',
-    'theme_logo_only' : True,
-    'display_github': True, # Integrate GitHub
-    'github_user': 'flyingfrog81', # Username
-    'github_repo': 'developer.skatelescope.org', # Repo name
-    'github_version': 'master', # Version
-    'conf_py_path': '/src/', # Path in the checkout to the docs root
-
-}
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
