@@ -2,13 +2,8 @@
   "submitted_on": "",
   "submitted_by": "",
   "cycle": "",
-  "meta_data": {
-    "created_by": "next",
-    "last_updated_by": "next",
-    "created_date": "2022-10-03T01:23:45.678Z",
-    "last_updated_on": "2022-10-03T01:23:45.678Z"
-  },
-  "proposal": {
+  "investigators": ["user2", "user1"],
+  "info": {
     "skao_proposal_id": "SKA2388",
     "title": "The Milky Way View",
     "cycle": "SKA_5000_2023",
@@ -46,7 +41,7 @@
         "principal_investigator": "yes"
       },
       {
-        "investigator_id": "user1",
+        "investigator_id": "user2",
         "first_name": "Van Loo",
         "last_name": "Cheng",
         "email": "ask.lop@map.com",
