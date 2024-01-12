@@ -15,6 +15,8 @@ from flask import jsonify
 from ska_oso_pht_services.constants.model import ProposalDefinition
 from ska_oso_pht_services.utils import coordinates
 
+from connectors.proposal_handler import testDummy
+
 Response = ProposalDefinition
 
 LOGGER = logging.getLogger(__name__)
@@ -81,7 +83,7 @@ def hello_world() -> Response:
     """
     Function that requests to /hello-world are mapped to
     """
-    return "Hello, world!"
+    return "Hello, world! test"
 
 
 @error_handler

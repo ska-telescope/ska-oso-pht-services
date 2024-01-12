@@ -9,3 +9,8 @@ def transform_save_proposal(data: object):
         # submitted on empty -> it was a save proposal
     }
     return {**updated_data, **{"proposal": data["info"]}}
+
+def testDummy():
+    name = "John"
+    age = 30
+    print("My name is", name, "and I am", age, "years old.")
