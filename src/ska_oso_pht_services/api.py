@@ -15,8 +15,6 @@ from flask import jsonify
 from ska_oso_pht_services.constants.model import ProposalDefinition
 from ska_oso_pht_services.utils import coordinates
 
-from connectors.proposal_handler import testDummy
-
 Response = ProposalDefinition
 
 LOGGER = logging.getLogger(__name__)
