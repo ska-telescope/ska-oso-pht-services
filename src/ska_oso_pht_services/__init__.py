@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 import prance
 from connexion import App
+from flask import Response, Flask
 from ska_db_oda.rest.flask_oda import FlaskODA
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
@@ -41,6 +42,14 @@ class CustomRequestBodyValidator:  # pylint: disable=too-few-public-methods
         return function
 
 
+def set_default_headers_on_response(response: Response) -> Response:
+    """
+    Set default headers on the Flask response object
+    """
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
 def create_app(open_api_spec=None) -> App:
     """
     Create the Connexion application with required config
@@ -49,12 +58,12 @@ def create_app(open_api_spec=None) -> App:
     if open_api_spec is None:
         open_api_spec = resolve_openapi_spec()
 
-    connexion = App(__name__, specification_dir="openapi/")
+    app = App(__name__)
 
     validator_map = {
         "body": CustomRequestBodyValidator,
     }
-    connexion.add_api(
+    app.add_api(
         open_api_spec,
         arguments={"title": "OpenAPI PHT"},
         # The base path includes the namespace which is known at runtime
@@ -64,6 +73,8 @@ def create_app(open_api_spec=None) -> App:
         validator_map=validator_map,
     )
 
-    oda.init_app(connexion.app)
+    oda.init_app(app.app)
 
-    return connexion
+    app.app.after_request(set_default_headers_on_response)
+
+    return app
