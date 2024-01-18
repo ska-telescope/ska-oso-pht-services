@@ -81,7 +81,7 @@ def hello_world() -> Response:
     """
     Function that requests to /hello-world are mapped to
     """
-    return "Hello, world! test"
+    return "Hello, world!"
 
 
 @error_handler
