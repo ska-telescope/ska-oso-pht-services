@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 import prance
 from connexion import App
-from flask import Response, Flask
+from flask import Flask, Response
 from ska_db_oda.rest.flask_oda import FlaskODA
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
