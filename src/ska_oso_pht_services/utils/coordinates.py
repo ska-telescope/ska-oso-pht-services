@@ -39,3 +39,20 @@ def get_coordinates(object_name):
     dec_dms = coordinates.dec.to_string(unit=u.degree, sep=":")
 
     return f"{ra_hms} {dec_dms}"
+
+
+    def convert_ra_dec(ra_str, dec_str):
+    """
+    Convert RA and Dec from sexagesimal (string format) to decimal degrees.
+
+    Parameters:
+    ra_str (str): RA in the format "HH:MM:SS" (e.g., "5:35:17.3")
+    dec_str (str): Dec in the format "DD:MM:SS" (e.g., "-1:2:37")
+
+    Returns:
+    tuple: RA and Dec in decimal degrees
+    """
+    ra = Angle(ra_str, unit=u.hour)
+    dec = Angle(dec_str, unit=u.deg)
+
+    return round(ra.degree, 3), round(dec.degree, 3)
