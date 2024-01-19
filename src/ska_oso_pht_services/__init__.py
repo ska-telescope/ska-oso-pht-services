@@ -58,7 +58,7 @@ def create_app(open_api_spec=None) -> App:
     if open_api_spec is None:
         open_api_spec = resolve_openapi_spec()
 
-    app = App(__name__)
+    app = App(__name__, specification_dir="openapi/")
 
     validator_map = {
         "body": CustomRequestBodyValidator,
