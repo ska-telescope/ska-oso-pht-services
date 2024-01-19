@@ -51,7 +51,8 @@ def set_default_headers_on_response(response: Response) -> Response:
         "Access-Control-Allow-Origin"
     ] = "*"  # solves POST request issue in frontend
     #
-    # TODO: once app more mature and login capability in place, may need to modify setting bellow accordingly for better security
+    # TODO: once app more mature and login capability in place, 
+    # may need to modify setting bellow accordingly for better security
     #
     response.headers[
         "Access-Control-Allow-Methods"
