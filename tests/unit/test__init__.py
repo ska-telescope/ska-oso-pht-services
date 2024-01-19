@@ -10,5 +10,4 @@ class TestDefaultHeaders(unittest.TestCase):
         response = Response()
         response = set_default_headers_on_response(response)
         self.assertIn("Access-Control-Allow-Origin", response.headers)
-        # self.assertEqual(response.headers["Access-Control-Allow-Origin"], "*") # should pass
-        self.assertEqual(response.headers["Access-Control-Allow-Origin"], "gggg*") # should fail
+        self.assertEqual(response.headers["Access-Control-Allow-Origin"], "*")
