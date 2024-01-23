@@ -1,73 +1,67 @@
-{"proposal_id" : "",
+{
+  "proposal_id": "",
+  "status":"draft",
+  "submitted_by": "", 
   "submitted_on": "",
-  "submitted_by": "",
-  "cycle": "",
-  "investigators": ["user2", "user1"],
-  "info": {
-    "skao_proposal_id": "SKA2388",
+  "proposal_info": {
     "title": "The Milky Way View",
     "cycle": "SKA_5000_2023",
-    "abstract": "Pretty Looking frontend depends on hard work put into good wireframing and requirement gathering",
-    "proposal_type": "Standard Proposal",
-    "sub_proposal_type": "Coordinated Proposal",
+    "abstract": "Prettyllll llklkl",
+    "proposal_type": {"type": "Standard Proposal", "sub_type":"Coordinated Proposal" },
     "science_category": "gjhjkhklj",
-    "science_subcategory": "gjhjkhklj",
-    "science_justification": "science justification",
-    "technical_justification": "technical justification",
     "targets": [
       {
         "name": "M28",
-        "right_ascension": "01:00:00",
-        "declination": "00:00:00",
-        "velocity": "4543"
+        "right_ascension":"22:33:55",
+        "declination": "22:33:55",
+        "velocity": 34.6,
+        "velocity_unit": "km/s",
+        "right_ascension_unit": "degrees",
+        "declination_unit": "dd:mm:ss"
       },
       {
         "name": "M1",
-        "right_ascension": "01:00:00",
-        "declination": "00:00:00",
-        "velocity": "4543"
+        "right_ascension":"22:33:55",
+        "declination": "22:33:55",
+        "velocity": 34.6,
+        "velocity_unit": "km/s",
+        "right_ascension_unit": "hh:mm:ss",
+        "declination_unit": "dd:mm:ss"
       }
     ],
-    "investigator": [
+    "investigators": [
       {
         "investigator_id": "user1",
         "first_name": "Van Loo",
         "last_name": "Cheng",
         "email": "ask.lop@map.com",
-        "country": "Lagoon",
-        "organization_id": "University of Free Town",
-        "for_phd": "No",
-        "has_phd": "No",
-        "principal_investigator": "yes"
+        "organization": "University of Free" ,
+        "for_phd": true,
+        "principal_investigator": true
       },
       {
         "investigator_id": "user2",
         "first_name": "Van Loo",
         "last_name": "Cheng",
-        "email": "ask.lop@map.com",
         "country": "Lagoon",
-        "organization_id": "University of Free Town",
-        "for_phd": "No",
-        "has_phd?": "No",
-        "principal_investigator": "no"
+        "organization": "University of Free",
+        "for_phd": false,
+        "principal_investigator": false
       }
     ],
-    "science_goals": [
+    "science_programmes": [
       {
         "science_goal_id": "goal1",
         "array": "MID",
         "subarray": "subarray 1",
-        "linked": "4",
-        "observation_type": "Continuum",
-        "observing_band": "ghjghghg"
-      },
+        "linked_sources": ["M1", "M2"],
+        "observation_type": "Continuum" },
       {
         "science_goal_id": "goal2",
         "array": "MID",
         "subarray": "subarray 1",
-        "linked": "4",
-        "observation_type": "Continuum",
-        "observing_band": "ghjghghg"
+        "linked_sources": ["M1", "M2"],
+        "observation_type": "Continuum"
       }
     ]
   }

@@ -2,6 +2,8 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
+from astropy.coordinates import Angle
+
 
 
 def get_coordinates(object_name):
@@ -39,3 +41,9 @@ def get_coordinates(object_name):
     dec_dms = coordinates.dec.to_string(unit=u.degree, sep=":")
 
     return f"{ra_hms} {dec_dms}"
+
+
+
+
+
+
