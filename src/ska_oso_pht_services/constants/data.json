@@ -3,24 +3,12 @@
   "status":"draft",
   "submitted_by": "", 
   "submitted_on": "",
-<<<<<<< HEAD
   "proposal_info": {
-=======
-  "submitted_by": "",
-  "cycle": "",
-  "status": "",
-  "info": {
-    "skao_proposal_id": "SKA2388",
->>>>>>> 167788fb41f9068b5e0e7c460058f93e700ea00a
     "title": "The Milky Way View",
     "cycle": "SKA_5000_2023",
     "abstract": "Prettyllll llklkl",
     "proposal_type": {"type": "Standard Proposal", "sub_type":"Coordinated Proposal" },
     "science_category": "gjhjkhklj",
-<<<<<<< HEAD
-=======
-    "science_subcategory": "gjhjkhklj",
->>>>>>> 167788fb41f9068b5e0e7c460058f93e700ea00a
     "targets": [
       {
         "name": "M28",
@@ -60,7 +48,6 @@
         "for_phd": false,
         "principal_investigator": false
       }
-<<<<<<< HEAD
     ],
     "science_programmes": [
       {
@@ -76,8 +63,6 @@
         "linked_sources": ["M1", "M2"],
         "observation_type": "Continuum"
       }
-=======
->>>>>>> 167788fb41f9068b5e0e7c460058f93e700ea00a
     ]
   }
 }

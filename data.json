@@ -1,25 +1,13 @@
 {
-    "proposal_id": "project_123333/2024",
+    "proposal_id": "",
     "submitted_by": "",
     "submitted_date": "",
     "status": "draft",
-<<<<<<< HEAD
     "investigators": [
         "user1",
         "user2"
     ],
-    "meta_data": {
-        "created_by": "next",
-        "last_updated_by": "next",
-        "created_date": "2022-10-03T01:23:45.678Z",
-        "last_updated_on": "2024-01-22 23:05:20",
-        "version": 1
-    },
     "proposal_info": {
-=======
-    "proposal": {
-        "skao_proposal_id": "SKA2388",
->>>>>>> 167788fb41f9068b5e0e7c460058f93e700ea00a
         "title": "The Milky Way View",
         "cycle": "SKA_5000_2023",
         "abstract": "Prettyllll llklkl",
@@ -28,10 +16,6 @@
             "sub_type": "Coordinated Proposal"
         },
         "science_category": "gjhjkhklj",
-<<<<<<< HEAD
-=======
-        "science_subcategory": "gjhjkhklj",
->>>>>>> 167788fb41f9068b5e0e7c460058f93e700ea00a
         "targets": [
             {
                 "name": "M28",
@@ -71,7 +55,6 @@
                 "for_phd": false,
                 "principal_investigator": false
             }
-<<<<<<< HEAD
         ],
         "science_programmes": [
             {
@@ -94,8 +77,13 @@
                 ],
                 "observation_type": "Continuum"
             }
-=======
->>>>>>> 167788fb41f9068b5e0e7c460058f93e700ea00a
         ]
+    },
+    "meta_data": {
+        "created_by": "next",
+        "last_updated_by": "next",
+        "created_date": "2022-10-03T01:23:45.678Z",
+        "last_updated_on": "2024-01-23 06:05:25",
+        "version": 1
     }
 }
