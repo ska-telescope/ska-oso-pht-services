@@ -1,0 +1,163 @@
+Proposal:
+  required:
+    - prsl_id
+    - proposal_info
+    - metadata
+    - status
+  type: object
+  properties:
+    prsl_id:
+      description: Alphanumeric unique identifier of the proposal.
+      example: prp-ska01-202204-01
+      type: string
+    status:
+      description: Status of the proposal.
+      example: submitted
+      type: string
+    submitted_on:
+      description: The date and time the proposal was submitted
+      format: date-time
+      type: string
+    submitted_by:
+      description: User id of the user that submitted the proposal
+      type: string
+    investigators:
+      description: User ids of the investigators/team that are involved in the proposal.
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    metadata:
+      $ref: 'common-openapi-v1.yaml#/Metadata'
+    proposal_info:
+      $ref: '#/ProposalInfo'
+
+ProposalInfo:
+  type: object
+  description: This holds information bout the proposal that needs to be captured from the user.
+  properties:
+    title: 
+      description: Title of the proposal.
+      type: string
+    cycle: 
+      description: Cycle of the proposal that the given proposal put in for.
+      type: string
+    abstract: 
+      description: Abstract of the proposal.
+      type: string
+    proposal_type:
+      description: Type of the proposal that the user is putting in for. 
+      type: object
+      properties:
+        main_type:
+          description: The main proposal category 
+          type: string
+        sub_type: 
+          description: The sub proposal category
+          type: string
+    science_category: 
+      description: The science category of the proposal.
+      type: string
+    targets:
+      description: Targets in the proposal.
+      type: array
+      items:
+        $ref: '#/Targets'
+    investigators:
+      description: List of investigators participating in the proposal.
+      type: array
+      items:
+        $ref: '#/Investigators'
+    science_programmes:
+      description: List of science programmes in the proposal.
+      type: array
+      items:
+        $ref: '#/ScienceProgrammes'
+
+  
+Targets: 
+  type: object
+  properties:
+    name: 
+      description: Name of the target of interest
+      type: string
+    right_ascension: 
+      type: number
+      description: Right ascension of the target of interest. Values must be a positive number in the range 0.000 <= right_ascension <= 359.00 with precision up to three decimal places.
+      example: 275.553
+      minimum: 0
+      maximum: 360.000
+      multipleOf: 0.001
+    declination:
+      description: Declination of the target of interest. Expected values in the range of -90.000 <= declination <=90.000 with precision up to three decimal places.
+      type: number
+      example: 30.000
+      minimum: -90.000
+      maximum: 90.000
+      multipleOf: 0.001
+    velocity: 
+      type: number
+      description: Velocity of the source with a precision of up to three decimal places.
+      example: 30.500
+      multipleOf: 0.001
+    velocity_unit:
+      type: string
+      description: Unit of measurement for velocity. Only kilometers per second is allowed.
+      example: km/s
+      enum:
+        - km/s
+        - m/s
+    right_ascension_unit:
+      type: string
+      description: Unit of measurement for right ascension. Only degrees is allowed.
+      example: deg
+      enum:
+        - deg
+    declination_unit:
+      type: string
+      description: Unit of measurement for declination. Only degrees is allowed.
+      example: deg
+      enum:
+        - deg
+      
+Investigators:
+  type: object
+  properties:
+    investigator_id:
+      description: ID of the investigator as given in the SKAO database.
+      type: integer
+    first_name:
+      description: First name of the given investigator.
+      type: string
+    last_name:
+      description: Last name of the given investigator.
+      type: string
+    email:
+      description: Email of the given investigator.
+      type: string
+    organization:
+      description: Organization of the given investigator.
+      type: string
+    for_phd:
+      type: boolean
+    principal_investigator:
+      type: boolean
+
+ScienceProgrammes:
+  type: object
+  properties:
+    array:
+      description: The array of a given science goal e.g MID or LOW
+      type: string
+    subarray:
+      description: The sub array of a given science programmes.
+      type: string
+    linked_sources:
+      description: Number of sources linked to a given science programmes.
+      type: array
+      items:
+        type: string
+    observation_type:
+      description: Type of observation e.g Continuum.
+      type: string
+     
