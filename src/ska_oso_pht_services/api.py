@@ -77,23 +77,13 @@ def error_handler(api_func):
 
 
 @error_handler
-def hello_world() -> Response:
-    """
-    Function that requests to /hello-world are mapped to
-    """
-    return "Hello, world!"
-
-
-@error_handler
 def proposal_get(proposal_id: str) -> Response:
     """
     Function that requests to /proposal are mapped to
     """
-    if proposal_id =="mock":
-        data = {"pop":"good"}
-    else:
-        MOCKED_DATA = load_string_from_file("constants/data.json")
-        data = json.loads(MOCKED_DATA)
+    
+    MOCKED_DATA = load_string_from_file("constants/data.json")
+    data = json.loads(MOCKED_DATA)
     return data
 
 
@@ -112,7 +102,8 @@ def proposal_create() -> Response:
     """
     Function that requests to /proposal are mapped to
     """
-    return "post /proposal"
+    proposal_id = "prp-default_generator_id-20240117-00001"
+    return proposal_id
 
 
 @error_handler

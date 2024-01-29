@@ -13,12 +13,10 @@ PHT_URL = getenv(
 )
 
 
-def test_hello_world():
-    """
-    TODO
-    """
-    response = requests.get(f"{PHT_URL}/hello-world")
+
+def test_proposal_post(client):
+    result = client.post(f"{PHT_URL}/create-proposal", data={})
     print(PHT_URL)
     print(response.text)
-    assert response.status_code == HTTPStatus.OK
-    assert response.text == "Hello, world!"
+    assert result.status_code == HTTPStatus.OK
+    assert result.text == "prp-default_generator_id-20240117-00001"
