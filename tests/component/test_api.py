@@ -14,7 +14,7 @@ PHT_URL = getenv(
 
 
 
-def test_proposal_post(client):
-    result = client.post(f"{PHT_URL}/proposal/create", data={})
+def test_proposal_post():
+    result = requests.post(f"{PHT_URL}/proposal/create", data={})
     assert result.status_code == HTTPStatus.Created
     assert result.text == "prp-default_generator_id-20240117-00001"
