@@ -161,7 +161,7 @@ def get_coordinates(identifier: str) -> Response:
 
 
 @error_handler
-def test_proposal_post_for_oda(body) -> Response:
+def test_proposal_post_for_oda(body) -> Response:  # pylint: disable=unused-argument
     """
     Function that test connections to ODA
 
@@ -170,6 +170,7 @@ def test_proposal_post_for_oda(body) -> Response:
     try:
         skuid = SkuidClient(SKUID_URL)
         SAMPLE_DATETIME = datetime.fromisoformat("2022-09-23T15:43:53.971548+00:00")
+
         metadata = Metadata(
             version=1,
             created_by="TestUser",
@@ -177,11 +178,7 @@ def test_proposal_post_for_oda(body) -> Response:
             last_modified_by="TestUser",
             last_modified_on=SAMPLE_DATETIME,
         )
-        print("----body----")
-        print(body)
-        # prsl: Proposal = Proposal.from_dict(json.dumps(body))
-        # print('----prsl----')
-        # print(prsl)
+
         prsl = Proposal(
             prsl_id=skuid.fetch_skuid("prsl"),
             submitted_by="TestUser",
