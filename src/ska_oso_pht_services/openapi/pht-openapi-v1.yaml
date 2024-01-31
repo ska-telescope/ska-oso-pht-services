@@ -10,7 +10,7 @@ servers:
 # This default is overwritten when the application is deployed to include the actual namespace if it is different to the 'ska-oso-pht-services' default
 - url: /ska-oso-pht-services/pht/api/v1/
 paths:
-  /create-proposal:
+  /proposal/create:
     post:
       summary: Create a proposal
       description: |
@@ -21,7 +21,7 @@ paths:
           application/json:
             schema: {}
       responses:
-        "200":
+        "201":
           description: OK
           content:
             text/plain:
