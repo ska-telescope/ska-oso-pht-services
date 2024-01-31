@@ -1,7 +1,3 @@
-"""
-TODO
-"""
-
 from http import HTTPStatus
 from os import getenv
 
@@ -22,3 +18,19 @@ def test_hello_world():
     print(response.text)
     assert response.status_code == HTTPStatus.OK
     assert response.text == "Hello, world!"
+
+
+def test_proposal_post_for_oda():
+    """
+    Test that the POST /test-proposals-post-for-oda path receives the request
+    and returns a valid Proposal
+    """
+
+    response = requests.post(
+        f"{PHT_URL}/test-proposals-post-for-oda",
+        data={},
+        headers={"Content-type": "application/json"},
+    )
+    assert response.status_code == HTTPStatus.OK
+
+    assert response.text == "prsl-t0001-20240131-00002"

@@ -7,17 +7,32 @@ Connexion maps the function name to the operationId in the OpenAPI document path
 import json
 import logging
 import os.path
+from datetime import datetime
 from functools import wraps
+from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
+from ska_oso_pdm.generated.models.metadata import Metadata
+from ska_oso_pdm.generated.models.proposal import Proposal, ProposalInfo
+from ska_oso_pdm.generated.models.proposal_info import (
+    Investigators,
+    ProposalInfoProposalType,
+    ScienceProgrammes,
+    Targets,
+)
+from ska_ser_skuid.client import SkuidClient
 
-from ska_oso_pht_services.constants.model import ProposalDefinition
+from ska_oso_pht_services import oda
 from ska_oso_pht_services.utils import coordinates
 
-Response = ProposalDefinition
+Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
+
+# The real SKUID URL depends on Kubernetes namespace and Helm release and is
+# set at deployment time in the configmap
+SKUID_URL = os.environ.get("SKUID_URL", "http://ska-ser-skuid-test-svc:9870")
 
 
 def load_string_from_file(filename):
@@ -143,3 +158,114 @@ def get_coordinates(identifier: str) -> Response:
     """
 
     return coordinates.get_coordinates(identifier)
+
+
+@error_handler
+def test_proposal_post_for_oda(body) -> Response:
+    """
+    Function that test connections to ODA
+
+    """
+
+    try:
+        skuid = SkuidClient(SKUID_URL)
+        SAMPLE_DATETIME = datetime.fromisoformat("2022-09-23T15:43:53.971548+00:00")
+        metadata = Metadata(
+            version=1,
+            created_by="TestUser",
+            created_on=SAMPLE_DATETIME,
+            last_modified_by="TestUser",
+            last_modified_on=SAMPLE_DATETIME,
+        )
+        print("----body----")
+        print(body)
+        # prsl: Proposal = Proposal.from_dict(json.dumps(body))
+        # print('----prsl----')
+        # print(prsl)
+        prsl = Proposal(
+            prsl_id=skuid.fetch_skuid("prsl"),
+            submitted_by="TestUser",
+            submitted_on=SAMPLE_DATETIME,
+            status="submitted",
+            investigators=["user2", "user1"],
+            metadata=metadata,
+            proposal_info=ProposalInfo(
+                title="The Milky Way View",
+                cycle="SKA_5000_2023",
+                abstract=(
+                    "Pretty Looking frontend depends on hard work put into good"
+                    " wireframing and requirement gathering"
+                ),
+                proposal_type=ProposalInfoProposalType(
+                    main_type="Standard Proposal", sub_type="Coordinated Proposal"
+                ),
+                science_category="gjhjkhklj",
+                targets=[
+                    Targets(
+                        name="M28",
+                        right_ascension=250.000,
+                        declination=30.000,
+                        velocity=20.000,
+                        velocity_unit="km/s",
+                        right_ascension_unit="deg",
+                        declination_unit="deg",
+                    ),
+                    Targets(
+                        name="M1",
+                        right_ascension=250.000,
+                        declination=30.000,
+                        velocity=20.000,
+                        velocity_unit="km/s",
+                        right_ascension_unit="deg",
+                        declination_unit="deg",
+                    ),
+                ],
+                investigators=[
+                    Investigators(
+                        investigator_id=123,
+                        first_name="Van Loo",
+                        last_name="Cheng",
+                        email="ask.lop@map.com",
+                        organization="University of Free Town",
+                        for_phd=True,
+                        principal_investigator=True,
+                    ),
+                    Investigators(
+                        investigator_id=666,
+                        first_name="Van Loo",
+                        last_name="Cheng",
+                        email="ask.lop@map.com",
+                        organization="University of Free Town",
+                        for_phd=False,
+                        principal_investigator=False,
+                    ),
+                ],
+                science_programmes=[
+                    ScienceProgrammes(
+                        array="MID",
+                        subarray="subarray 1",
+                        linked_sources=["M28", "M1"],
+                        observation_type="Continuum",
+                    ),
+                    ScienceProgrammes(
+                        array="MID",
+                        subarray="subarray 1",
+                        linked_sources=["M28", "M1"],
+                        observation_type="Continuum",
+                    ),
+                ],
+            ),
+        )
+        with oda.uow as uow:
+            updated_prsl = uow.prsls.add(prsl)
+            uow.commit()
+        return (
+            updated_prsl.prsl_id,
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when adding Proposal to the ODA")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )

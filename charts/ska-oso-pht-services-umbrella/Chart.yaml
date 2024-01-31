@@ -9,6 +9,10 @@ dependencies:
 - name: ska-oso-pht-services
   version: 0.1.0
   repository: file://../ska-oso-pht-services
+- name: ska-db-oda
+  version: 2.1.0
+  repository: https://artefact.skao.int/repository/helm-internal
+  condition: ska-db-oda.enabled
 - name: ska-ser-skuid
   version: 3.3.3
   repository: https://artefact.skao.int/repository/helm-internal

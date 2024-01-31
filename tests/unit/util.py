@@ -40,3 +40,4 @@ VALID_MOCKED_DATA_JSON = load_string_from_file("testfile_sample_data.json")
 VALID_MOCKED_DATA_LIST_JSON = load_string_from_file(
     "testfile_sample_data_get_list.json"
 )
+VALID_PROPOSAL_DATA_JSON = load_string_from_file("testfile_sample_proposal.json")
