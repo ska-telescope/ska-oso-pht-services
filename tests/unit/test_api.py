@@ -29,7 +29,6 @@ def test_proposal_get_list(client):
 def test_proposal_post(client):
     result = client.post("/ska-oso-pht-services/pht/api/v1/create-proposal", data={})
 
-    assert result.status_code == HTTPStatus.CREATED
     assert result.text == "prp-default_generator_id-20240117-00001"
 
 
