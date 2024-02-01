@@ -102,7 +102,7 @@ def proposal_create() -> Response:
     """
     Function that requests to /proposal are mapped to
     """
-    proposal_id = "prp-default_generator_id-20240117-00001"
+    proposal_id = "prp-00001"
     return proposal_id
 
 

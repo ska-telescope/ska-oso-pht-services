@@ -14,7 +14,7 @@ from .util import (
 
 def test_proposal_get(client):
     result = client.get(
-        "/ska-oso-pht-services/pht/api/v1/proposal/prp-default_generator_id-20240117-00001"
+        "/ska-oso-pht-services/pht/api/v1/proposal/prp-00001"
     )
 
     assert result.status_code == HTTPStatus.OK
@@ -30,12 +30,12 @@ def test_proposal_get_list(client):
 
 def test_proposal_post(client):
     result = client.post("/ska-oso-pht-services/pht/api/v1/proposal/create", data={})
-    assert result.text == "prp-default_generator_id-20240117-00001"
+    assert result.text == "prp-00001"
 
 
 def test_proposal_edit(client):
     result = client.put(
-        "/ska-oso-pht-services/pht/api/v1/proposal/prp-default_generator_id-20240117-00001",
+        "/ska-oso-pht-services/pht/api/v1/proposal/prp-00001",
         data={},
     )
 
