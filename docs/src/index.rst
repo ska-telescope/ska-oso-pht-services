@@ -1,7 +1,7 @@
 SKA OSO Proposal Handling Tool Services
 ========================================
 
-The SKA OSO PHT is a tool currently under development which allows users to design observations for the SKA,
+The SKA OSO PHT is a tool currently under development which allows users to prepare and submit proposals for the SKA,
 namely by creating and editing entities such as Scheduling Blocks.
 This project provides back-end web services for manipulating, validating and storing these entities.
 
