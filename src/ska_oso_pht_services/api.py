@@ -81,7 +81,7 @@ def proposal_get(proposal_id: str) -> Response:
     """
     Function that requests to /proposal are mapped to
     """
-    
+
     MOCKED_DATA = load_string_from_file("constants/data.json")
     data = json.loads(MOCKED_DATA)
     return data

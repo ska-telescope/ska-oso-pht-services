@@ -13,7 +13,6 @@ PHT_URL = getenv(
 )
 
 
-
 def test_proposal_post():
     result = requests.post(f"{PHT_URL}/proposal/create", data={})
     assert result.status_code == HTTPStatus.OK
