@@ -95,7 +95,7 @@ def error_handler(api_func):
 @error_handler
 def proposal_get(proposal_id: str) -> Response:
     """
-    Function that requests to /proposal are mapped to
+    Function that requests to /proposas are mapped to
     """
 
     MOCKED_DATA = load_string_from_file("constants/data.json")
@@ -116,7 +116,7 @@ def proposal_get_list() -> Response:
 @error_handler
 def proposal_create() -> Response:
     """
-    Function that requests to /proposal are mapped to
+    Function that requests to /proposals are mapped to
     """
     try:
         # skuid = SkuidClient(SKUID_URL)
