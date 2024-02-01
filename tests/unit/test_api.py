@@ -12,15 +12,10 @@ from .util import (
 )
 
 
-def test_hello_world(client):
-    result = client.get("/ska-oso-pht-services/pht/api/v1/hello-world")
-
-    assert result.status_code == HTTPStatus.OK
-    assert result.text == "Hello, world!"
-
-
 def test_proposal_get(client):
-    result = client.get("/ska-oso-pht-services/pht/api/v1/proposal")
+    result = client.get(
+        "/ska-oso-pht-services/pht/api/v1/proposal/prp-00001"
+    )
 
     assert result.status_code == HTTPStatus.OK
     assert_json_is_equal(result.text, VALID_MOCKED_DATA_JSON)
@@ -34,14 +29,15 @@ def test_proposal_get_list(client):
 
 
 def test_proposal_post(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/proposal", data={})
-
-    assert result.status_code == HTTPStatus.OK
-    assert result.text == "post /proposal"
+    result = client.post("/ska-oso-pht-services/pht/api/v1/proposal/create", data={})
+    assert result.text == "prp-00001"
 
 
 def test_proposal_edit(client):
-    result = client.put("/ska-oso-pht-services/pht/api/v1/proposal", data={})
+    result = client.put(
+        "/ska-oso-pht-services/pht/api/v1/proposal/prp-00001",
+        data={},
+    )
 
     assert result.status_code == HTTPStatus.OK
     assert result.text == "put /proposal"

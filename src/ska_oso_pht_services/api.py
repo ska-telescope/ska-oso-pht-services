@@ -92,18 +92,11 @@ def error_handler(api_func):
 
 
 @error_handler
-def hello_world() -> Response:
-    """
-    Function that requests to /hello-world are mapped to
-    """
-    return "Hello, world!"
-
-
-@error_handler
-def proposal_get() -> Response:
+def proposal_get(proposal_id: str) -> Response:
     """
     Function that requests to /proposal are mapped to
     """
+
     MOCKED_DATA = load_string_from_file("constants/data.json")
     data = json.loads(MOCKED_DATA)
     return data
@@ -124,11 +117,12 @@ def proposal_create() -> Response:
     """
     Function that requests to /proposal are mapped to
     """
-    return "post /proposal"
+    proposal_id = "prp-00001"
+    return proposal_id
 
 
 @error_handler
-def proposal_edit() -> Response:
+def proposal_edit(proposal_id: str) -> Response:
     """
     Function that requests to /proposal are mapped to
     """

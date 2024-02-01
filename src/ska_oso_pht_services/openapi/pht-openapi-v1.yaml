@@ -69,6 +69,26 @@ paths:
             text/plain:
               schema:
                 type: string
+  /proposal/{proposal_id}:
+    parameters:
+      - name: proposal_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+    get:
+      summary: Get a proposal
+      description: |
+        Get a proposal
+      operationId: ska_oso_pht_services.api.proposal_get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
     put:
       summary: Edit a proposal
       description: |
