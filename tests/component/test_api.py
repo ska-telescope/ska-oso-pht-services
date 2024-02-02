@@ -4,6 +4,8 @@ from datetime import datetime
 
 import requests
 
+from ..unit.util import VALID_PROPOSAL_DATA_JSON
+
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 PHT_URL = getenv(
     "PHT_URL", f"http://ska-oso-pht-services-rest-test:5000/{KUBE_NAMESPACE}/pht/api/v1"
@@ -17,9 +19,8 @@ def test_proposal_post():
     
     response = requests.post(
         f"{PHT_URL}/proposals",
-        data={},
+        data={VALID_PROPOSAL_DATA_JSON},
         headers={"Content-type": "application/json"},
     )
     assert response.status_code == HTTPStatus.OK
-
-    assert response.text == f"prsl-t0001-{datetime.today().strftime('%Y%m%d')}-00002"
+    assert response.text == f"prsl-t0001-20240202-00002"

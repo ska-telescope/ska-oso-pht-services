@@ -27,9 +27,9 @@ paths:
             text/plain:
               schema:
                 type: string
-  /proposals/{proposal_id}:
+  /proposals/{identifier}:
     parameters:
-      - name: proposal_id
+      - name: identifier
         in: path
         required: true
         style: simple
@@ -46,7 +46,8 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {}
+              schema: 
+                $ref: './prsl-openapi-v1.yaml#/Proposal'
     put:
       summary: Edit a proposal
       description: |
@@ -80,18 +81,30 @@ paths:
             text/plain:
               schema:
                 type: string
-  /proposals/list:
+  /proposals/list/{identifier}:
+    parameters:
+      - name: identifier
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
     get:
       summary: Get a list of proposal
       description: |
-        Validate a proposal
+        Get a list of proposal
       operationId: ska_oso_pht_services.api.proposal_get_list
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema: {}
+              schema: 
+                type: array
+                items:
+                  anyOf:
+                    - $ref: './prsl-openapi-v1.yaml#/Proposal'
   /upload/pdf:
     post:
       summary: Upload a pdf

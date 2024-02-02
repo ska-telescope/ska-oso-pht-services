@@ -30,34 +30,41 @@ def test_proposal_get_list(client):
     assert_json_is_equal(result.text, VALID_MOCKED_DATA_LIST_JSON)
 
 
-# def test_proposal_create(client):
-#     result = client.post("/ska-oso-pht-services/pht/api/v1/proposals", data={})
+def test_proposal_create(client):
+    result = client.post("/ska-oso-pht-services/pht/api/v1/proposals", data={})
 
-#     assert result.status_code == HTTPStatus.OK
-#     assert result.text == f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
+    assert result.status_code == HTTPStatus.OK
+    assert result.text == f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
     
-# @mock.patch("ska_oso_pht_services.api.oda")
-# def test_proposal_create_with_mock(mock_oda, client):
-#     """
-#     Check the proposal_create method returns the expected prsl_id and status code
-#     """
+@mock.patch("ska_oso_pht_services.api.oda")
+def test_proposal_create_with_mock(mock_oda, client):
+    """
+    TODO: learn pytest mock data
+    Check the proposal_create method returns the expected prsl_id and status code
+    """
     
-#     now = datetime.datetime.now()
-#     with mock.patch("ska_oso_pht_services.api.datetime") as mock_datetime:
-#         mock_datetime.datetime.now.return_value = now
+    # now = datetime.datetime.now()
+    # with mock.patch("ska_oso_pht_services.api.datetime") as mock_datetime:
+    #     mock_datetime.datetime.now.return_value = now
 
-#         with mock.patch(
-#             "ska_oso_pht_services.api.SkuidClient", autospec=True
-#         ) as mock_skuidclient_cls:
-#             instance = mock_skuidclient_cls.return_value
-#             # random ID to return as a fake PRSL ID by the mock SKUID client
-#             prsl_id = "foo"
-#             instance.fetch_skuid.return_value = prsl_id
+    #     with mock.patch(
+    #         "ska_oso_pht_services.api.SkuidClient", autospec=True
+    #     ) as mock_skuidclient_cls:
+    #         instance = mock_skuidclient_cls.return_value
+    #         # random ID to return as a fake PRSL ID by the mock SKUID client
+    #         prsl_id = "foo"
+    #         instance.fetch_skuid.return_value = prsl_id
 
-#             response = client.post("/ska-oso-pht-services/pht/api/v1/proposals", data={})
+    #         response = client.post("/ska-oso-pht-services/pht/api/v1/proposals", data={})
+    uow_mock = mock.MagicMock()
+    uow_mock.prsls.add.return_value = True
+    uow_mock.prsls.get.return_value = f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
+    mock_oda.uow.__enter__.return_value = uow_mock
+    
+    response = client.post("/ska-oso-pht-services/pht/api/v1/proposals", data={})
             
-#         assert response.status_code == HTTPStatus.OK
-#         assert response.text == prsl_id
+    assert response.status_code == HTTPStatus.OK
+    assert response.text == f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
 
 def test_proposal_edit(client):
     result = client.put(
