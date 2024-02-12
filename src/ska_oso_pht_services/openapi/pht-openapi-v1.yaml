@@ -19,7 +19,8 @@ paths:
       requestBody:
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: './prsl-openapi-v1.yaml#/Proposal'
       responses:
         "200":
           description: OK
@@ -56,7 +57,8 @@ paths:
       requestBody:
         content:
           application/json:
-            schema: {}
+            schema:
+              $ref: './prsl-openapi-v1.yaml#/Proposal'
       responses:
         "200":
           description: OK

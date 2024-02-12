@@ -21,6 +21,10 @@ from ska_oso_pdm.generated.models.proposal_info import (
     ScienceProgrammes,
     Targets,
 )
+
+from ska_oso_pht_services.connectors.pht_handler import (
+    transform_create_proposal,
+    transform_update_proposal)
 from ska_ser_skuid.client import SkuidClient
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
@@ -141,9 +145,12 @@ def proposal_create(body) -> Response:
     Function that requests to /proposals are mapped to
     """
     LOGGER.debug("POST PROPOSAL create")
-    try:        
+    
+    try:
+        transform_body =  transform_create_proposal(body)   
+  
         prsl = OPENAPI_CODEC.loads(
-            Proposal, json.dumps(body)
+            Proposal, json.dumps(transform_body)
         )
         with oda.uow as uow:
             updated_prsl = uow.prsls.add(prsl)
@@ -161,11 +168,39 @@ def proposal_create(body) -> Response:
 
 
 @error_handler
-def proposal_edit(proposal_id: str) -> Response:
+def proposal_edit(body: dict, identifier: str) -> Response:
     """
     Function that requests to /proposals are mapped to
     """
-    return "put /proposals"
+    LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
+    
+    try:
+        transform_body =  transform_update_proposal(body)   
+  
+        prsl = OPENAPI_CODEC.loads(
+            Proposal, json.dumps(transform_body)
+        )
+        
+        if prsl.prsl_id != identifier:
+            return (
+                {"error": f"Unprocessable Entity, mismatched Proposal ID"},
+                HTTPStatus.UNPROCESSABLE_ENTITY,
+            )
+        
+        with oda.uow as uow:
+            uow.prsls.add(prsl)
+            uow.commit()
+            updated_prsl = uow.prsls.get(identifier)
+        return (
+            updated_prsl.to_dict(),
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when adding Proposal to the ODA")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
 
 
 @error_handler
