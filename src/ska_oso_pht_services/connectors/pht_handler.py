@@ -63,7 +63,7 @@ def transform_create_proposal(data: dict) -> dict:
     return {
         "status": "draft",
         "proposal_info": data.get('proposal_info', {}),
-        "meta_data": {
+        "metadata": {
             "created_by": "next",
             "last_modified_by": "next",
             "created_date": "2022-10-03T01:23:45.678Z",

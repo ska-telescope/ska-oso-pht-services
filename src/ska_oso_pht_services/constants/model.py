@@ -84,11 +84,11 @@ class Proposal(BaseModel):
 
 
 # class ProposalDefinition(BaseModel):
-#     meta_data: MetaData
+#     metadata: MetaData
 #     proposal: Proposal
 
 
 class ProposalDefinition(BaseModel):
-    meta_data: MetaData
+    metadata: MetaData
     investigator: Set[str]
     proposal: dict
