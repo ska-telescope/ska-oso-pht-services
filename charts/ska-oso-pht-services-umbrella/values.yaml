@@ -1,0 +1,20 @@
+# Override some of the ODA values.yaml
+# See the umbrella and ODA main chart for all configurable values
+ska-db-oda-umbrella:
+  ska-db-oda:
+    enabled: true
+    rest:
+      enabled: true
+      ingress:
+        enabled: true
+      backend:
+        type: postgres
+        postgres:
+          host:
+  postgresql:
+    enabled: true
+  pgadmin4:
+    enabled: true
+  ska-ser-skuid:
+    skuid:
+      enabled: true

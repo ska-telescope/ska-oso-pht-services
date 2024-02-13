@@ -1,6 +1,7 @@
 """
 ska_oso_pht_services
 """
+
 import os
 from typing import Any, Dict
 
@@ -10,6 +11,7 @@ from flask import Flask, Response
 from ska_db_oda.rest.flask_oda import FlaskODA
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
+API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v1"
 
 oda = FlaskODA()
 
@@ -47,19 +49,19 @@ def set_default_headers_on_response(response: Response) -> Response:
     Set default headers on the Flask response object
     """
     # Set CORS headers
-    response.headers[
-        "Access-Control-Allow-Origin"
-    ] = "*"  # solves POST request issue in frontend
+    response.headers["Access-Control-Allow-Origin"] = (
+        "*"  # solves POST request issue in frontend
+    )
     #
     # TODO: once app more mature and login capability in place,
     # may need to modify setting bellow accordingly for better security
     #
-    response.headers[
-        "Access-Control-Allow-Methods"
-    ] = "*"  # solves PUT request issue from frontend
-    response.headers[
-        "Access-Control-Allow-Headers"
-    ] = "Content-Type, Authorization"  # solves POST request issue from frontend
+    response.headers["Access-Control-Allow-Methods"] = (
+        "*"  # solves PUT request issue from frontend
+    )
+    response.headers["Access-Control-Allow-Headers"] = (
+        "Content-Type, Authorization"  # solves POST request issue from frontend
+    )
     return response
 
 
@@ -81,7 +83,7 @@ def create_app(open_api_spec=None) -> App:
         arguments={"title": "OpenAPI PHT"},
         # The base path includes the namespace which is known at runtime
         # to avoid clashes in deployments, for example in CICD
-        base_path=f"/{KUBE_NAMESPACE}/pht/api/v1",
+        base_path=API_PATH,
         pythonic_params=True,
         validator_map=validator_map,
     )

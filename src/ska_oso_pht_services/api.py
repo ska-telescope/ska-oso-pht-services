@@ -25,7 +25,6 @@ from ska_oso_pdm.generated.models.proposal_info import (
 from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal)
-from ska_ser_skuid.client import SkuidClient
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 from ska_oso_pht_services import oda
@@ -36,10 +35,6 @@ from ska_db_oda.domain.query import DateQuery, MatchType, UserQuery
 Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
-
-# The real SKUID URL depends on Kubernetes namespace and Helm release and is
-# set at deployment time in the configmap
-SKUID_URL = os.environ.get("SKUID_URL", "http://ska-ser-skuid-test-svc:9870")
 
 
 def load_string_from_file(filename):
