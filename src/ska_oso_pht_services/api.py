@@ -219,6 +219,7 @@ def proposal_validate() -> Response:
 
     :return: a string "post /proposals/validate"
     """
+    LOGGER.debug("POST PROPOSAL validate")
     return "post /proposals/validate"
 
 
@@ -229,6 +230,7 @@ def upload_pdf() -> Response:
 
     :return: a string "post /upload/pdf"
     """
+    LOGGER.debug("POST PROPOSAL upload pdf")
     return "post /upload/pdf"
 
 
@@ -246,5 +248,5 @@ def get_coordinates(identifier: str) -> Response:
     degree-minute-second (DMS) format respectively seperated by a space
     or an error response
     """
-
+    LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
     return coordinates.get_coordinates(identifier)
