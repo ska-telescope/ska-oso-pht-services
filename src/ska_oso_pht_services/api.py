@@ -7,30 +7,21 @@ Connexion maps the function name to the operationId in the OpenAPI document path
 import json
 import logging
 import os.path
-import datetime
 from functools import wraps
 from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
-from ska_oso_pdm.generated.models.metadata import Metadata
-from ska_oso_pdm.generated.models.proposal import Proposal, ProposalInfo
-from ska_oso_pdm.generated.models.proposal_info import (
-    Investigators,
-    ProposalInfoProposalType,
-    ScienceProgrammes,
-    Targets,
-)
-
-from ska_oso_pht_services.connectors.pht_handler import (
-    transform_create_proposal,
-    transform_update_proposal)
+from ska_db_oda.domain.query import MatchType, UserQuery
+from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 from ska_oso_pht_services import oda
+from ska_oso_pht_services.connectors.pht_handler import (
+    transform_create_proposal,
+    transform_update_proposal,
+)
 from ska_oso_pht_services.utils import coordinates
-
-from ska_db_oda.domain.query import DateQuery, MatchType, UserQuery
 
 Response = Proposal
 
@@ -96,7 +87,14 @@ def error_handler(api_func):
 @error_handler
 def proposal_get(identifier: str) -> Response:
     """
-    Function that requests to /proposals are mapped to
+    Function that requests to GET /proposals are mapped to
+
+    Retrieves the Proposal with the given identifier from the
+    underlying data store, if available
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of an Proposal and a
+        HTTP status, which the Connexion will wrap in a response
     """
 
     try:
@@ -112,12 +110,17 @@ def proposal_get(identifier: str) -> Response:
         )
 
 
-
 @error_handler
 def proposal_get_list(identifier: str) -> Response:
     """
-    Function that requests to /proposals/list are mapped to
-    currently only search for User Equals
+    Function that requests to GET /proposals/list are mapped to
+
+    Retrieves the Proposals with the given identifier as a user query from the
+    underlying data store, if available
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of a list of Proposal and a
+        HTTP status, which the Connexion will wrap in a response
     """
 
     try:
@@ -125,7 +128,7 @@ def proposal_get_list(identifier: str) -> Response:
         with oda.uow as uow:
             query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
             prsl = uow.prsls.query(query_param)
-        return [x.to_dict() for x in prsl] , HTTPStatus.OK
+        return [x.to_dict() for x in prsl], HTTPStatus.OK
     except KeyError:
         LOGGER.exception("KeyError when adding Proposal to the ODA")
         return (
@@ -137,16 +140,22 @@ def proposal_get_list(identifier: str) -> Response:
 @error_handler
 def proposal_create(body) -> Response:
     """
-    Function that requests to /proposals are mapped to
+    Function that requests to POST /proposals are mapped to
+
+    Stores the Proposal in the underlying data store.
+
+    The ODA is responsible for populating the prsl_id and metadata
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of an Proposal as it exists in the ODA or error
+        response and a HTTP status, which the Connexion will wrap in a response
     """
     LOGGER.debug("POST PROPOSAL create")
-    
+
     try:
-        transform_body =  transform_create_proposal(body)   
-  
-        prsl = OPENAPI_CODEC.loads(
-            Proposal, json.dumps(transform_body)
-        )
+        transform_body = transform_create_proposal(body)
+
+        prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
         with oda.uow as uow:
             updated_prsl = uow.prsls.add(prsl)
             uow.commit()
@@ -165,23 +174,28 @@ def proposal_create(body) -> Response:
 @error_handler
 def proposal_edit(body: dict, identifier: str) -> Response:
     """
-    Function that requests to /proposals are mapped to
+    Function that requests to PUT /proposals are mapped to
+
+    Stores the Proposal with the given identifier
+    in the underlying data store.
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of an Proposal or error response and a HTTP status,
+        which the Connexion will wrap in a response
     """
     LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
-    
+
     try:
-        transform_body =  transform_update_proposal(body)   
-  
-        prsl = OPENAPI_CODEC.loads(
-            Proposal, json.dumps(transform_body)
-        )
-        
+        transform_body = transform_update_proposal(body)
+
+        prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
+
         if prsl.prsl_id != identifier:
             return (
-                {"error": f"Unprocessable Entity, mismatched Proposal ID"},
+                {"error": "Unprocessable Entity, mismatched Proposal ID"},
                 HTTPStatus.UNPROCESSABLE_ENTITY,
             )
-        
+
         with oda.uow as uow:
             uow.prsls.add(prsl)
             uow.commit()
@@ -201,7 +215,9 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 @error_handler
 def proposal_validate() -> Response:
     """
-    Function that requests to /proposals/validate are mapped to
+    Function that requests to dummy endpoint POST /proposals/validate are mapped to
+
+    :return: a string "post /proposals/validate"
     """
     return "post /proposals/validate"
 
@@ -209,7 +225,9 @@ def proposal_validate() -> Response:
 @error_handler
 def upload_pdf() -> Response:
     """
-    Function that requests to /upload/pdf are mapped to
+    Function that requests to dummy endpoint POST /upload/pdf are mapped to
+
+    :return: a string "post /upload/pdf"
     """
     return "post /upload/pdf"
 
@@ -218,6 +236,15 @@ def upload_pdf() -> Response:
 def get_coordinates(identifier: str) -> Response:
     """
     Function that requests to /coordinates are mapped to
+
+    Query celestial coordinates for a given object name from SIMBAD and NED databases.
+    If the object is not found in SIMBAD database
+    it then queries the NED (NASA/IPAC Extragalactic Database).
+
+    :return: a string of the Right Ascension (RA)
+    and Declination (Dec) in the hour-minute-second (HMS) and
+    degree-minute-second (DMS) format respectively seperated by a space
+    or an error response
     """
 
     return coordinates.get_coordinates(identifier)

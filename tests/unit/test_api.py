@@ -2,70 +2,103 @@
 Unit tests for ska_oso_pht_services.api
 """
 
-
+import json
 from http import HTTPStatus
-import datetime
 from unittest import mock
 
+from ska_oso_pdm.generated.models.proposal import Proposal
+from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
+
 from .util import (
-    VALID_MOCKED_DATA_JSON,
-    VALID_MOCKED_DATA_LIST_JSON,
     VALID_PROPOSAL_DATA_JSON,
+    VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
+    VALID_PROPOSAL_GET_LIST_RESULT_JSON,
+    VALID_PROPOSAL_UPDATE_RESULT_JSON,
     assert_json_is_equal,
 )
 
 
-# def test_proposal_get(client):
-#     result = client.get(
-#         "/ska-oso-pht-services/pht/api/v1/proposals/prsl-123"
-#     )
-
-#     assert result.status_code == HTTPStatus.OK
-#     assert_json_is_equal(result.text, VALID_MOCKED_DATA_JSON)
-
-
-# def test_proposal_get_list(client):
-#     result = client.get("/ska-oso-pht-services/pht/api/v1/proposals/list/DefaultUser")
-
-#     assert result.status_code == HTTPStatus.OK
-#     assert_json_is_equal(result.text, VALID_MOCKED_DATA_LIST_JSON)
-
-
-def test_proposal_create(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/proposals", data={})
-
-    assert result.status_code == HTTPStatus.OK
-    assert result.text == f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
-    
 @mock.patch("ska_oso_pht_services.api.oda")
-def test_proposal_create_with_mock(mock_oda, client):
+def test_proposal_create(mock_oda, client):
     """
-    TODO: learn pytest mock data
     Check the proposal_create method returns the expected prsl_id and status code
     """
-    
+
     uow_mock = mock.MagicMock()
-    uow_mock.prsls.add.return_value = None
-    uow_mock.prsls.get.return_value = f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
+    uow_mock.prsls.__contains__.return_value = True
+    uow_mock.prsls.add.return_value = OPENAPI_CODEC.loads(
+        Proposal, VALID_PROPOSAL_DATA_JSON
+    )
     mock_oda.uow.__enter__.return_value = uow_mock
-    
+
     response = client.post(
-        "/ska-oso-pht-services/pht/api/v1/proposals", 
+        "/ska-oso-pht-services/pht/api/v1/proposals",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
-            
-    assert response.status_code == HTTPStatus.OK
-    assert response.text == f"prsl-t0001-{datetime.datetime.today().strftime('%Y%m%d')}-00002"
 
-def test_proposal_edit(client):
-    result = client.put(
-        "/ska-oso-pht-services/pht/api/v1/proposals/prsl-00001",
-        data={},
+    assert response.status_code == HTTPStatus.OK
+    assert response.text == "prsl-1234"
+
+
+@mock.patch("ska_oso_pht_services.api.oda")
+def test_proposal_get(mock_oda, client):
+    uow_mock = mock.MagicMock()
+    uow_mock.prsls.__contains__.return_value = True
+    uow_mock.prsls.get.return_value = OPENAPI_CODEC.loads(
+        Proposal, VALID_PROPOSAL_DATA_JSON
+    )
+
+    mock_oda.uow.__enter__.return_value = uow_mock
+
+    result = client.get(
+        "/ska-oso-pht-services/pht/api/v1/proposals/prsl-1234",
+        data=VALID_PROPOSAL_DATA_JSON,
+        headers={"Content-type": "application/json"},
     )
 
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "put /proposals"
+    assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
+
+
+@mock.patch("ska_oso_pht_services.api.oda")
+def test_proposal_get_list(mock_oda, client):
+    list_result = json.loads(VALID_PROPOSAL_GET_LIST_RESULT_JSON)
+
+    return_value = []
+    for x in list_result:
+        return_value.append(OPENAPI_CODEC.loads(Proposal, json.dumps(x)))
+
+    uow_mock = mock.MagicMock()
+    uow_mock.prsls.__contains__.return_value = True
+    uow_mock.prsls.query.return_value = return_value
+
+    mock_oda.uow.__enter__.return_value = uow_mock
+
+    result = client.get("/ska-oso-pht-services/pht/api/v1/proposals/list/DefaultUser")
+
+    assert result.status_code == HTTPStatus.OK
+    assert_json_is_equal(result.text, VALID_PROPOSAL_GET_LIST_RESULT_JSON)
+
+
+@mock.patch("ska_oso_pht_services.api.oda")
+def test_proposal_edit(mock_oda, client):
+    uow_mock = mock.MagicMock()
+    uow_mock.prsls.__contains__.return_value = True
+    uow_mock.prsls.get.return_value = OPENAPI_CODEC.loads(
+        Proposal, VALID_PROPOSAL_UPDATE_RESULT_JSON
+    )
+
+    mock_oda.uow.__enter__.return_value = uow_mock
+
+    result = client.put(
+        "/ska-oso-pht-services/pht/api/v1/proposals/prsl-1234",
+        data=VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert_json_is_equal(result.text, VALID_PROPOSAL_UPDATE_RESULT_JSON)
+    assert result.status_code == HTTPStatus.OK
 
 
 def test_proposal_validate(client):

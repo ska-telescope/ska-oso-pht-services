@@ -1,6 +1,8 @@
 from datetime import datetime
-from astropy.coordinates import Angle
+
 import astropy.units as u
+from astropy.coordinates import Angle
+
 
 def transform_update_proposal(data: dict) -> dict:
     """
@@ -13,8 +15,8 @@ def transform_update_proposal(data: dict) -> dict:
     - Changes the units of 'right_ascension' and 'declination' to degrees.
 
     Parameters:
-    data (dict): A dictionary containing various fields, including 'proposal_id', 
-                 'submitted_by', 'submitted_on', and nested 'proposal_info' 
+    data (dict): A dictionary containing various fields, including 'proposal_id',
+                 'submitted_by', 'submitted_on', and nested 'proposal_info'
                  which includes 'investigators' and 'targets'.
 
     Returns:
@@ -27,36 +29,42 @@ def transform_update_proposal(data: dict) -> dict:
             target[f"{key}_unit"] = "deg"
 
     # Constructing and returning the updated data
-    if data['submitted_by'] != "":
-    # Constructing and returning the updated data
+    if data["submitted_by"] != "":
+        # Constructing and returning the updated data
         return {
-            "prsl_id": data['prsl_id'] if data['prsl_id'] != "new" else "12345",
-            "submitted_by": data['submitted_by'],
-            "submitted_on": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "status": "submitted" if data['submitted_on'] else "draft",
-            "investigators": [user['investigator_id'] for user in data.get('proposal_info', {}).get('investigators', [])],
-            "proposal_info": data.get('proposal_info', {}),
+            "prsl_id": data["prsl_id"] if data["prsl_id"] != "new" else "12345",
+            "submitted_by": data["submitted_by"],
+            "submitted_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "status": "submitted" if data["submitted_on"] else "draft",
+            "investigators": [
+                user["investigator_id"]
+                for user in data.get("proposal_info", {}).get("investigators", [])
+            ],
+            "proposal_info": data.get("proposal_info", {}),
             "metadata": {
                 "created_by": "next",
                 "last_modified_by": "next",
                 "created_date": "2022-10-03T01:23:45.678Z",
-                "last_modified_by": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                "version": 1
-            }
+                "last_modified_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "version": 1,
+            },
         }
     else:
-         return {
-            "prsl_id": data['prsl_id'],
-            "status": "submitted" if data['submitted_on'] else "draft",
-            "investigators": [user['investigator_id'] for user in data.get('proposal_info', {}).get('investigators', [])],
-            "proposal_info": data.get('proposal_info', {}),
+        return {
+            "prsl_id": data["prsl_id"],
+            "status": "submitted" if data["submitted_on"] else "draft",
+            "investigators": [
+                user["investigator_id"]
+                for user in data.get("proposal_info", {}).get("investigators", [])
+            ],
+            "proposal_info": data.get("proposal_info", {}),
             "metadata": {
                 "created_by": "next",
                 "last_modified_by": "next",
                 "created_date": "2022-10-03T01:23:45.678Z",
-                "last_modified_by": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                "version": 1
-            }
+                "last_modified_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "version": 1,
+            },
         }
 
 
@@ -69,8 +77,8 @@ def transform_create_proposal(data: dict) -> dict:
     - Adds or modifies date-related metadata.
 
     Parameters:
-    data (dict): A dictionary containing various fields, including 'proposal_id', 
-                 'submitted_by', 'submitted_on', and nested 'proposal_info' 
+    data (dict): A dictionary containing various fields, including 'proposal_id',
+                 'submitted_by', 'submitted_on', and nested 'proposal_info'
                  which includes 'investigators' and 'targets'.
 
     Returns:
@@ -78,12 +86,12 @@ def transform_create_proposal(data: dict) -> dict:
     """
     return {
         "status": "draft",
-        "proposal_info": data.get('proposal_info', {}),
+        "proposal_info": data.get("proposal_info", {}),
         "metadata": {
             "created_by": "next",
             "last_modified_by": "next",
             "created_date": "2022-10-03T01:23:45.678Z",
-            "last_modified_on": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "version": 1
-        }
+            "last_modified_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "version": 1,
+        },
     }
