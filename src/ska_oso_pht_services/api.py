@@ -235,7 +235,7 @@ def upload_pdf() -> Response:
 
 
 @error_handler
-def get_coordinates(identifier: str) -> Response:
+def get_coordinates(identifier: str, coordinate_system: str) -> Response:
     """
     Function that requests to /coordinates are mapped to
 
@@ -249,4 +249,4 @@ def get_coordinates(identifier: str) -> Response:
     or an error response
     """
     LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
-    return coordinates.get_coordinates(identifier)
+    return coordinates.get_coordinates(identifier, coordinate_system)

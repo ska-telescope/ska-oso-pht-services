@@ -103,5 +103,3 @@ def convert_ra_dec_deg(ra_str, dec_str):
     return [round(ra.degree, 3), round(dec.degree, 3)]
             
 
-
-print(get_coordinates("M1", "galactic"))

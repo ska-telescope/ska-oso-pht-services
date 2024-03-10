@@ -128,13 +128,20 @@ paths:
         get coordinates
       operationId: ska_oso_pht_services.api.get_coordinates
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        # - name: coordinatesystem
+        #   in: path
+        #   required: true
+        #   style: simple
+        #   explode: false
+        #   schema:
+        #     type: string
       responses:
         "200":
           description: OK
