@@ -2,30 +2,22 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord, Angle
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
+from astroquery.exceptions import RemoteServiceError
 
 
 def round_coord_to_3_decimal_places(ra, dec):
     """
-    Converts RA and DEC coordinates to formats with the seconds (RA) and arcseconds (DEC) 
-    rounded to 3 decimal places.
+    Rounds the seconds component of RA and the arcseconds component of DEC to 3 decimal places.
 
     Parameters:
-    - ra (str): The Right Ascension in the format "HH:MM:SS.sssssssss"
-    - dec (str): The Declination in the format "DD:MM:SS.sssssssss"
+    - ra (str): Right Ascension in "HH:MM:SS.sssssssss"
+    - dec (str): Declination in "DD:MM:SS.sssssssss"
 
     Returns:
-    - tuple: The RA and DEC coordinates with the seconds and arcseconds rounded to 3 decimal places
+    - tuple: RA and DEC coordinates with seconds and arcseconds rounded to 3 decimal places.
     """
-    # For RA
-    ra_hours, ra_minutes, ra_seconds = ra.split(':')
-    ra_seconds_rounded = round(float(ra_seconds), 3)
-    ra_formatted = f"{ra_hours}:{ra_minutes}:{ra_seconds_rounded:06.3f}"
-    
-    # For DEC
-    dec_degrees, dec_minutes, dec_seconds = dec.split(':')
-    dec_seconds_rounded = round(float(dec_seconds), 3)
-    dec_formatted = f"{dec_degrees}:{dec_minutes}:{dec_seconds_rounded:06.3f}"
-    
+    ra_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(ra.split(':')))
+    dec_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(dec.split(':')))
     return ra_formatted, dec_formatted
 
 
@@ -74,20 +66,24 @@ def get_coordinates(object_name, coordinate_system):
         dec = result_table_simbad["DEC"][0]
     else:
         # If not found in SIMBAD, search in NED
-        result_table_ned = Ned.query_object(object_name)
-        if result_table_ned is None or len(result_table_ned) == 0:
-            return "Object not found in SIMBAD or NED"
+        try:
+            result_table_ned = Ned.query_object(object_name)
+        except RemoteServiceError as e:
+            return f"{'Object not found in SIMBAD or NED', e}"
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
 
     # Creating a SkyCoord object
-    coordinates = SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame='icrs').fk5.to_string('hmsdms').replace('h', ':')\
-                .replace('d', ':').replace('m', ':').replace('s', '')
+    coordinates = (SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame='icrs')
+                   .fk5.to_string('hmsdms').replace('h', ':')
+                   .replace('d', ':').replace('m', ':').replace('s', ''))
     if coordinate_system.lower() == "galactic":
         return convert_to_galactic(coordinates.split(" ")[0], coordinates.split(" ")[1])
     else:
-        rounded_coordinates = round_coord_to_3_decimal_places(coordinates.split(" ")[0], coordinates.split(" ")[1])
-        return rounded_coordinates
+        return round_coord_to_3_decimal_places(coordinates.split(" ")[0], coordinates.split(" ")[1])
+        
+
+
 
 
 def convert_ra_dec_deg(ra_str, dec_str):
@@ -106,3 +102,6 @@ def convert_ra_dec_deg(ra_str, dec_str):
 
     return [round(ra.degree, 3), round(dec.degree, 3)]
             
+
+
+print(get_coordinates("M1", "galactic"))
