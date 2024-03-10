@@ -8,14 +8,22 @@ import json
 import logging
 import os.path
 from functools import wraps
+from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
+from ska_db_oda.domain.query import MatchType, UserQuery
+from ska_oso_pdm.generated.models.proposal import Proposal
+from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
-from ska_oso_pht_services.constants.model import ProposalDefinition
+from ska_oso_pht_services import oda
+from ska_oso_pht_services.connectors.pht_handler import (
+    transform_create_proposal,
+    transform_update_proposal,
+)
 from ska_oso_pht_services.utils import coordinates
 
-Response = ProposalDefinition
+Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
 
@@ -77,62 +85,152 @@ def error_handler(api_func):
 
 
 @error_handler
-def hello_world() -> Response:
+def proposal_get(identifier: str) -> Response:
     """
-    Function that requests to /hello-world are mapped to
+    Function that requests to GET /proposals are mapped to
+
+    Retrieves the Proposal with the given identifier from the
+    underlying data store, if available
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of an Proposal and a
+        HTTP status, which the Connexion will wrap in a response
     """
-    return "Hello, world!"
+
+    try:
+        LOGGER.debug("GET PROPOSAL prsl_id: %s", identifier)
+        with oda.uow as uow:
+            prsl = uow.prsls.get(identifier)
+        return prsl.to_dict(), HTTPStatus.OK
+    except KeyError:
+        LOGGER.exception("KeyError when adding Proposal to the ODA")
+        return (
+            {"error": f"Proposal with ID {identifier} not found "},
+            HTTPStatus.NOT_FOUND,
+        )
 
 
 @error_handler
-def proposal_get() -> Response:
+def proposal_get_list(identifier: str) -> Response:
     """
-    Function that requests to /proposal are mapped to
+    Function that requests to GET /proposals/list are mapped to
+
+    Retrieves the Proposals with the given identifier as a user query from the
+    underlying data store, if available
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of a list of Proposal and a
+        HTTP status, which the Connexion will wrap in a response
     """
-    MOCKED_DATA = load_string_from_file("constants/data.json")
-    data = json.loads(MOCKED_DATA)
-    return data
+
+    try:
+        LOGGER.debug("GET PROPOSAL LIST query: %s", identifier)
+        with oda.uow as uow:
+            query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
+            prsl = uow.prsls.query(query_param)
+        return [x.to_dict() for x in prsl], HTTPStatus.OK
+    except KeyError:
+        LOGGER.exception("KeyError when adding Proposal to the ODA")
+        return (
+            {"error": f"Proposal List with query {identifier} not found "},
+            HTTPStatus.NOT_FOUND,
+        )
 
 
 @error_handler
-def proposal_get_list() -> Response:
+def proposal_create(body) -> Response:
     """
-    Function that requests to /proposal/list are mapped to
+    Function that requests to POST /proposals are mapped to
+
+    Stores the Proposal in the underlying data store.
+
+    The ODA is responsible for populating the prsl_id and metadata
+
+    :param identifier: identifier of the Proposal
+    :return: a tuple of an Proposal as it exists in the ODA or error
+        response and a HTTP status, which the Connexion will wrap in a response
     """
-    MOCKED_DATA = load_string_from_file("constants/data.json")
-    data = json.loads(MOCKED_DATA)
-    return [data for x in range(5)]
+    LOGGER.debug("POST PROPOSAL create")
+
+    try:
+        transform_body = transform_create_proposal(body)
+
+        prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
+        with oda.uow as uow:
+            updated_prsl = uow.prsls.add(prsl)
+            uow.commit()
+        return (
+            updated_prsl.prsl_id,
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when adding Proposal to the ODA")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
 
 
 @error_handler
-def proposal_create() -> Response:
+def proposal_edit(body: dict, identifier: str) -> Response:
     """
-    Function that requests to /proposal are mapped to
-    """
-    return "post /proposal"
+    Function that requests to PUT /proposals are mapped to
 
+    Stores the Proposal with the given identifier
+    in the underlying data store.
 
-@error_handler
-def proposal_edit() -> Response:
+    :param identifier: identifier of the Proposal
+    :return: a tuple of an Proposal or error response and a HTTP status,
+        which the Connexion will wrap in a response
     """
-    Function that requests to /proposal are mapped to
-    """
-    return "put /proposal"
+    LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
+
+    try:
+        transform_body = transform_update_proposal(body)
+
+        prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
+
+        if prsl.prsl_id != identifier:
+            return (
+                {"error": "Unprocessable Entity, mismatched Proposal ID"},
+                HTTPStatus.UNPROCESSABLE_ENTITY,
+            )
+
+        with oda.uow as uow:
+            uow.prsls.add(prsl)
+            uow.commit()
+            updated_prsl = uow.prsls.get(identifier)
+        return (
+            updated_prsl.to_dict(),
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when adding Proposal to the ODA")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
 
 
 @error_handler
 def proposal_validate() -> Response:
     """
-    Function that requests to /proposal/validate are mapped to
+    Function that requests to dummy endpoint POST /proposals/validate are mapped to
+
+    :return: a string "post /proposals/validate"
     """
-    return "post /proposal/validate"
+    LOGGER.debug("POST PROPOSAL validate")
+    return "post /proposals/validate"
 
 
 @error_handler
 def upload_pdf() -> Response:
     """
-    Function that requests to /upload/pdf are mapped to
+    Function that requests to dummy endpoint POST /upload/pdf are mapped to
+
+    :return: a string "post /upload/pdf"
     """
+    LOGGER.debug("POST PROPOSAL upload pdf")
     return "post /upload/pdf"
 
 
@@ -140,6 +238,15 @@ def upload_pdf() -> Response:
 def get_coordinates(identifier: str) -> Response:
     """
     Function that requests to /coordinates are mapped to
-    """
 
+    Query celestial coordinates for a given object name from SIMBAD and NED databases.
+    If the object is not found in SIMBAD database
+    it then queries the NED (NASA/IPAC Extragalactic Database).
+
+    :return: a string of the Right Ascension (RA)
+    and Declination (Dec) in the hour-minute-second (HMS) and
+    degree-minute-second (DMS) format respectively seperated by a space
+    or an error response
+    """
+    LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
     return coordinates.get_coordinates(identifier)

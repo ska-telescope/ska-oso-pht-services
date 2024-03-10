@@ -9,6 +9,7 @@ subsystem: ska-oso-pht-services
 
 global:
   minikube: true
+  cluster_domain: cluster.local
 
 rest:
   component: rest
@@ -19,11 +20,11 @@ rest:
   image:
     registry: artefact.skao.int
     image: ska-oso-pht-services
-    tag: 0.1.0
+    tag: ~  # Defaults to the chart appVersion if not set
     pullPolicy: IfNotPresent
   oda:
     backendType: filesystem
-    url:
+    url: ~ # Defaults to the ODA Kubernetes service address if not set
   use_skuid: true
   resources:
     requests:

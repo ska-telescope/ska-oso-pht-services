@@ -36,7 +36,16 @@ def load_string_from_file(filename):
         return json_data
 
 
-VALID_MOCKED_DATA_JSON = load_string_from_file("testfile_sample_data.json")
-VALID_MOCKED_DATA_LIST_JSON = load_string_from_file(
-    "testfile_sample_data_get_list.json"
+VALID_PROPOSAL_DATA_JSON = load_string_from_file("testfile_sample_proposal.json")
+VALID_PROPOSAL_FRONTEND_CREATE_JSON = load_string_from_file(
+    "testfile_frontend_create_proposal.json"
+)
+VALID_PROPOSAL_FRONTEND_UPDATE_JSON = load_string_from_file(
+    "testfile_frontend_update_proposal.json"
+)
+VALID_PROPOSAL_UPDATE_RESULT_JSON = load_string_from_file(
+    "testfile_sample_edit_proposal_result.json"
+)
+VALID_PROPOSAL_GET_LIST_RESULT_JSON = load_string_from_file(
+    "testfile_sample_get_list_proposal_result.json"
 )

@@ -8,6 +8,7 @@ CAR_OCI_REGISTRY_HOST ?= artefact.skao.int
 CAR_OCI_REGISTRY_USERNAME ?= ska-telescope
 PROJECT_NAME = ska-oso-pht-services
 KUBE_NAMESPACE ?= ska-oso-pht-services
+RELEASE_NAME ?= test
 
 # Set sphinx documentation build to fail on warnings (as it is configured
 # in .readthedocs.yaml as well)
@@ -15,6 +16,10 @@ DOCS_SPHINXOPTS ?= -W --keep-going
 
 IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST)/$(strip $(OCI_IMAGE)):$(VERSION)
 K8S_CHART = ska-oso-pht-services-umbrella
+
+POSTGRES_HOST ?= $(RELEASE_NAME)-postgresql
+K8S_CHART_PARAMS += \
+  --set ska-db-oda-umbrella.pgadmin4.serverDefinitions.servers.firstServer.Host=$(POSTGRES_HOST)
 
 # For the test, dev and integration environment, use the freshly built image in the GitLab registry
 ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')
@@ -55,6 +60,21 @@ PYTHON_TEST_FILE = tests/unit/
 
 # include your own private variables for custom deployment configuration
 -include PrivateRules.mak
+
+REST_POD_NAME=$(shell kubectl get pods -o name -n $(KUBE_NAMESPACE) -l app=ska-oso-pht-services,component=rest | cut -c 5-)
+
+# install helm plugin from https://github.com/helm-unittest/helm-unittest.git
+# k8s-chart-test:
+# 	mkdir -p charts/build; \
+# 	helm unittest charts/ska-oso-odt-services/ --with-subchart \
+# 		--output-type JUnit --output-file charts/build/chart_template_tests.xml
+
+k8s-pre-test:
+	kubectl exec $(REST_POD_NAME) -n $(KUBE_NAMESPACE) -- mkdir -p /var/lib/oda/prsl/prsl-1234
+	kubectl cp tests/unit/testfile_sample_proposal.json $(KUBE_NAMESPACE)/$(REST_POD_NAME):/var/lib/oda/prsl/prsl-1234/1.json
+
+k8s-post-test:
+	# kubectl -n $(KUBE_NAMESPACE) exec $(REST_POD_NAME) -- rm -r /var/lib/oda/prsl/
 
 MINIKUBE_NFS_SHARES_ROOT ?=
 
