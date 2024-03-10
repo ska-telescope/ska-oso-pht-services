@@ -1,10 +1,59 @@
 import astropy.units as u
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import SkyCoord, Angle
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
 
-def get_coordinates(object_name):
+def round_coord_to_3_decimal_places(ra, dec):
+    """
+    Converts RA and DEC coordinates to formats with the seconds (RA) and arcseconds (DEC) 
+    rounded to 3 decimal places.
+
+    Parameters:
+    - ra (str): The Right Ascension in the format "HH:MM:SS.sssssssss"
+    - dec (str): The Declination in the format "DD:MM:SS.sssssssss"
+
+    Returns:
+    - tuple: The RA and DEC coordinates with the seconds and arcseconds rounded to 3 decimal places
+    """
+    # For RA
+    ra_hours, ra_minutes, ra_seconds = ra.split(':')
+    ra_seconds_rounded = round(float(ra_seconds), 3)
+    ra_formatted = f"{ra_hours}:{ra_minutes}:{ra_seconds_rounded:06.3f}"
+    
+    # For DEC
+    dec_degrees, dec_minutes, dec_seconds = dec.split(':')
+    dec_seconds_rounded = round(float(dec_seconds), 3)
+    dec_formatted = f"{dec_degrees}:{dec_minutes}:{dec_seconds_rounded:06.3f}"
+    
+    return ra_formatted, dec_formatted
+
+
+def convert_to_galactic(ra, dec):
+    """
+    Converts RA and DEC coordinates to Galactic coordinates.
+
+    Parameters:
+    - ra (str): The Right Ascension in the format "HH:MM:SS.sss"
+    - dec (str): The Declination in the format "+DD:MM:SS.sss"
+
+    Returns:
+    - str: The Galactic coordinates as a string (l, b)
+    """
+    # Creating a SkyCoord object with the given RA and DEC
+    coord = SkyCoord(ra, dec, frame='icrs', unit=(u.hourangle, u.deg))
+    
+    # Converting to Galactic frame
+    galactic_coord = coord.galactic
+    
+    # Formatting the output
+    longitude = galactic_coord.l.to_string(unit=u.degree, decimal=True)
+    latitude = galactic_coord.b.to_string(unit=u.degree, decimal=True)
+    
+    return (longitude, latitude)
+
+
+def get_coordinates(object_name, coordinate_system):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
     If the object is not found in SIMBAD database
@@ -32,16 +81,16 @@ def get_coordinates(object_name):
         dec = result_table_ned["DEC"][0]
 
     # Creating a SkyCoord object
-    coordinates = SkyCoord(ra, dec, unit=(u.hourangle, u.deg))
+    coordinates = SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame='icrs').fk5.to_string('hmsdms').replace('h', ':')\
+                .replace('d', ':').replace('m', ':').replace('s', '')
+    if coordinate_system.lower() == "galactic":
+        return convert_to_galactic(coordinates.split(" ")[0], coordinates.split(" ")[1])
+    else:
+        rounded_coordinates = round_coord_to_3_decimal_places(coordinates.split(" ")[0], coordinates.split(" ")[1])
+        return rounded_coordinates
 
-    # Formatting RA and DEC in HMS and DMS
-    ra_hms = coordinates.ra.to_string(unit=u.hour, sep=":")
-    dec_dms = coordinates.dec.to_string(unit=u.degree, sep=":")
 
-    return f"{ra_hms} {dec_dms}"
-
-
-    def convert_ra_dec(ra_str, dec_str):
+def convert_ra_dec_deg(ra_str, dec_str):
     """
     Convert RA and Dec from sexagesimal (string format) to decimal degrees.
 
@@ -55,4 +104,5 @@ def get_coordinates(object_name):
     ra = Angle(ra_str, unit=u.hour)
     dec = Angle(dec_str, unit=u.deg)
 
-    return round(ra.degree, 3), round(dec.degree, 3)
+    return [round(ra.degree, 3), round(dec.degree, 3)]
+            
