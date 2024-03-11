@@ -9,9 +9,6 @@ import logging
 import os.path
 from functools import wraps
 from http import HTTPStatus
-from astropy.coordinates import SkyCoord, Angle
-import astropy.units as u
-
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
 from ska_db_oda.domain.query import MatchType, UserQuery
@@ -21,7 +18,7 @@ from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 from ska_oso_pht_services import oda
 from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
-    transform_update_proposal,
+    transform_update_proposal, upload_pdf_s3
 )
 from ska_oso_pht_services.utils import coordinates
 
@@ -233,11 +230,12 @@ def upload_pdf() -> Response:
     :return: a string "post /upload/pdf"
     """
     LOGGER.debug("POST PROPOSAL upload pdf")
+    # test = upload_pdf_s3("test")
     return "post /upload/pdf"
 
 
 @error_handler
-def get_coordinates(identifier: str, test:str) -> Response:
+def get_coordinates(identifier: str, coordinateSystem:str) -> dict:
     """
     Function that requests to /coordinates are mapped to
 
@@ -251,10 +249,9 @@ def get_coordinates(identifier: str, test:str) -> Response:
     or an error response
     """
     LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
-    pop = coordinates.get_coordinates(identifier)
-    coordinate_system = test
-    if coordinate_system.lower() == "galactic":
-        return coordinates.convert_to_galactic(pop["ra"], pop["dec"])
+    response = coordinates.get_coordinates(identifier)
+    if coordinateSystem.lower() == "galactic":
+        return coordinates.convert_to_galactic(response["ra"], response["dec"])
     else:
-        return coordinates.round_coord_to_3_decimal_places(pop["ra"], pop["dec"])
+        return coordinates.round_coord_to_3_decimal_places(response["ra"], response["dec"])
 

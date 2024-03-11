@@ -16,13 +16,8 @@ def round_coord_to_3_decimal_places(ra, dec):
     Returns:
     - tuple: RA and DEC coordinates with seconds and arcseconds rounded to 3 decimal places.
     """
-    ra_hours, ra_minutes, ra_seconds = ra.split(":")
-    ra_seconds_round = round(float(ra_seconds), 3)
-    ra_formatted = f"{ra_hours}:{ra_minutes}:{ra_seconds_round:06.3f}"
-
-    dec_hours, dec_minutes, dec_seconds = dec.split(":")
-    dec_seconds_round = round(float(dec_seconds), 3)
-    dec_formatted = f"{dec_hours}:{dec_minutes}:{dec_seconds_round:06.3f}"
+    ra_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(ra.split(':')))
+    dec_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(dec.split(':')))
 
     return {"ra": ra_formatted, 
     "dec" : dec_formatted}
@@ -60,16 +55,11 @@ def convert_to_galactic(ra, dec):
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame='icrs', unit=(u.hourangle, u.deg))
-    
     # Converting to Galactic frame
     galactic_coord = coord.galactic
-    
-    # Formatting the output
-    longitude = galactic_coord.l.to_string(unit=u.degree, decimal=True)
-    latitude = galactic_coord.b.to_string(unit=u.degree, decimal=True)
-    
-    return  {"longitude" :longitude, 
-        "latitude":latitude}
+
+    return  {"longitude" : galactic_coord.l.to_string(unit=u.degree, decimal=True), 
+        "latitude": galactic_coord.b.to_string(unit=u.degree, decimal=True)}
 
 
 def get_coordinates(object_name):
@@ -86,8 +76,6 @@ def get_coordinates(object_name):
     string: RA in HMS format Dec in DMS format
     or a 'not found' message.
     """
-    coordinate_system = "galactic"
-
     # Try searching in SIMBAD
     result_table_simbad = Simbad.query_object(object_name)
     if result_table_simbad is not None:
