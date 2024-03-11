@@ -9,6 +9,8 @@ import logging
 import os.path
 from functools import wraps
 from http import HTTPStatus
+from astropy.coordinates import SkyCoord, Angle
+import astropy.units as u
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
@@ -235,7 +237,7 @@ def upload_pdf() -> Response:
 
 
 @error_handler
-def get_coordinates(identifier: str, coordinate_system: str) -> Response:
+def get_coordinates(identifier: str, test:str) -> Response:
     """
     Function that requests to /coordinates are mapped to
 
@@ -249,4 +251,10 @@ def get_coordinates(identifier: str, coordinate_system: str) -> Response:
     or an error response
     """
     LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
-    return coordinates.get_coordinates(identifier, coordinate_system)
+    pop = coordinates.get_coordinates(identifier)
+    coordinate_system = test
+    if coordinate_system.lower() == "galactic":
+        return coordinates.convert_to_galactic(pop["ra"], pop["dec"])
+    else:
+        return coordinates.round_coord_to_3_decimal_places(pop["ra"], pop["dec"])
+

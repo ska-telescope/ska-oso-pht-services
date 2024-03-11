@@ -16,9 +16,35 @@ def round_coord_to_3_decimal_places(ra, dec):
     Returns:
     - tuple: RA and DEC coordinates with seconds and arcseconds rounded to 3 decimal places.
     """
-    ra_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(ra.split(':')))
-    dec_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(dec.split(':')))
-    return ra_formatted, dec_formatted
+    ra_hours, ra_minutes, ra_seconds = ra.split(":")
+    ra_seconds_round = round(float(ra_seconds), 3)
+    ra_formatted = f"{ra_hours}:{ra_minutes}:{ra_seconds_round:06.3f}"
+
+    dec_hours, dec_minutes, dec_seconds = dec.split(":")
+    dec_seconds_round = round(float(dec_seconds), 3)
+    dec_formatted = f"{dec_hours}:{dec_minutes}:{dec_seconds_round:06.3f}"
+
+    return {"ra": ra_formatted, 
+    "dec" : dec_formatted}
+
+
+def convert_ra_dec_deg(ra_str, dec_str):
+    """
+    Convert RA and Dec from sexagesimal (string format) to decimal degrees.
+
+    Parameters:
+    ra_str (str): RA in the format "HH:MM:SS" (e.g., "5:35:17.3")
+    dec_str (str): Dec in the format "DD:MM:SS" (e.g., "-1:2:37")
+
+    Returns:
+    tuple: RA and Dec in decimal degrees
+    """
+    ra = Angle(ra_str, unit=u.hour)
+    dec = Angle(dec_str, unit=u.deg)
+
+    return {"ra": round(ra.degree, 3), 
+    "dec" : round(dec.degree, 3)}
+            
 
 
 def convert_to_galactic(ra, dec):
@@ -42,10 +68,11 @@ def convert_to_galactic(ra, dec):
     longitude = galactic_coord.l.to_string(unit=u.degree, decimal=True)
     latitude = galactic_coord.b.to_string(unit=u.degree, decimal=True)
     
-    return (longitude, latitude)
+    return  {"longitude" :longitude, 
+        "latitude":latitude}
 
 
-def get_coordinates(object_name, coordinate_system):
+def get_coordinates(object_name):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
     If the object is not found in SIMBAD database
@@ -59,6 +86,8 @@ def get_coordinates(object_name, coordinate_system):
     string: RA in HMS format Dec in DMS format
     or a 'not found' message.
     """
+    coordinate_system = "galactic"
+
     # Try searching in SIMBAD
     result_table_simbad = Simbad.query_object(object_name)
     if result_table_simbad is not None:
@@ -72,34 +101,10 @@ def get_coordinates(object_name, coordinate_system):
             return f"{'Object not found in SIMBAD or NED', e}"
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
-
-    # Creating a SkyCoord object
     coordinates = (SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame='icrs')
                    .fk5.to_string('hmsdms').replace('h', ':')
                    .replace('d', ':').replace('m', ':').replace('s', ''))
-    if coordinate_system.lower() == "galactic":
-        return convert_to_galactic(coordinates.split(" ")[0], coordinates.split(" ")[1])
-    else:
-        return round_coord_to_3_decimal_places(coordinates.split(" ")[0], coordinates.split(" ")[1])
-        
+    return {"ra" : coordinates.split(" ")[0], "dec" : coordinates.split(" ")[1]}
 
-
-
-
-def convert_ra_dec_deg(ra_str, dec_str):
-    """
-    Convert RA and Dec from sexagesimal (string format) to decimal degrees.
-
-    Parameters:
-    ra_str (str): RA in the format "HH:MM:SS" (e.g., "5:35:17.3")
-    dec_str (str): Dec in the format "DD:MM:SS" (e.g., "-1:2:37")
-
-    Returns:
-    tuple: RA and Dec in decimal degrees
-    """
-    ra = Angle(ra_str, unit=u.hour)
-    dec = Angle(dec_str, unit=u.deg)
-
-    return [round(ra.degree, 3), round(dec.degree, 3)]
-            
+   
 

@@ -121,7 +121,7 @@ paths:
             text/plain:
               schema:
                 type: string
-  /coordinates/{identifier}:
+  /coordinates/{identifier}/{test}:
     get:
       summary: get coordinates
       description: |
@@ -135,13 +135,13 @@ paths:
           explode: false
           schema:
             type: string
-        # - name: coordinatesystem
-        #   in: path
-        #   required: true
-        #   style: simple
-        #   explode: false
-        #   schema:
-        #     type: string
+        - name: test
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
