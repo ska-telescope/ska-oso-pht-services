@@ -90,7 +90,7 @@ def get_coordinates(object_name):
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
     coordinates = (SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame='icrs')
-                   .fk5.to_string('hmsdms').replace('h', ':')
+                    .to_string('hmsdms').replace('h', ':')
                    .replace('d', ':').replace('m', ':').replace('s', ''))
     return {"ra" : coordinates.split(" ")[0], "dec" : coordinates.split(" ")[1]}
 
