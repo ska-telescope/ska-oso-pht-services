@@ -58,8 +58,8 @@ def convert_to_galactic(ra, dec):
     # Converting to Galactic frame
     galactic_coord = coord.galactic
 
-    return  {"longitude" : galactic_coord.l.to_string(unit=u.degree, decimal=True), 
-        "latitude": galactic_coord.b.to_string(unit=u.degree, decimal=True)}
+    return  {"longitude" : float(galactic_coord.l.to_string(decimal=True, unit=u.degree)), 
+       "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree))}
 
 
 def get_coordinates(object_name):
