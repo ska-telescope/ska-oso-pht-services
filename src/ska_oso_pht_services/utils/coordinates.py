@@ -51,15 +51,15 @@ def convert_to_galactic(ra, dec):
     - dec (str): The Declination in the format "+DD:MM:SS.sss"
 
     Returns:
-    - str: The Galactic coordinates as a string (l, b)
+    - dict: A dictionary object with keys "longitude" and "latitude" representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame='icrs', unit=(u.hourangle, u.deg))
     # Converting to Galactic frame
     galactic_coord = coord.galactic
 
-    return  {"longitude" : float(galactic_coord.l.to_string(decimal=True, unit=u.degree)), 
-       "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree))}
+    return  {"galactic": {"longitude" : float(galactic_coord.l.to_string(decimal=True, unit=u.degree)), 
+       "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree))}}
 
 
 def get_coordinates(object_name):
