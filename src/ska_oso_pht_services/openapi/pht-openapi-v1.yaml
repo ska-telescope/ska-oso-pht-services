@@ -121,12 +121,12 @@ paths:
             text/plain:
               schema:
                 type: string
-  /coordinates/{identifier}/{coordinateSystem}:
+  /coordinates/{identifier}/{reference_frame}:
     get:
       summary: get coordinates
       description: |
         get coordinates
-      operationId: ska_oso_pht_services.api.get_coordinates
+      operationId: ska_oso_pht_services.api.get_systemcoordinates
       parameters:
         - name: identifier
           in: path
@@ -135,7 +135,7 @@ paths:
           explode: false
           schema:
             type: string
-        - name: coordinateSystem
+        - name: reference_frame
           in: path
           required: true
           style: simple
