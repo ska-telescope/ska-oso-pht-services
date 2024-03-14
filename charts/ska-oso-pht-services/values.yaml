@@ -36,6 +36,18 @@ rest:
   ingress:
     enabled: true
 
+secretProvider:
+enabled: true
+name: vault-ska-vault-example-csi
+provider:
+    name: "vault"
+    vaultAddress: "https://vault.skao.int"
+    roleName: "kube-role"
+    secretsPath: "PATH_TO_SECRET_VAULT"
+    secrets:
+    - secretKey: "USERNAME"
+    - secretKey: "PASSWORD"
+
 nodeSelector: {}
 
 affinity: {}
