@@ -5,7 +5,7 @@ from astroquery.simbad import Simbad
 from astroquery.exceptions import RemoteServiceError
 
 
-def round_coord_to_3_decimal_places(ra, dec):
+def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
     """
     Rounds the seconds component of RA and the arcseconds component of DEC to 3 decimal places.
 
@@ -14,13 +14,14 @@ def round_coord_to_3_decimal_places(ra, dec):
     - dec (str): Declination in "DD:MM:SS.sssssssss"
 
     Returns:
-    - tuple: RA and DEC coordinates with seconds and arcseconds rounded to 3 decimal places.
+    - dict: A dictionary with one key "equatorial", containing a nested dictionary with keys "right_ascension" 
+            and "declination", each containing a string value with the rounded RA and DEC coordinates.
     """
     ra_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(ra.split(':')))
     dec_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(dec.split(':')))
 
-    return {"ra": ra_formatted, 
-    "dec" : dec_formatted}
+    return {"equatorial": {"right_ascension": ra_formatted, 
+    "declination" : dec_formatted}}
 
 
 def convert_ra_dec_deg(ra_str, dec_str):
@@ -51,7 +52,8 @@ def convert_to_galactic(ra, dec):
     - dec (str): The Declination in the format "+DD:MM:SS.sss"
 
     Returns:
-    - dict: A dictionary object with keys "longitude" and "latitude" representing the Galactic coordinates as floats in degrees.
+    - dict: A dictionary with one key "galactic", containing a nested dictionary with keys "longitude" 
+            and "latitude", representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame='icrs', unit=(u.hourangle, u.deg))

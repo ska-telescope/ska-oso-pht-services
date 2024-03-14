@@ -245,10 +245,16 @@ def get_systemcoordinates(identifier: str, reference_frame:str) -> Response:
     If the object is not found in SIMBAD database
     it then queries the NED (NASA/IPAC Extragalactic Database).
 
-    :return: a string of the Right Ascension (RA)
-    and Declination (Dec) in the hour-minute-second (HMS) and
-    degree-minute-second (DMS) format respectively seperated by a space
-    or an error response
+    :param identifier: A string representing the name of the object to query.
+    :param reference_frame: A string representing the reference frame to return the coordinates in ("galactic" or "equatorial").
+    :return: A dictionary with one key "equatorial" or "galactic", 
+             containing a nested dictionary with galactic or equatorial coordinates:
+             {"galactic": {"latitude": 78.7068,"longitude": 42.217}}
+             or
+             {"equatorial":{"right_ascension": "+28:22:38.200","declination": "13:41:11.620"}}
+             In case of an error, an error response is returned.
+    :rtype: dict
+    :raises: Possible exceptions or error scenarios that may result in an error response.
     """
     LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
     response = coordinates.get_coordinates(identifier)
