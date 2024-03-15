@@ -3,6 +3,7 @@ Unit tests for ska_oso_pht_services.api
 """
 
 import json
+import logging
 from http import HTTPStatus
 from unittest import mock
 
@@ -117,7 +118,16 @@ def test_upload_pdf(client):
 
 def test_get_coordinates(client):
     name = "LHS337"
-    result = client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
+    reference_frame = "any"
+    response = client.get(
+        f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
+    )
 
-    assert result.status_code == HTTPStatus.OK
-    assert result.text == "12:38:49.0984 -38:22:53.67"
+    assert response.status_code == HTTPStatus.OK
+    expected_response = {
+        "equatorial": {
+            "declination": "-38:22:53.670",
+            "right_ascension": "12:38:49.098",
+        }
+    }
+    assert json.loads(response.data.decode()) == expected_response
