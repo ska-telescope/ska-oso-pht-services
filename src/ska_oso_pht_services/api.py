@@ -9,8 +9,6 @@ import logging
 import os.path
 from functools import wraps
 from http import HTTPStatus
-from astropy.coordinates import SkyCoord, Angle
-import astropy.units as u
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
@@ -237,7 +235,7 @@ def upload_pdf() -> Response:
 
 
 @error_handler
-def get_systemcoordinates(identifier: str, reference_frame:str) -> Response:
+def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
     """
     Function that requests to /coordinates are mapped to
 
@@ -246,20 +244,26 @@ def get_systemcoordinates(identifier: str, reference_frame:str) -> Response:
     it then queries the NED (NASA/IPAC Extragalactic Database).
 
     :param identifier: A string representing the name of the object to query.
-    :param reference_frame: A string representing the reference frame to return the coordinates in ("galactic" or "equatorial").
-    :return: A dictionary with one key "equatorial" or "galactic", 
+    :param reference_frame: A string representing the reference frame
+    to return the coordinates in ("galactic" or "equatorial").
+    :return: A dictionary with one key "equatorial" or "galactic",
              containing a nested dictionary with galactic or equatorial coordinates:
-             {"galactic": {"latitude": 78.7068,"longitude": 42.217}}
+             {"galactic":
+                {"latitude": 78.7068,"longitude": 42.217}
+             }
              or
-             {"equatorial":{"right_ascension": "+28:22:38.200","declination": "13:41:11.620"}}
+             {"equatorial":
+                {"right_ascension": "+28:22:38.200",
+                "declination": "13:41:11.620"}
+             }
              In case of an error, an error response is returned.
     :rtype: dict
-    :raises: Possible exceptions or error scenarios that may result in an error response.
     """
     LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
     response = coordinates.get_coordinates(identifier)
     if reference_frame.lower() == "galactic":
         return coordinates.convert_to_galactic(response["ra"], response["dec"])
     else:
-        return coordinates.round_coord_to_3_decimal_places(response["ra"], response["dec"])
-
+        return coordinates.round_coord_to_3_decimal_places(
+            response["ra"], response["dec"]
+        )

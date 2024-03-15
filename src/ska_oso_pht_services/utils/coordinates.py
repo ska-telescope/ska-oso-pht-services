@@ -1,27 +1,37 @@
 import astropy.units as u
-from astropy.coordinates import SkyCoord, Angle
+from astropy.coordinates import Angle, SkyCoord
+from astroquery.exceptions import RemoteServiceError
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
-from astroquery.exceptions import RemoteServiceError
 
 
 def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
     """
-    Rounds the seconds component of RA and the arcseconds component of DEC to 3 decimal places.
+    Rounds the seconds component of RA and the arcseconds component of DEC
+    to 3 decimal places.
 
     Parameters:
     - ra (str): Right Ascension in "HH:MM:SS.sssssssss"
     - dec (str): Declination in "DD:MM:SS.sssssssss"
 
     Returns:
-    - dict: A dictionary with one key "equatorial", containing a nested dictionary with keys "right_ascension" 
-            and "declination", each containing a string value with the rounded RA and DEC coordinates.
+    - dict: A dictionary with one key "equatorial",
+            containing a nested dictionary with keys "right_ascension"
+            and "declination", each containing a string value
+            with the rounded RA and DEC coordinates.
     """
-    ra_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(ra.split(':')))
-    dec_formatted = ':'.join(f"{round(float(x), 3):06.3f}" if i == 2 else x for i, x in enumerate(dec.split(':')))
+    ra_formatted = ":".join(
+        f"{round(float(x), 3):06.3f}" if i == 2 else x
+        for i, x in enumerate(ra.split(":"))
+    )
+    dec_formatted = ":".join(
+        f"{round(float(x), 3):06.3f}" if i == 2 else x
+        for i, x in enumerate(dec.split(":"))
+    )
 
-    return {"equatorial": {"right_ascension": ra_formatted, 
-    "declination" : dec_formatted}}
+    return {
+        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted}
+    }
 
 
 def convert_ra_dec_deg(ra_str, dec_str):
@@ -38,9 +48,7 @@ def convert_ra_dec_deg(ra_str, dec_str):
     ra = Angle(ra_str, unit=u.hour)
     dec = Angle(dec_str, unit=u.deg)
 
-    return {"ra": round(ra.degree, 3), 
-    "dec" : round(dec.degree, 3)}
-            
+    return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
 
 
 def convert_to_galactic(ra, dec):
@@ -52,16 +60,21 @@ def convert_to_galactic(ra, dec):
     - dec (str): The Declination in the format "+DD:MM:SS.sss"
 
     Returns:
-    - dict: A dictionary with one key "galactic", containing a nested dictionary with keys "longitude" 
+    - dict: A dictionary with one key "galactic",
+            containing a nested dictionary with keys "longitude"
             and "latitude", representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
-    coord = SkyCoord(ra, dec, frame='icrs', unit=(u.hourangle, u.deg))
+    coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
     # Converting to Galactic frame
     galactic_coord = coord.galactic
 
-    return  {"galactic": {"longitude" : float(galactic_coord.l.to_string(decimal=True, unit=u.degree)), 
-       "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree))}}
+    return {
+        "galactic": {
+            "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
+            "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+        }
+    }
 
 
 def get_coordinates(object_name):
@@ -91,10 +104,12 @@ def get_coordinates(object_name):
             return f"{'Object not found in SIMBAD or NED', e}"
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
-    coordinates = (SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame='icrs')
-                    .to_string('hmsdms').replace('h', ':')
-                   .replace('d', ':').replace('m', ':').replace('s', ''))
-    return {"ra" : coordinates.split(" ")[0], "dec" : coordinates.split(" ")[1]}
-
-   
-
+    coordinates = (
+        SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame="icrs")
+        .to_string("hmsdms")
+        .replace("h", ":")
+        .replace("d", ":")
+        .replace("m", ":")
+        .replace("s", "")
+    )
+    return {"ra": coordinates.split(" ")[0], "dec": coordinates.split(" ")[1]}

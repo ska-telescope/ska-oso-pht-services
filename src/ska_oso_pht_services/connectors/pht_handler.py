@@ -97,5 +97,5 @@ def transform_create_proposal(data: dict) -> dict:
     }
 
 
-def upload_pdf_s3(file: str) -> dict:
-    return "test"
+# def upload_pdf_s3(file: str) -> dict:
+# return "test"
