@@ -4,21 +4,10 @@ Unit tests for ska_oso_pht_services.api
 
 import json
 from http import HTTPStatus
-import logging
 from unittest import mock
-import unittest
-import requests
-
-import unittest
-import responses
-import json
-import pytest
 
 from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
-from ska_oso_pht_services.api import get_systemcoordinates
-from ska_oso_pht_services.utils.coordinates import get_coordinates
-from tests.unit.conftest import test_app
 
 from .util import (
     VALID_PROPOSAL_DATA_JSON,
@@ -125,6 +114,7 @@ def test_upload_pdf(client):
     assert result.status_code == HTTPStatus.OK
     assert result.text == "post /upload/pdf"
 
+
 def test_get_coordinates(client):
     name = "LHS337"
     reference_frame = "any"
@@ -182,12 +172,14 @@ def test_get_coordinates(client):
 #             })
 #         ]
 
-#     def get_coordinates_generic(self, client, name, reference_frame, expected_response):
+#     def get_coordinates_generic(self, client, name,
+#   reference_frame, expected_response):
 #         if not reference_frame:
-#             response = client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
+#             response =
+#             client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
 #             assert response.status_code == HTTPStatus.NOT_FOUND
 #             return
-        
+
 #         response = client.get(
 #             f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
 #         )
