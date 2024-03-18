@@ -132,56 +132,60 @@ def test_upload_pdf(client):
 #     assert json.loads(response.data.decode()) == expected_response
 
 
-class TestGetCoordinates():
+class TestGetCoordinates:
     test_cases = [
-            ("LHS337", "any", {
+        (
+            "LHS337",
+            "any",
+            {
                 "equatorial": {
                     "right_ascension": "12:38:49.098",
-                    "declination": "-38:22:53.670"
+                    "declination": "-38:22:53.670",
                 }
-            }),
-            ("M31", "test", {
+            },
+        ),
+        (
+            "M31",
+            "test",
+            {
                 "equatorial": {
                     "right_ascension": "00:42:44.330",
-                    "declination": "+41:16:07.500"
+                    "declination": "+41:16:07.500",
                 }
-            }),
-            ("NGC253", "any", {
+            },
+        ),
+        (
+            "NGC253",
+            "any",
+            {
                 "equatorial": {
                     "right_ascension": "00:47:33.134",
-                    "declination": "-25:17:19.680"
+                    "declination": "-25:17:19.680",
                 }
-            }),
-            ("N10", "galactic", {
-                "galactic": {
-                    "latitude": -78.5856,
-                    "longitude": 354.21
-                }
-            }),
-             ("N10", "equatorial", {
+            },
+        ),
+        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21}}),
+        (
+            "N10",
+            "equatorial",
+            {
                 "equatorial": {
-                   "declination": "-33:51:30.197",
-                   "right_ascension": "00:08:34.539"
+                    "declination": "-33:51:30.197",
+                    "right_ascension": "00:08:34.539",
                 }
-            }),
-            ("M1", "", {
-                 "": {
-                    "": "",
-                    "": ""
-                }
-            })
-        ]
+            },
+        ),
+        ("M1", "", {"equatorial": {"declination": "", "right_ascension": ""}}),
+    ]
 
-    def get_coordinates_generic(self, client, name,
-  reference_frame, expected_response):
+    def get_coordinates_generic(self, client, name, reference_frame, expected_response):
         base_url = "/ska-oso-pht-services/pht/api/v1/coordinates/"
         if not reference_frame:
             response = client.get(f"{base_url}{name}")
             assert response.status_code == HTTPStatus.NOT_FOUND
             return
 
-        response = client.get(f"{base_url}{name}/{reference_frame}"
-        )
+        response = client.get(f"{base_url}{name}/{reference_frame}")
         assert response.status_code == HTTPStatus.OK
         assert json.loads(response.data.decode()) == expected_response
 
