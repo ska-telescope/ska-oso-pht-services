@@ -4,6 +4,7 @@ Unit tests for ska_oso_pht_services.api
 
 import json
 from http import HTTPStatus
+import logging
 from unittest import mock
 import unittest
 import requests
@@ -125,58 +126,8 @@ def test_upload_pdf(client):
     assert result.text == "post /upload/pdf"
 
 
-# SINGLE TEST WORKS WITH HTTP
-###################################
-def test_get_coordinates(client):
-    name = "LHS337"
-    reference_frame = "any"
-    response = client.get(
-        f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
-    )
-
-    assert response.status_code == HTTPStatus.OK
-    expected_response = {
-        "equatorial": {
-            "declination": "-38:22:53.670",
-            "right_ascension": "12:38:49.098",
-        }
-    }
-    assert json.loads(response.data.decode()) == expected_response
-    
-
-
-# SINGLE TEST IN CLASS WORKS WITH HTTP
-######################################
-@pytest.fixture()
-def client(test_app):  # pylint: disable=redefined-outer-name
-    """
-    Create a test client from the app instance, without running a live server
-    """
-    return test_app.test_client()
 class TestGetCoordinates():
-    def test_get_coordinates(self, client):
-        name = "LHS337"
-        reference_frame = "any"
-        response = client.get(
-            f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
-        )
-
-        assert response.status_code == HTTPStatus.OK
-        expected_response = {
-            "equatorial": {
-                "declination": "-38:22:53.670",
-                "right_ascension": "12:38:49.098",
-            }
-        }
-        assert json.loads(response.data.decode()) == expected_response
-    
-    
-
-# MULTIPLE TESTS / NO HTTP WORKS
-####################################
-class TestGetCoordinates(unittest.TestCase):
-    def test_get_coordinates(self):
-        test_cases = [
+    test_cases = [
             ("LHS337", "any", {
                 "equatorial": {
                     "right_ascension": "12:38:49.098",
@@ -206,51 +157,27 @@ class TestGetCoordinates(unittest.TestCase):
                    "declination": "-33:51:30.197",
                    "right_ascension": "00:08:34.539"
                 }
+            }),
+            ("M1", "", {
+                 "": {
+                    "": "",
+                    "": ""
+                }
             })
         ]
 
-        for name, reference_frame, expected_response in test_cases:
-            with self.subTest(name=name, reference_frame=reference_frame):
-                result = get_systemcoordinates(name, reference_frame)
-                self.assertEqual(result, expected_response)
+    def get_coordinates_generic(self, client, name, reference_frame, expected_response):
+        if not reference_frame:
+            response = client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
+            assert response.status_code == HTTPStatus.NOT_FOUND
+            return
+        
+        response = client.get(
+            f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
+        )
+        assert response.status_code == HTTPStatus.OK
+        assert json.loads(response.data.decode()) == expected_response
 
-
-
-
-# TEST
-# DOES NOT WORK< TO CONTINUE
-# @pytest.fixture()
-# def client(test_app):  # pylint: disable=redefined-outer-name
-#     """
-#     Create a test client from the app instance, without running a live server
-#     """
-#     return test_app.test_client()
-# class TestGetCoordinates(unittest.TestCase):
-#     def test_get_coordinates(self, client):
-#         name = "LHS337"
-#         reference_frame = "any"
-#         response = client.get(
-#             f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
-#         )
-
-#         assert response.status_code == HTTPStatus.OK
-#         expected_response = {
-#             "equatorial": {
-#                 "declination": "-38:22:53.670",
-#                 "right_ascension": "12:38:49.098",
-#             }
-#         }
-#         assert json.loads(response.data.decode()) == expected_response
-
-#     test_cases = [
-#             ("LHS337", "any", {
-#                 "equatorial": {
-#                     "right_ascension": "12:38:49.098",
-#                     "declination": "-38:22:53.670"
-#                 }
-#             })
-#         ]
-#     for name, reference_frame, expected_response in test_cases:
-#         with unittest.TestCase.subTest(name=name, reference_frame=reference_frame):
-#             result = get_systemcoordinates(name, reference_frame)
-#             unittest.TestCase.assertEqual(result, expected_response)
+    def test_coordinates(self, client):
+        for data in self.test_cases:
+            self.get_coordinates_generic(client, *data)
