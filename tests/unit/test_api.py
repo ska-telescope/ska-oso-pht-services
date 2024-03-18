@@ -174,14 +174,13 @@ class TestGetCoordinates():
 
     def get_coordinates_generic(self, client, name,
   reference_frame, expected_response):
+        base_url = "/ska-oso-pht-services/pht/api/v1/coordinates/"
         if not reference_frame:
-            response =
-            client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
+            response = client.get(f"{base_url}{name}")
             assert response.status_code == HTTPStatus.NOT_FOUND
             return
 
-        response = client.get(
-            f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
+        response = client.get(f"{base_url}{name}/{reference_frame}"
         )
         assert response.status_code == HTTPStatus.OK
         assert json.loads(response.data.decode()) == expected_response
