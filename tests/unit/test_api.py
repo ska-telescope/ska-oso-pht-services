@@ -131,6 +131,7 @@ def test_get_coordinates(client):
     response = client.get(
         f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
     )
+
     assert response.status_code == HTTPStatus.OK
     expected_response = {
         "equatorial": {
@@ -139,6 +140,21 @@ def test_get_coordinates(client):
         }
     }
     assert json.loads(response.data.decode()) == expected_response
+
+# def test_get_coordinates(client):
+#     name = "LHS337"
+#     reference_frame = "any"
+#     response = client.get(
+#         f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
+#     )
+#     assert response.status_code == HTTPStatus.OK
+#     expected_response = {
+#         "equatorial": {
+#             "declination": "-38:22:53.670",
+#             "right_ascension": "12:38:49.098",
+#         }
+#     }
+#     assert json.loads(response.data.decode()) == expected_response
 
 
 class TestGetCoordinates():
