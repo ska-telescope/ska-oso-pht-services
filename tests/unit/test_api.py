@@ -115,23 +115,6 @@ def test_upload_pdf(client):
     assert result.text == "post /upload/pdf"
 
 
-# def test_get_coordinates(client):
-#     name = "LHS337"
-#     reference_frame = "any"
-#     response = client.get(
-#         f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
-#     )
-
-#     assert response.status_code == HTTPStatus.OK
-#     expected_response = {
-#         "equatorial": {
-#             "declination": "-38:22:53.670",
-#             "right_ascension": "12:38:49.098",
-#         }
-#     }
-#     assert json.loads(response.data.decode()) == expected_response
-
-
 class TestGetCoordinates:
     test_cases = [
         (
@@ -189,6 +172,6 @@ class TestGetCoordinates:
         assert response.status_code == HTTPStatus.OK
         assert json.loads(response.data.decode()) == expected_response
 
-    def test_coordinates(self, client):
+    def test_get_coordinates(self, client):
         for data in self.test_cases:
             self.get_coordinates_generic(client, *data)
