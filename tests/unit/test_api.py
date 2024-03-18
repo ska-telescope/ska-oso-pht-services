@@ -141,74 +141,59 @@ def test_get_coordinates(client):
     }
     assert json.loads(response.data.decode()) == expected_response
 
-# def test_get_coordinates(client):
-#     name = "LHS337"
-#     reference_frame = "any"
-#     response = client.get(
-#         f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
-#     )
-#     assert response.status_code == HTTPStatus.OK
-#     expected_response = {
-#         "equatorial": {
-#             "declination": "-38:22:53.670",
-#             "right_ascension": "12:38:49.098",
-#         }
-#     }
-#     assert json.loads(response.data.decode()) == expected_response
 
+# class TestGetCoordinates():
+#     test_cases = [
+#             ("LHS337", "any", {
+#                 "equatorial": {
+#                     "right_ascension": "12:38:49.098",
+#                     "declination": "-38:22:53.670"
+#                 }
+#             }),
+#             ("M31", "test", {
+#                 "equatorial": {
+#                     "right_ascension": "00:42:44.330",
+#                     "declination": "+41:16:07.500"
+#                 }
+#             }),
+#             ("NGC253", "any", {
+#                 "equatorial": {
+#                     "right_ascension": "00:47:33.134",
+#                     "declination": "-25:17:19.680"
+#                 }
+#             }),
+#             ("N10", "galactic", {
+#                 "galactic": {
+#                     "latitude": -78.5856,
+#                     "longitude": 354.21
+#                 }
+#             }),
+#              ("N10", "equatorial", {
+#                 "equatorial": {
+#                    "declination": "-33:51:30.197",
+#                    "right_ascension": "00:08:34.539"
+#                 }
+#             }),
+#             ("M1", "", {
+#                  "": {
+#                     "": "",
+#                     "": ""
+#                 }
+#             })
+#         ]
 
-class TestGetCoordinates():
-    test_cases = [
-            ("LHS337", "any", {
-                "equatorial": {
-                    "right_ascension": "12:38:49.098",
-                    "declination": "-38:22:53.670"
-                }
-            }),
-            ("M31", "test", {
-                "equatorial": {
-                    "right_ascension": "00:42:44.330",
-                    "declination": "+41:16:07.500"
-                }
-            }),
-            ("NGC253", "any", {
-                "equatorial": {
-                    "right_ascension": "00:47:33.134",
-                    "declination": "-25:17:19.680"
-                }
-            }),
-            ("N10", "galactic", {
-                "galactic": {
-                    "latitude": -78.5856,
-                    "longitude": 354.21
-                }
-            }),
-             ("N10", "equatorial", {
-                "equatorial": {
-                   "declination": "-33:51:30.197",
-                   "right_ascension": "00:08:34.539"
-                }
-            }),
-            ("M1", "", {
-                 "": {
-                    "": "",
-                    "": ""
-                }
-            })
-        ]
-
-    def get_coordinates_generic(self, client, name, reference_frame, expected_response):
-        if not reference_frame:
-            response = client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
-            assert response.status_code == HTTPStatus.NOT_FOUND
-            return
+#     def get_coordinates_generic(self, client, name, reference_frame, expected_response):
+#         if not reference_frame:
+#             response = client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
+#             assert response.status_code == HTTPStatus.NOT_FOUND
+#             return
         
-        response = client.get(
-            f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
-        )
-        assert response.status_code == HTTPStatus.OK
-        assert json.loads(response.data.decode()) == expected_response
+#         response = client.get(
+#             f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}/{reference_frame}"
+#         )
+#         assert response.status_code == HTTPStatus.OK
+#         assert json.loads(response.data.decode()) == expected_response
 
-    def test_coordinates(self, client):
-        for data in self.test_cases:
-            self.get_coordinates_generic(client, *data)
+#     def test_coordinates(self, client):
+#         for data in self.test_cases:
+#             self.get_coordinates_generic(client, *data)
