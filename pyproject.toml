@@ -41,6 +41,8 @@ ska-oso-pdm = "^11.3.0"
 prance = {version = "^23.6.21.0", extras = ["osv"]}
 pydantic = {extras = ["email"], version = "^2.5.3"}
 ska-ser-sphinx-theme = "^0.1.2"
+boto3 = "^1.34.62"
+moto = "^5.0.3"
 
 
 [tool.poetry.group.dev.dependencies]

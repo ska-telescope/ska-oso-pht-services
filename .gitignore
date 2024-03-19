@@ -5,6 +5,8 @@
 *.DS_Store
 setup.py-e
 
+config.py
+
 build
 dist
 .cache
