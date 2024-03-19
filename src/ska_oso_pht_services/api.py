@@ -233,6 +233,7 @@ def upload_pdf() -> Response:
     LOGGER.debug("POST PROPOSAL upload pdf")
     return "post /upload/pdf"
 
+
 @error_handler
 def download_pdf(filename: str) -> Response:
     """
