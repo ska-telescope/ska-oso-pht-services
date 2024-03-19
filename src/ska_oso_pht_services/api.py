@@ -237,7 +237,8 @@ def upload_pdf() -> Response:
 @error_handler
 def download_pdf(filename: str) -> Response:
     """
-    Function that requests to dummy endpoint GET /download/signedurl/{filename} are mapped to
+    Function that requests to dummy endpoint GET /download/signedurl/{filename}
+    are mapped to
 
     :param filename: filename of the uploaded document
     :return: a string "/download/signedurl/{filename}"
