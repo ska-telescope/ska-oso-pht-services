@@ -233,6 +233,33 @@ def upload_pdf() -> Response:
     LOGGER.debug("POST PROPOSAL upload pdf")
     return "post /upload/pdf"
 
+@error_handler
+def download_pdf(filename: str) -> Response:
+    """
+    Function that requests to dummy endpoint GET /download/signedurl/{filename} are mapped to
+
+    :param filename: filename of the uploaded document
+    :return: a string "/download/signedurl/{filename}"
+    """
+    LOGGER.debug("GET Download Signed URL")
+    try:
+        return (
+            "/download/signedurl/{filename}",
+            HTTPStatus.OK,
+        )
+    except ValueError as ve:
+        LOGGER.exception("ValueError when adding Document to the ODA")
+        return (
+            {"error": f"Bad Request '{ve.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
+    except SystemError as se:
+        LOGGER.exception("SystemError when adding Document to the ODA")
+        return (
+            {"error": f"InternalServerError '{se.args[0]}'"},
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+        )
+
 
 @error_handler
 def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
