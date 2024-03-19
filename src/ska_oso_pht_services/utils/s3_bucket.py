@@ -1,7 +1,4 @@
-import boto3
-
-
-# TODO: connect s3 credentials using SKAO Vault  
+# TODO: connect s3 credentials using SKAO Vault
 
 # import config
 
