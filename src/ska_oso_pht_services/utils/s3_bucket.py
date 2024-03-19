@@ -1,33 +1,36 @@
 import boto3
 
-import config
 
-AWS_SERVER_PUBLIC_KEY = config.AWS_SERVER_PUBLIC_KEY
-AWS_SERVER_SECRET_KEY = config.AWS_SERVER_SECRET_KEY
-AWS_PHT_BUCKET_NAME = config.AWS_PHT_BUCKET_NAME
-AWS_REGION_NAME = config.AWS_REGION_NAME
+# TODO: connect s3 credentials using SKAO Vault  
 
-PRESIGNED_URL_EXPIRY_TIME = 60
+# import config
 
+# AWS_SERVER_PUBLIC_KEY = config.AWS_SERVER_PUBLIC_KEY
+# AWS_SERVER_SECRET_KEY = config.AWS_SERVER_SECRET_KEY
+# AWS_PHT_BUCKET_NAME = config.AWS_PHT_BUCKET_NAME
+# AWS_REGION_NAME = config.AWS_REGION_NAME
 
-def _get_aws_client():
-    aws_access_key_id = AWS_SERVER_PUBLIC_KEY
-    aws_secret_access_key = AWS_SERVER_SECRET_KEY
-    region_name = AWS_REGION_NAME
-    return boto3.client(
-        "s3",
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key,
-        region_name=region_name,
-    )
+# PRESIGNED_URL_EXPIRY_TIME = 60
 
 
-def _get_all_bucket_object_with_client():
-    s3_client = _get_aws_client()
-    objects = s3_client.list_objects_v2(Bucket=AWS_PHT_BUCKET_NAME)
+# def _get_aws_client():
+#     aws_access_key_id = AWS_SERVER_PUBLIC_KEY
+#     aws_secret_access_key = AWS_SERVER_SECRET_KEY
+#     region_name = AWS_REGION_NAME
+#     return boto3.client(
+#         "s3",
+#         aws_access_key_id=aws_access_key_id,
+#         aws_secret_access_key=aws_secret_access_key,
+#         region_name=region_name,
+#     )
 
-    for obj in objects["Contents"]:
-        print(obj["Key"])
+
+# def _get_all_bucket_object_with_client():
+#     s3_client = _get_aws_client()
+#     objects = s3_client.list_objects_v2(Bucket=AWS_PHT_BUCKET_NAME)
+
+#     for obj in objects["Contents"]:
+#         print(obj["Key"])
 
 
 def create_presigned_url_download_pdf(bucket, key, s3_client, expiry):
