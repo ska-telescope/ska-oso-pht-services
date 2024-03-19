@@ -71,49 +71,49 @@ spec:
         intent: production
     spec:
       containers:
-      - name: pht-services
-        image: "{{ .Values.rest.image.registry }}/{{ .Values.rest.image.image }}:{{$.Values.rest.image.tag | default $.Chart.AppVersion}}"
-        imagePullPolicy: {{ .Values.rest.image.pullPolicy }}
-        command: [ "/bin/sh" ]
-        args: [ "-c", "poetry run gunicorn --chdir src --bind 0.0.0.0:5000 --logger-class=ska_oso_pht_services.wsgi.UniformLogger --log-level='{{ .Values.rest.logLevel }}' ska_oso_pht_services.wsgi:app" ]
-        envFrom:
-          - configMapRef:
-              name: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}-environment
-        ports:
-          - containerPort: 5000
-        env: ###
-        {{- if .Values.secretProvider.enabled }}
-        {{- range .Values.secretProvider.provider.secrets }}
-        - name: {{ .targetEnv | default .secretKey }}
-            valueFrom:
-            secretKeyRef:
+        - name: pht-services
+          image: "{{ .Values.rest.image.registry }}/{{ .Values.rest.image.image }}:{{$.Values.rest.image.tag | default $.Chart.AppVersion}}"
+          imagePullPolicy: {{ .Values.rest.image.pullPolicy }}
+          command: [ "/bin/sh" ]
+          args: [ "-c", "poetry run gunicorn --chdir src --bind 0.0.0.0:5000 --logger-class=ska_oso_pht_services.wsgi.UniformLogger --log-level='{{ .Values.rest.logLevel }}' ska_oso_pht_services.wsgi:app" ]
+          envFrom:
+            - configMapRef:
+                name: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}-environment
+          ports:
+            - containerPort: 5000
+          env: ###
+          {{- if .Values.secretProvider.enabled }}
+          {{- range .Values.secretProvider.provider.secrets }}
+          - name: {{ .targetEnv | default .secretKey }}
+              valueFrom:
+              secretKeyRef:
                 name: {{ $.Values.secretProvider.name }}
                 key: {{ .secretKey }}
-        {{- end }}
-        {{- else }}
-        - name: USERNAME
-            value: "{{ .Values.global.env.username }}"
-        - name : PASSWORD
-            value: "{{ .Values.global.env.password }}"
-        {{- end }}
-        volumeMounts:
-        {{- if .Values.secretProvider.enabled }}
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"
-            readOnly: true
-        {{- end }}
-        resources:
-{{ toYaml .Values.rest.resources | indent 10 }}
-        volumes:
-    {{- if .Values.secretProvider.enabled }}
+          {{- end }}
+          {{- else }}
+          - name: USERNAME
+              value: "{{ .Values.global.env.username }}"
+          - name : PASSWORD
+              value: "{{ .Values.global.env.password }}"
+          {{- end }}
+          volumeMounts:
+          {{- if .Values.secretProvider.enabled }}
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+          {{- end }}
+          resources:
+  {{ toYaml .Values.rest.resources | indent 10 }}
+      volumes:
+      {{- if .Values.secretProvider.enabled }}
         - name: secrets-store-inline
-        csi:
+          csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-            secretProviderClass: {{ .Values.secretProvider.name }}
-    {{- end }}
-  {{- with .Values.nodeSelector }}
+              secretProviderClass: {{ .Values.secretProvider.name }}
+      {{- end }}
+    {{- with .Values.nodeSelector }}
 nodeSelector:
   {{ toYaml . | indent 8 }}
   {{- end }}

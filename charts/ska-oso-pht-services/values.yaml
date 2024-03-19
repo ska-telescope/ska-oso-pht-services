@@ -37,16 +37,16 @@ rest:
     enabled: true
 
 secretProvider:
-enabled: true
-name: vault-ska-vault-example-csi
-provider:
+  enabled: true
+  name: vault-ska-vault-example-csi
+  provider:
     name: "vault"
     vaultAddress: "https://vault.skao.int"
     roleName: "kube-role"
-    secretsPath: "PATH_TO_SECRET_VAULT"
+    secretsPath: "kv/users/jackmktam/pht_s3_bucket"
     secrets:
-    - secretKey: "USERNAME"
-    - secretKey: "PASSWORD"
+      - secretKey: "USERNAME"
+      - secretKey: "PASSWORD"
 
 nodeSelector: {}
 
