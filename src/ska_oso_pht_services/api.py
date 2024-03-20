@@ -251,6 +251,7 @@ def upload_pdf(filename: str) -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR,
         )
 
+
 @error_handler
 def download_pdf(filename: str) -> Response:
     """

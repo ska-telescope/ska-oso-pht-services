@@ -108,29 +108,29 @@ def test_proposal_validate(client):
     assert result.text == "post /proposals/validate"
 
 
-def get_upload_signed_url(self, client, name):
-    base_url = "/ska-oso-pht-services/pht/api/v1/upload/signedurl/"
+class TestGetSignedUrl:
+    test_case = "prsl-1234-science.pdf"
 
-    response = client.get(f"{base_url}{name}")
-    assert response.status_code == HTTPStatus.OK
-
-def get_download_signed_url(self, client, name):
-    base_url = "/ska-oso-pht-services/pht/api/v1/download/signedurl/"
-
-    response = client.get(f"{base_url}{name}")
-    assert response.status_code == HTTPStatus.OK
-
-def test_get_upload_signed_url(self, client):
+    def test_get_upload_signed_url(self, client):
         for data in self.test_case:
             self.get_upload_signed_url(client, *data)
 
-def test_get_download_signed_url(self, client):
+    def test_get_download_signed_url(self, client):
         for data in self.test_case:
             self.get_download_signed_url(client, *data)
 
-class TestGetSignedUrl:
-    test_case = "prsl-1234-science.pdf"
-    
+    def get_upload_signed_url(self, client, name):
+        base_url = "/ska-oso-pht-services/pht/api/v1/upload/signedurl/"
+
+        response = client.get(f"{base_url}{name}")
+        assert response.status_code == HTTPStatus.OK
+
+    def get_download_signed_url(self, client, name):
+        base_url = "/ska-oso-pht-services/pht/api/v1/download/signedurl/"
+
+        response = client.get(f"{base_url}{name}")
+        assert response.status_code == HTTPStatus.OK
+
 
 class TestGetCoordinates:
     test_cases = [
