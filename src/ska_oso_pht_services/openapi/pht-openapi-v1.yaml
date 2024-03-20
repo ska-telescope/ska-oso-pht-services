@@ -105,7 +105,7 @@ paths:
                   anyOf:
                     - $ref: './prsl-openapi-v1.yaml#/Proposal'
   /upload/signedurl/{filename}:
-    post:
+    get:
       summary: Upload a pdf
       description: |
         Upload a pdf
