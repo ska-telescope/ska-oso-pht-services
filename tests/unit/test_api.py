@@ -108,16 +108,16 @@ def test_proposal_validate(client):
     assert result.text == "post /proposals/validate"
 
 
-def test_upload_pdf(client, filename):
+def test_upload_pdf(client, name):
     base_url = "/ska-oso-pht-services/pht/api/v1/upload/signedurl/"
 
-    response = client.get(f"{base_url}{filename}")
+    response = client.get(f"{base_url}{name}")
     assert response.status_code == HTTPStatus.OK
 
-def test_download_pdf(client, filename):
+def test_download_pdf(client, name):
     base_url = "/ska-oso-pht-services/pht/api/v1/download/signedurl/"
 
-    response = client.get(f"{base_url}{filename}")
+    response = client.get(f"{base_url}{name}")
     assert response.status_code == HTTPStatus.OK
 
 
