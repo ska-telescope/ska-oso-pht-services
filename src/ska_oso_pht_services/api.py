@@ -247,7 +247,7 @@ def download_pdf(filename: str) -> Response:
     try:
         return (
             "/download/signedurl/{filename}",
-            HTTPStatus.OK,
+            HTTPStatus.OK + filename,
         )
     except ValueError as ve:
         LOGGER.exception("ValueError when adding Document to the ODA")
