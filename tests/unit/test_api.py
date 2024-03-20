@@ -108,17 +108,17 @@ def test_proposal_validate(client):
     assert result.text == "post /proposals/validate"
 
 
-def test_upload_pdf(client, filename):
-    result = client.get("/ska-oso-pht-services/pht/api/v1/upload/signedurl/", filename, data={})
+def test_upload_pdf(client):
+    result = client.get("/ska-oso-pht-services/pht/api/v1/upload/signedurl/", data={})
 
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "get /upload/signedurl/" + filename
+    assert result.text == "get /upload/signedurl/"
 
-def test_download_pdf(client, filename):
-    result = client.get("/ska-oso-pht-services/pht/api/v1/download/signedurl/", filename, data={})
+def test_download_pdf(client):
+    result = client.get("/ska-oso-pht-services/pht/api/v1/download/signedurl/", data={})
 
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "get /download/signedurl" + filename
+    assert result.text == "get /download/signedurl"
 
 
 class TestGetCoordinates:
