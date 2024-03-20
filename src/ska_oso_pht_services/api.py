@@ -224,20 +224,37 @@ def proposal_validate() -> Response:
 
 
 @error_handler
-def upload_pdf() -> Response:
+def upload_pdf(filename: str) -> Response:
     """
-    Function that requests to dummy endpoint POST /upload/pdf are mapped to
+    Function that requests to endpoint GET /upload/signedurl/{filename}
+    are mapped to
 
-    :return: a string "post /upload/pdf"
+    :param filename: filename of the uploaded document
+    :return: a string "/upload/signedurl/{filename}"
     """
-    LOGGER.debug("POST PROPOSAL upload pdf")
-    return "post /upload/pdf"
-
+    LOGGER.debug("GET Upload Signed URL")
+    try:
+        return (
+            "/upload/signedurl/" + filename,
+            HTTPStatus.OK,
+        )
+    except ValueError as ve:
+        LOGGER.exception("ValueError when adding document to the ODA")
+        return (
+            {"error": f"Bad Request '{ve.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
+    except SystemError as se:
+        LOGGER.exception("SystemError when adding document to the ODA")
+        return (
+            {"error": f"InternalServerError '{se.args[0]}'"},
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+        )
 
 @error_handler
 def download_pdf(filename: str) -> Response:
     """
-    Function that requests to dummy endpoint GET /download/signedurl/{filename}
+    Function that requests to endpoint GET /download/signedurl/{filename}
     are mapped to
 
     :param filename: filename of the uploaded document
@@ -250,13 +267,13 @@ def download_pdf(filename: str) -> Response:
             HTTPStatus.OK,
         )
     except ValueError as ve:
-        LOGGER.exception("ValueError when adding Document to the ODA")
+        LOGGER.exception("ValueError when retrieving document from the ODA")
         return (
             {"error": f"Bad Request '{ve.args[0]}'"},
             HTTPStatus.BAD_REQUEST,
         )
     except SystemError as se:
-        LOGGER.exception("SystemError when adding Document to the ODA")
+        LOGGER.exception("SystemError when retrieving document from the ODA")
         return (
             {"error": f"InternalServerError '{se.args[0]}'"},
             HTTPStatus.INTERNAL_SERVER_ERROR,

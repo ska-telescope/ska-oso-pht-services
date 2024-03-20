@@ -110,13 +110,29 @@ paths:
       description: |
         Upload a pdf
       operationId: ska_oso_pht_services.api.upload_pdf
-      requestBody:
-        content:
-          application/json:
-            schema: {}
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
           content:
             text/plain:
               schema:
