@@ -5,7 +5,9 @@ from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
 
-def round_coord_to_3_decimal_places(ra: str, dec: str, velocity:float, redshift: float) -> dict:
+def round_coord_to_3_decimal_places(
+    ra: str, dec: str, velocity: float, redshift: float
+) -> dict:
     """
     Rounds the seconds component of RA and the arcseconds component of DEC
     to 3 decimal places.
@@ -30,7 +32,12 @@ def round_coord_to_3_decimal_places(ra: str, dec: str, velocity:float, redshift:
     )
 
     return {
-        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted, "velocity": velocity, "redshift": redshift}
+        "equatorial": {
+            "right_ascension": ra_formatted,
+            "declination": dec_formatted,
+            "velocity": velocity,
+            "redshift": redshift,
+        }
     }
 
 
@@ -48,7 +55,12 @@ def convert_ra_dec_deg(ra_str: str, dec_str: str, velocity: float, redshift: flo
     ra = Angle(ra_str, unit=u.hour)
     dec = Angle(dec_str, unit=u.deg)
 
-    return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3), "velocity": velocity, "redshift": redshift}
+    return {
+        "ra": round(ra.degree, 3),
+        "dec": round(dec.degree, 3),
+        "velocity": velocity,
+        "redshift": redshift,
+    }
 
 
 def convert_to_galactic(ra, dec, velocity: float, redshift: float):
@@ -73,7 +85,8 @@ def convert_to_galactic(ra, dec, velocity: float, redshift: float):
         "galactic": {
             "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
             "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
-            "velocity": velocity, "redshift": redshift
+            "velocity": velocity,
+            "redshift": redshift,
         }
     }
 
@@ -93,14 +106,30 @@ def get_coordinates(object_name: str):
     or a 'not found' message.
     """
     # Try searching in SIMBAD
-    Simbad.add_votable_fields('ra', 'dec', 'rvz_radvel', 'rv_value', 'z_value', )
+    Simbad.add_votable_fields(
+        "ra",
+        "dec",
+        "rvz_radvel",
+        "rv_value",
+        "z_value",
+    )
     result_table_simbad = Simbad.query_object(object_name)
     if result_table_simbad is not None:
         ra = result_table_simbad["RA"][0]
         dec = result_table_simbad["DEC"][0]
-        velocity = next((v for v in [result_table_simbad["RVZ_RADVEL"][0], result_table_simbad["RV_VALUE"][0]] if v is not None and v != ''), None)
+        velocity = next(
+            (
+                value
+                for value in [
+                    result_table_simbad["RVZ_RADVEL"][0],
+                    result_table_simbad["RV_VALUE"][0],
+                ]
+                if value is not None and value != ""
+            ),
+            None,
+        )
         if result_table_simbad["Z_VALUE"][0]:
-            redshift =  result_table_simbad["Z_VALUE"][0]
+            redshift = result_table_simbad["Z_VALUE"][0]
         else:
             redshift = None
     else:
@@ -110,7 +139,7 @@ def get_coordinates(object_name: str):
         except RemoteServiceError as e:
             return f"{'Object not found in SIMBAD or NED', e}"
         ra = result_table_ned["RA"][0]
-        dec = result_table_ned["DEC"][0] 
+        dec = result_table_ned["DEC"][0]
     coordinates = (
         SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame="icrs")
         .to_string("hmsdms")
@@ -119,7 +148,9 @@ def get_coordinates(object_name: str):
         .replace("m", ":")
         .replace("s", "")
     )
-    return {"ra": coordinates.split(" ")[0], 
-            "dec": coordinates.split(" ")[1],  "velocity": velocity, "redshift": redshift}
-
-
+    return {
+        "ra": coordinates.split(" ")[0],
+        "dec": coordinates.split(" ")[1],
+        "velocity": velocity,
+        "redshift": redshift,
+    }

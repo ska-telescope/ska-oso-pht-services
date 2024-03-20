@@ -123,8 +123,9 @@ class TestGetCoordinates:
             {
                 "equatorial": {
                     "right_ascension": "12:38:49.098",
-                    "declination": "-38:22:53.670","redshift": None,
-    "velocity": None
+                    "declination": "-38:22:53.670",
+                    "redshift": None,
+                    "velocity": None,
                 }
             },
         ),
@@ -134,8 +135,9 @@ class TestGetCoordinates:
             {
                 "equatorial": {
                     "right_ascension": "00:42:44.330",
-                    "declination": "+41:16:07.500", "redshift": -0.001,
-    "velocity": -300.0
+                    "declination": "+41:16:07.500",
+                    "redshift": -0.001,
+                    "velocity": -300.0,
                 }
             },
         ),
@@ -145,26 +147,48 @@ class TestGetCoordinates:
             {
                 "equatorial": {
                     "right_ascension": "00:47:33.134",
-                    "declination": "-25:17:19.680", "redshift": 0.000864,
-    "velocity": 258.8
+                    "declination": "-25:17:19.680",
+                    "redshift": 0.000864,
+                    "velocity": 258.8,
                 }
             },
         ),
-        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21, "redshift": 0.022946,
-    "velocity": 6800.0}}),
+        (
+            "N10",
+            "galactic",
+            {
+                "galactic": {
+                    "latitude": -78.5856,
+                    "longitude": 354.21,
+                    "redshift": 0.022946,
+                    "velocity": 6800.0,
+                }
+            },
+        ),
         (
             "N10",
             "equatorial",
             {
                 "equatorial": {
                     "declination": "-33:51:30.197",
-                    "right_ascension": "00:08:34.539", "redshift": 0.022946,
-    "velocity": 6800.0
+                    "right_ascension": "00:08:34.539",
+                    "redshift": 0.022946,
+                    "velocity": 6800.0,
                 }
             },
         ),
-        ("M1", "", {"equatorial": {"declination": "", "right_ascension": "", "redshift": None,
-    "velocity": None}}),
+        (
+            "M1",
+            "",
+            {
+                "equatorial": {
+                    "declination": "",
+                    "right_ascension": "",
+                    "redshift": None,
+                    "velocity": None,
+                }
+            },
+        ),
     ]
 
     def get_coordinates_generic(self, client, name, reference_frame, expected_response):
