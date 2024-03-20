@@ -1,6 +1,7 @@
 """
 Utility functions to be used in tests
 """
+
 import json
 import os.path
 
