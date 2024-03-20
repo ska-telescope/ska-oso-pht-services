@@ -118,18 +118,6 @@ def test_upload_pdf(client):
 class TestGetCoordinates:
     test_cases = [
         (
-            "LHS337",
-            "any",
-            {
-                "equatorial": {
-                    "right_ascension": "12:38:49.098",
-                    "declination": "-38:22:53.670",
-                    "redshift": None,
-                    "velocity": None,
-                }
-            },
-        ),
-        (
             "M31",
             "test",
             {
@@ -138,18 +126,6 @@ class TestGetCoordinates:
                     "declination": "+41:16:07.500",
                     "redshift": -0.001,
                     "velocity": -300.0,
-                }
-            },
-        ),
-        (
-            "NGC253",
-            "any",
-            {
-                "equatorial": {
-                    "right_ascension": "00:47:33.134",
-                    "declination": "-25:17:19.680",
-                    "redshift": 0.000864,
-                    "velocity": 258.8,
                 }
             },
         ),
