@@ -5,7 +5,9 @@ from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
 
-def round_coord_to_3_decimal_places(ra: str, dec: str, velocity: float, redshift: float) -> dict:
+def round_coord_to_3_decimal_places(
+    ra: str, dec: str, velocity: float, redshift: float
+) -> dict:
     """
     Rounds the seconds component of RA and the arcseconds component of DEC
     to 3 decimal places.
@@ -30,8 +32,12 @@ def round_coord_to_3_decimal_places(ra: str, dec: str, velocity: float, redshift
     )
 
     return {
-        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted,
-        "velocity": velocity, "redshift": redshift}
+        "equatorial": {
+            "right_ascension": ra_formatted,
+            "declination": dec_formatted,
+            "velocity": velocity,
+            "redshift": redshift,
+        }
     }
 
 
@@ -74,7 +80,8 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
         "galactic": {
             "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
             "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
-            "velocity": velocity, "redshift": redshift
+            "velocity": velocity,
+            "redshift": redshift,
         }
     }
 
@@ -130,5 +137,9 @@ def get_coordinates(object_name: str):
         .replace("m", ":")
         .replace("s", "")
     )
-    return {"ra": coordinates.split(" ")[0], "dec": coordinates.split(" ")[1],
-            "velocity": velocity, "redshift": redshift}
+    return {
+        "ra": coordinates.split(" ")[0],
+        "dec": coordinates.split(" ")[1],
+        "velocity": velocity,
+        "redshift": redshift,
+    }

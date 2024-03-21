@@ -146,21 +146,42 @@ class TestGetCoordinates:
                 }
             },
         ),
-        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21, "redshift": 0.022946,
-                    "velocity": 6800.0,}}),
+        (
+            "N10",
+            "galactic",
+            {
+                "galactic": {
+                    "latitude": -78.5856,
+                    "longitude": 354.21,
+                    "redshift": 0.022946,
+                    "velocity": 6800.0,
+                }
+            },
+        ),
         (
             "N10",
             "equatorial",
             {
                 "equatorial": {
                     "declination": "-33:51:30.197",
-                    "right_ascension": "00:08:34.539", "redshift": 0.022946,
+                    "right_ascension": "00:08:34.539",
+                    "redshift": 0.022946,
                     "velocity": 6800.0,
                 }
             },
         ),
-        ("M1", "", {"equatorial": {"declination": "", "right_ascension": "", "redshift": None,
-                    "velocity": None,}}),
+        (
+            "M1",
+            "",
+            {
+                "equatorial": {
+                    "declination": "",
+                    "right_ascension": "",
+                    "redshift": None,
+                    "velocity": None,
+                }
+            },
+        ),
     ]
 
     def get_coordinates_generic(self, client, name, reference_frame, expected_response):
