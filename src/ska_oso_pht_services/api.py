@@ -234,9 +234,9 @@ def upload_pdf(filename: str) -> Response:
     """
     LOGGER.debug("GET Upload Signed URL")
     return (
-            "/upload/signedurl/" + filename,
-            HTTPStatus.OK,
-        )
+        "/upload/signedurl/" + filename,
+        HTTPStatus.OK,
+    )
 
 
 @error_handler
@@ -250,9 +250,9 @@ def download_pdf(filename: str) -> Response:
     """
     LOGGER.debug("GET Download Signed URL")
     return (
-            "/download/signedurl/" + filename,
-            HTTPStatus.OK,
-        )
+        "/download/signedurl/" + filename,
+        HTTPStatus.OK,
+    )
 
 
 @error_handler
