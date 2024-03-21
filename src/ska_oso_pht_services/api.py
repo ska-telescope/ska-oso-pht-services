@@ -283,7 +283,8 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
     LOGGER.debug("POST PROPOSAL get coordinates: %s", identifier)
     response = coordinates.get_coordinates(identifier)
     if reference_frame.lower() == "galactic":
-        return coordinates.convert_to_galactic(response["ra"], response["dec"], response["velocity"], response["redshift"])
+        return coordinates.convert_to_galactic(response["ra"], response["dec"], 
+                                               response["velocity"], response["redshift"])
     else:
         return coordinates.round_coord_to_3_decimal_places(
             response["ra"], response["dec"], response["velocity"], response["redshift"]
