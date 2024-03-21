@@ -45,8 +45,8 @@ secretProvider:
     roleName: "kube-role"
     secretsPath: "kv/users/jackmktam/pht_s3_bucket"
     secrets:
-      - secretKey: "USERNAME"
-      - secretKey: "PASSWORD"
+    - secretKey: "USERNAME"
+    - secretKey: "PASSWORD"
 
 nodeSelector: {}
 
