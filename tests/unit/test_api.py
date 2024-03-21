@@ -139,8 +139,8 @@ class TestGetCoordinates:
             "test",
             {
                 "equatorial": {
-                    "right_ascension": "00:42:44.330",
-                    "declination": "+41:16:07.500",
+                    "ra": "00:42:44.330",
+                    "dec": "+41:16:07.500",
                     "redshift": -0.001,
                     "velocity": -300.0,
                 }
@@ -151,8 +151,8 @@ class TestGetCoordinates:
             "galactic",
             {
                 "galactic": {
-                    "latitude": -78.5856,
-                    "longitude": 354.21,
+                    "lat": -78.5856,
+                    "lon": 354.21,
                     "redshift": 0.022946,
                     "velocity": 6800.0,
                 }
@@ -163,8 +163,8 @@ class TestGetCoordinates:
             "equatorial",
             {
                 "equatorial": {
-                    "declination": "-33:51:30.197",
-                    "right_ascension": "00:08:34.539",
+                    "dec": "-33:51:30.197",
+                    "ra": "00:08:34.539",
                     "redshift": 0.022946,
                     "velocity": 6800.0,
                 }
@@ -175,8 +175,8 @@ class TestGetCoordinates:
             "",
             {
                 "equatorial": {
-                    "declination": "",
-                    "right_ascension": "",
+                    "dec": "",
+                    "ra": "",
                     "redshift": None,
                     "velocity": None,
                 }
