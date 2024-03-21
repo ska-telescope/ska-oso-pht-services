@@ -51,7 +51,7 @@ def convert_ra_dec_deg(ra_str, dec_str):
     return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
 
 
-def convert_to_galactic(ra, dec):
+def convert_to_galactic(ra: str, dec: str):
     """
     Converts RA and DEC coordinates to Galactic coordinates.
 
@@ -77,7 +77,7 @@ def convert_to_galactic(ra, dec):
     }
 
 
-def get_coordinates(object_name):
+def get_coordinates(object_name: str):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
     If the object is not found in SIMBAD database
