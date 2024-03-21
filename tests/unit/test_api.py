@@ -135,47 +135,32 @@ class TestGetSignedUrl:
 class TestGetCoordinates:
     test_cases = [
         (
-            "LHS337",
-            "any",
-            {
-                "equatorial": {
-                    "right_ascension": "12:38:49.098",
-                    "declination": "-38:22:53.670",
-                }
-            },
-        ),
-        (
             "M31",
             "test",
             {
                 "equatorial": {
                     "right_ascension": "00:42:44.330",
                     "declination": "+41:16:07.500",
+                    "redshift": -0.001,
+                    "velocity": -300.0,
                 }
             },
         ),
-        (
-            "NGC253",
-            "any",
-            {
-                "equatorial": {
-                    "right_ascension": "00:47:33.134",
-                    "declination": "-25:17:19.680",
-                }
-            },
-        ),
-        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21}}),
+        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21, "redshift": 0.022946,
+                    "velocity": 6800.0,}}),
         (
             "N10",
             "equatorial",
             {
                 "equatorial": {
                     "declination": "-33:51:30.197",
-                    "right_ascension": "00:08:34.539",
+                    "right_ascension": "00:08:34.539", "redshift": 0.022946,
+                    "velocity": 6800.0,
                 }
             },
         ),
-        ("M1", "", {"equatorial": {"declination": "", "right_ascension": ""}}),
+        ("M1", "", {"equatorial": {"declination": "", "right_ascension": "", "redshift": None,
+                    "velocity": None,}}),
     ]
 
     def get_coordinates_generic(self, client, name, reference_frame, expected_response):

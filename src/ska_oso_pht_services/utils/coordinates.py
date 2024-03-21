@@ -5,7 +5,7 @@ from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
 
-def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
+def round_coord_to_3_decimal_places(ra: str, dec: str, velocity: float, redshift: float) -> dict:
     """
     Rounds the seconds component of RA and the arcseconds component of DEC
     to 3 decimal places.
@@ -30,7 +30,8 @@ def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
     )
 
     return {
-        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted}
+        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted},
+        "velocity": velocity, "redshift": redshift
     }
 
 
@@ -51,7 +52,7 @@ def convert_ra_dec_deg(ra_str, dec_str):
     return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
 
 
-def convert_to_galactic(ra: str, dec: str):
+def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
     """
     Converts RA and DEC coordinates to Galactic coordinates.
 
@@ -73,11 +74,12 @@ def convert_to_galactic(ra: str, dec: str):
         "galactic": {
             "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
             "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+            "velocity": velocity, "redshift": redshift
         }
     }
 
 
-def get_coordinates(object_name: str):
+def get_coordinates(object_name: str, velocity: float, redshift: float):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
     If the object is not found in SIMBAD database
@@ -112,4 +114,5 @@ def get_coordinates(object_name: str):
         .replace("m", ":")
         .replace("s", "")
     )
-    return {"ra": coordinates.split(" ")[0], "dec": coordinates.split(" ")[1]}
+    return {"ra": coordinates.split(" ")[0], "dec": coordinates.split(" ")[1],
+            "velocity": velocity, "redshift": redshift}
