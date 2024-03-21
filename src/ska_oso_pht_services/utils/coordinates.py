@@ -30,8 +30,8 @@ def round_coord_to_3_decimal_places(ra: str, dec: str, velocity: float, redshift
     )
 
     return {
-        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted},
-        "velocity": velocity, "redshift": redshift
+        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted,
+        "velocity": velocity, "redshift": redshift}
     }
 
 
@@ -79,7 +79,7 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
     }
 
 
-def get_coordinates(object_name: str, velocity: float, redshift: float):
+def get_coordinates(object_name: str):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
     If the object is not found in SIMBAD database
@@ -94,10 +94,26 @@ def get_coordinates(object_name: str, velocity: float, redshift: float):
     or a 'not found' message.
     """
     # Try searching in SIMBAD
+    Simbad.add_votable_fields("ra", "dec", "rvz_radvel", "rv_value", "z_value")
     result_table_simbad = Simbad.query_object(object_name)
     if result_table_simbad is not None:
         ra = result_table_simbad["RA"][0]
         dec = result_table_simbad["DEC"][0]
+        velocity = next(
+            (
+                value
+                for value in [
+                    result_table_simbad["RVZ_RADVEL"][0],
+                    result_table_simbad["RV_VALUE"][0],
+                ]
+                if value is not None and value != ""
+            ),
+            None,
+        )
+        if result_table_simbad["Z_VALUE"][0]:
+            redshift = result_table_simbad["Z_VALUE"][0]
+        else:
+            redshift = None
     else:
         # If not found in SIMBAD, search in NED
         try:
