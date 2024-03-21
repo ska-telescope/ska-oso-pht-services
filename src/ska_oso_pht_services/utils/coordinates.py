@@ -92,7 +92,6 @@ def get_coordinates(object_name: str):
     or a 'not found' message.
     """
     # Try searching in SIMBAD
-    Simbad.add_votable_fields('ra', 'dec', 'rvz_radvel', 'rv_value', 'z_value', )
     result_table_simbad = Simbad.query_object(object_name)
     if result_table_simbad is not None:
         ra = result_table_simbad["RA"][0]
