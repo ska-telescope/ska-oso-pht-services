@@ -5,7 +5,7 @@ from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
 
-def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
+def round_coord_to_3_decimal_places(ra: str, dec: str, velocity: float, redshift: float) -> dict:
     """
     Rounds the seconds component of RA and the arcseconds component of DEC
     to 3 decimal places.
@@ -30,11 +30,13 @@ def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
     )
 
     return {
-        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted}
+        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted,
+                        "velocity": velocity,
+            "redshift": redshift}
     }
 
 
-def convert_ra_dec_deg(ra_str, dec_str):
+def convert_ra_dec_deg(ra_str: str, dec_str: str, velocity: float, redshift: float):
     """
     Convert RA and Dec from sexagesimal (string format) to decimal degrees.
 
@@ -48,10 +50,11 @@ def convert_ra_dec_deg(ra_str, dec_str):
     ra = Angle(ra_str, unit=u.hour)
     dec = Angle(dec_str, unit=u.deg)
 
-    return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
+    return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3), "velocity": velocity,
+        "redshift": redshift}
 
 
-def convert_to_galactic(ra, dec):
+def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
     """
     Converts RA and DEC coordinates to Galactic coordinates.
 
@@ -73,6 +76,8 @@ def convert_to_galactic(ra, dec):
         "galactic": {
             "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
             "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+            "velocity": velocity,
+            "redshift": redshift
         }
     }
 
