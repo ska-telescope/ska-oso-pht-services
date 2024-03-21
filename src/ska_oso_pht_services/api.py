@@ -233,22 +233,9 @@ def upload_pdf(filename: str) -> Response:
     :return: a string "/upload/signedurl/{filename}"
     """
     LOGGER.debug("GET Upload Signed URL")
-    try:
-        return (
+    return (
             "/upload/signedurl/" + filename,
             HTTPStatus.OK,
-        )
-    except ValueError as ve:
-        LOGGER.exception("ValueError when adding document to the ODA")
-        return (
-            {"error": f"Bad Request '{ve.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
-    except SystemError as se:
-        LOGGER.exception("SystemError when adding document to the ODA")
-        return (
-            {"error": f"InternalServerError '{se.args[0]}'"},
-            HTTPStatus.INTERNAL_SERVER_ERROR,
         )
 
 
@@ -262,22 +249,9 @@ def download_pdf(filename: str) -> Response:
     :return: a string "/download/signedurl/{filename}"
     """
     LOGGER.debug("GET Download Signed URL")
-    try:
-        return (
+    return (
             "/download/signedurl/" + filename,
             HTTPStatus.OK,
-        )
-    except ValueError as ve:
-        LOGGER.exception("ValueError when retrieving document from the ODA")
-        return (
-            {"error": f"Bad Request '{ve.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
-    except SystemError as se:
-        LOGGER.exception("SystemError when retrieving document from the ODA")
-        return (
-            {"error": f"InternalServerError '{se.args[0]}'"},
-            HTTPStatus.INTERNAL_SERVER_ERROR,
         )
 
 
