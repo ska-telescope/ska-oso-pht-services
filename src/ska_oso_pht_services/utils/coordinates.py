@@ -66,7 +66,7 @@ def convert_to_galactic(ra, dec):
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
-    # Converting to Galactic frame
+    # Converting to Galactic frame.
     galactic_coord = coord.galactic
 
     return {
