@@ -68,8 +68,8 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
 
     Returns:
     - dict: A dictionary with one key "galactic",
-            containing a nested dictionary with keys "longitude": lon
-            and "latitude": lat, representing the Galactic coordinates as floats in degrees.
+            containing a nested dictionary with keys lon
+            and lat, representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
