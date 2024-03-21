@@ -1,7 +1,80 @@
 import astropy.units as u
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import Angle, SkyCoord
+from astroquery.exceptions import RemoteServiceError
 from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
+
+
+def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
+    """
+    Rounds the seconds component of RA and the arcseconds component of DEC
+    to 3 decimal places.
+
+    Parameters:
+    - ra (str): Right Ascension in "HH:MM:SS.sssssssss"
+    - dec (str): Declination in "DD:MM:SS.sssssssss"
+
+    Returns:
+    - dict: A dictionary with one key "equatorial",
+            containing a nested dictionary with keys "right_ascension"
+            and "declination", each containing a string value
+            with the rounded RA and DEC coordinates.
+    """
+    ra_formatted = ":".join(
+        f"{round(float(x), 3):06.3f}" if i == 2 else x
+        for i, x in enumerate(ra.split(":"))
+    )
+    dec_formatted = ":".join(
+        f"{round(float(x), 3):06.3f}" if i == 2 else x
+        for i, x in enumerate(dec.split(":"))
+    )
+
+    return {
+        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted}
+    }
+
+
+def convert_ra_dec_deg(ra_str, dec_str):
+    """
+    Convert RA and Dec from sexagesimal (string format) to decimal degrees.
+
+    Parameters:
+    ra_str (str): RA in the format "HH:MM:SS" (e.g., "5:35:17.3")
+    dec_str (str): Dec in the format "DD:MM:SS" (e.g., "-1:2:37")
+
+    Returns:
+    tuple: RA and Dec in decimal degrees
+    """
+    ra = Angle(ra_str, unit=u.hour)
+    dec = Angle(dec_str, unit=u.deg)
+
+    return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
+
+
+def convert_to_galactic(ra, dec):
+    """
+    Converts RA and DEC coordinates to Galactic coordinates.
+
+    Parameters:
+    - ra (str): The Right Ascension in the format "HH:MM:SS.sss"
+    - dec (str): The Declination in the format "+DD:MM:SS.sss"
+
+    Returns:
+    - dict: A dictionary with one key "galactic",
+            containing a nested dictionary with keys "longitude"
+            and "latitude", representing the Galactic coordinates as floats in degrees.
+    """
+    # Creating a SkyCoord object with the given RA and DEC
+    coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
+    # Converting to Galactic frame
+    galactic_coord = coord.galactic
+
+    return {
+        "galactic": {
+            "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
+            "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+        }
+    }
 
 
 def get_coordinates(object_name):
@@ -25,17 +98,18 @@ def get_coordinates(object_name):
         dec = result_table_simbad["DEC"][0]
     else:
         # If not found in SIMBAD, search in NED
-        result_table_ned = Ned.query_object(object_name)
-        if result_table_ned is None or len(result_table_ned) == 0:
-            return "Object not found in SIMBAD or NED"
+        try:
+            result_table_ned = Ned.query_object(object_name)
+        except RemoteServiceError as e:
+            return f"{'Object not found in SIMBAD or NED', e}"
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
-
-    # Creating a SkyCoord object
-    coordinates = SkyCoord(ra, dec, unit=(u.hourangle, u.deg))
-
-    # Formatting RA and DEC in HMS and DMS
-    ra_hms = coordinates.ra.to_string(unit=u.hour, sep=":")
-    dec_dms = coordinates.dec.to_string(unit=u.degree, sep=":")
-
-    return f"{ra_hms} {dec_dms}"
+    coordinates = (
+        SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame="icrs")
+        .to_string("hmsdms")
+        .replace("h", ":")
+        .replace("d", ":")
+        .replace("m", ":")
+        .replace("s", "")
+    )
+    return {"ra": coordinates.split(" ")[0], "dec": coordinates.split(" ")[1]}

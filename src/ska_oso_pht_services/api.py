@@ -224,18 +224,39 @@ def proposal_validate() -> Response:
 
 
 @error_handler
-def upload_pdf() -> Response:
+def upload_pdf(filename: str) -> Response:
     """
-    Function that requests to dummy endpoint POST /upload/pdf are mapped to
+    Function that requests to endpoint GET /upload/signedurl/{filename}
+    are mapped to
 
-    :return: a string "post /upload/pdf"
+    :param filename: filename of the uploaded document
+    :return: a string "/upload/signedurl/{filename}"
     """
-    LOGGER.debug("POST PROPOSAL upload pdf")
-    return "post /upload/pdf"
+    LOGGER.debug("GET Upload Signed URL")
+    return (
+        "/upload/signedurl/" + filename,
+        HTTPStatus.OK,
+    )
 
 
 @error_handler
-def get_coordinates(identifier: str) -> Response:
+def download_pdf(filename: str) -> Response:
+    """
+    Function that requests to endpoint GET /download/signedurl/{filename}
+    are mapped to
+
+    :param filename: filename of the uploaded document
+    :return: a string "/download/signedurl/{filename}"
+    """
+    LOGGER.debug("GET Download Signed URL")
+    return (
+        "/download/signedurl/" + filename,
+        HTTPStatus.OK,
+    )
+
+
+@error_handler
+def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
     """
     Function that requests to /coordinates are mapped to
 
@@ -243,10 +264,27 @@ def get_coordinates(identifier: str) -> Response:
     If the object is not found in SIMBAD database
     it then queries the NED (NASA/IPAC Extragalactic Database).
 
-    :return: a string of the Right Ascension (RA)
-    and Declination (Dec) in the hour-minute-second (HMS) and
-    degree-minute-second (DMS) format respectively seperated by a space
-    or an error response
+    :param identifier: A string representing the name of the object to query.
+    :param reference_frame: A string representing the reference frame
+    to return the coordinates in ("galactic" or "equatorial").
+    :return: A dictionary with one key "equatorial" or "galactic",
+             containing a nested dictionary with galactic or equatorial coordinates:
+             {"galactic":
+                {"latitude": 78.7068,"longitude": 42.217}
+             }
+             or
+             {"equatorial":
+                {"right_ascension": "+28:22:38.200",
+                "declination": "13:41:11.620"}
+             }
+             In case of an error, an error response is returned.
+    :rtype: dict
     """
-    LOGGER.debug("POST PROPOSAL ger coordinates: %s", identifier)
-    return coordinates.get_coordinates(identifier)
+    LOGGER.debug("POST PROPOSAL get coordinates: %s", identifier)
+    response = coordinates.get_coordinates(identifier)
+    if reference_frame.lower() == "galactic":
+        return coordinates.convert_to_galactic(response["ra"], response["dec"])
+    else:
+        return coordinates.round_coord_to_3_decimal_places(
+            response["ra"], response["dec"]
+        )

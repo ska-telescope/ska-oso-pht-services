@@ -108,16 +108,87 @@ def test_proposal_validate(client):
     assert result.text == "post /proposals/validate"
 
 
-def test_upload_pdf(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/upload/pdf", data={})
+class TestGetSignedUrl:
+    test_case = "prsl-1234-science.pdf"
 
-    assert result.status_code == HTTPStatus.OK
-    assert result.text == "post /upload/pdf"
+    def test_get_upload_signed_url(self, client):
+        for data in self.test_case:
+            self.get_upload_signed_url(client, *data)
+
+    def test_get_download_signed_url(self, client):
+        for data in self.test_case:
+            self.get_download_signed_url(client, *data)
+
+    def get_upload_signed_url(self, client, name):
+        base_url = "/ska-oso-pht-services/pht/api/v1/upload/signedurl/"
+
+        response = client.get(f"{base_url}{name}")
+        assert response.status_code == HTTPStatus.OK
+
+    def get_download_signed_url(self, client, name):
+        base_url = "/ska-oso-pht-services/pht/api/v1/download/signedurl/"
+
+        response = client.get(f"{base_url}{name}")
+        assert response.status_code == HTTPStatus.OK
 
 
-def test_get_coordinates(client):
-    name = "LHS337"
-    result = client.get(f"/ska-oso-pht-services/pht/api/v1/coordinates/{name}")
+class TestGetCoordinates:
+    test_cases = [
+        (
+            "LHS337",
+            "any",
+            {
+                "equatorial": {
+                    "right_ascension": "12:38:49.098",
+                    "declination": "-38:22:53.670",
+                }
+            },
+        ),
+        (
+            "M31",
+            "test",
+            {
+                "equatorial": {
+                    "right_ascension": "00:42:44.330",
+                    "declination": "+41:16:07.500",
+                }
+            },
+        ),
+        (
+            "NGC253",
+            "any",
+            {
+                "equatorial": {
+                    "right_ascension": "00:47:33.134",
+                    "declination": "-25:17:19.680",
+                }
+            },
+        ),
+        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21}}),
+        (
+            "N10",
+            "equatorial",
+            {
+                "equatorial": {
+                    "declination": "-33:51:30.197",
+                    "right_ascension": "00:08:34.539",
+                }
+            },
+        ),
+        ("M1", "", {"equatorial": {"declination": "", "right_ascension": ""}}),
+    ]
 
-    assert result.status_code == HTTPStatus.OK
-    assert result.text == "12:38:49.0984 -38:22:53.67"
+    def get_coordinates_generic(self, client, name, reference_frame, expected_response):
+        base_url = "/ska-oso-pht-services/pht/api/v1/coordinates/"
+        if not reference_frame:
+            response = client.get(f"{base_url}{name}")
+            assert response.status_code == HTTPStatus.NOT_FOUND
+            return
+
+        response = client.get(f"{base_url}{name}/{reference_frame}")
+        assert response.status_code == HTTPStatus.OK
+        assert json.loads(response.data.decode()) == expected_response
+
+    def test_get_coordinates(self, client):
+        for data in self.test_cases:
+            self.get_coordinates_generic(client, *data)

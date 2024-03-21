@@ -104,16 +104,20 @@ paths:
                 items:
                   anyOf:
                     - $ref: './prsl-openapi-v1.yaml#/Proposal'
-  /upload/pdf:
-    post:
+  /upload/signedurl/{filename}:
+    get:
       summary: Upload a pdf
       description: |
         Upload a pdf
       operationId: ska_oso_pht_services.api.upload_pdf
-      requestBody:
-        content:
-          application/json:
-            schema: {}
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -121,20 +125,72 @@ paths:
             text/plain:
               schema:
                 type: string
-  /coordinates/{identifier}:
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
+          content:
+            text/plain:
+              schema:
+                type: string
+  /download/signedurl/{filename}:
+    get:
+      summary: Download signed url
+      description: |
+        Download signed url
+      operationId: ska_oso_pht_services.api.download_pdf
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
+          content:
+            text/plain:
+              schema:
+                type: string
+  /coordinates/{identifier}/{reference_frame}:
     get:
       summary: get coordinates
       description: |
         get coordinates
-      operationId: ska_oso_pht_services.api.get_coordinates
+      operationId: ska_oso_pht_services.api.get_systemcoordinates
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: reference_frame
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
