@@ -33,8 +33,8 @@ def round_coord_to_3_decimal_places(
 
     return {
         "equatorial": {
-            "right_ascension": ra_formatted,
-            "declination": dec_formatted,
+            "ra": ra_formatted,
+            "dec": dec_formatted,
             "velocity": velocity,
             "redshift": redshift,
         }
@@ -68,8 +68,8 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
 
     Returns:
     - dict: A dictionary with one key "galactic",
-            containing a nested dictionary with keys "longitude"
-            and "latitude", representing the Galactic coordinates as floats in degrees.
+            containing a nested dictionary with keys "longitude": lon
+            and "latitude": lat, representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
@@ -78,8 +78,8 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
 
     return {
         "galactic": {
-            "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
-            "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+            "lon": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
+            "lat": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
             "velocity": velocity,
             "redshift": redshift,
         }
@@ -97,8 +97,7 @@ def get_coordinates(object_name: str):
     Parameters:
     object_name (str): name of the celestial object to query.
     Returns:
-    string: RA in HMS format Dec in DMS format
-    or a 'not found' message.
+    dict: a dict with ra, dec, velocity and redshift values
     """
     # Try searching in SIMBAD
     Simbad.add_votable_fields("ra", "dec", "rvz_radvel", "rv_value", "z_value")
