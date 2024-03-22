@@ -5,7 +5,9 @@ from astroquery.ipac.ned import Ned
 from astroquery.simbad import Simbad
 
 
-def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
+def round_coord_to_3_decimal_places(
+    ra: str, dec: str, velocity: float, redshift: float
+) -> dict:
     """
     Rounds the seconds component of RA and the arcseconds component of DEC
     to 3 decimal places.
@@ -30,7 +32,12 @@ def round_coord_to_3_decimal_places(ra: str, dec: str) -> dict:
     )
 
     return {
-        "equatorial": {"right_ascension": ra_formatted, "declination": dec_formatted}
+        "equatorial": {
+            "ra": ra_formatted,
+            "dec": dec_formatted,
+            "velocity": velocity,
+            "redshift": redshift,
+        }
     }
 
 
@@ -51,7 +58,7 @@ def convert_ra_dec_deg(ra_str, dec_str):
     return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
 
 
-def convert_to_galactic(ra, dec):
+def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
     """
     Converts RA and DEC coordinates to Galactic coordinates.
 
@@ -61,8 +68,8 @@ def convert_to_galactic(ra, dec):
 
     Returns:
     - dict: A dictionary with one key "galactic",
-            containing a nested dictionary with keys "longitude"
-            and "latitude", representing the Galactic coordinates as floats in degrees.
+            containing a nested dictionary with keys lon
+            and lat, representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
     coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
@@ -71,13 +78,15 @@ def convert_to_galactic(ra, dec):
 
     return {
         "galactic": {
-            "longitude": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
-            "latitude": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+            "lon": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
+            "lat": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
+            "velocity": velocity,
+            "redshift": redshift,
         }
     }
 
 
-def get_coordinates(object_name):
+def get_coordinates(object_name: str):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
     If the object is not found in SIMBAD database
@@ -88,14 +97,29 @@ def get_coordinates(object_name):
     Parameters:
     object_name (str): name of the celestial object to query.
     Returns:
-    string: RA in HMS format Dec in DMS format
-    or a 'not found' message.
+    dict: a dict with ra, dec, velocity and redshift values
     """
     # Try searching in SIMBAD
+    Simbad.add_votable_fields("ra", "dec", "rvz_radvel", "rv_value", "z_value")
     result_table_simbad = Simbad.query_object(object_name)
     if result_table_simbad is not None:
         ra = result_table_simbad["RA"][0]
         dec = result_table_simbad["DEC"][0]
+        velocity = next(
+            (
+                value
+                for value in [
+                    result_table_simbad["RVZ_RADVEL"][0],
+                    result_table_simbad["RV_VALUE"][0],
+                ]
+                if value is not None and value != ""
+            ),
+            None,
+        )
+        if result_table_simbad["Z_VALUE"][0]:
+            redshift = result_table_simbad["Z_VALUE"][0]
+        else:
+            redshift = None
     else:
         # If not found in SIMBAD, search in NED
         try:
@@ -112,4 +136,9 @@ def get_coordinates(object_name):
         .replace("m", ":")
         .replace("s", "")
     )
-    return {"ra": coordinates.split(" ")[0], "dec": coordinates.split(" ")[1]}
+    return {
+        "ra": coordinates.split(" ")[0],
+        "dec": coordinates.split(" ")[1],
+        "velocity": velocity,
+        "redshift": redshift,
+    }

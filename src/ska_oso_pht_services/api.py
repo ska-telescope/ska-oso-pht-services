@@ -281,9 +281,7 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
              containing a nested dictionary with galactic or equatorial coordinates:
              {"galactic":
                 {"latitude": 78.7068,"longitude": 42.217}
-             }
-             or
-             {"equatorial":
+             } or {"equatorial":
                 {"right_ascension": "+28:22:38.200",
                 "declination": "13:41:11.620"}
              }
@@ -293,8 +291,10 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
     LOGGER.debug("POST PROPOSAL get coordinates: %s", identifier)
     response = coordinates.get_coordinates(identifier)
     if reference_frame.lower() == "galactic":
-        return coordinates.convert_to_galactic(response["ra"], response["dec"])
+        return coordinates.convert_to_galactic(
+            response["ra"], response["dec"], response["velocity"], response["redshift"]
+        )
     else:
         return coordinates.round_coord_to_3_decimal_places(
-            response["ra"], response["dec"]
+            response["ra"], response["dec"], response["velocity"], response["redshift"]
         )
