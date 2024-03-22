@@ -21,7 +21,7 @@ class TestS3Bucket(unittest.TestCase):
         s3 = boto3.client("s3")
 
         result = create_presigned_url_download_pdf(
-            "mybucket", "example.pdf", s3, PRESIGNED_URL_EXPIRY_TIME
+            "example.pdf", s3, PRESIGNED_URL_EXPIRY_TIME, "mybucket"
         )
 
         from_client = s3.generate_presigned_url(
@@ -38,7 +38,7 @@ class TestS3Bucket(unittest.TestCase):
         s3 = boto3.client("s3")
 
         result = create_presigned_url_upload_pdf(
-            "mybucket", "example.pdf", s3, PRESIGNED_URL_EXPIRY_TIME
+            "example.pdf", s3, PRESIGNED_URL_EXPIRY_TIME, "mybucket"
         )
 
         from_client = s3.generate_presigned_url(

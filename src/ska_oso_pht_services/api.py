@@ -21,7 +21,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
-from ska_oso_pht_services.utils import coordinates
+from ska_oso_pht_services.utils import coordinates, s3_bucket
 
 Response = Proposal
 
@@ -233,8 +233,13 @@ def upload_pdf(filename: str) -> Response:
     :return: a string "/upload/signedurl/{filename}"
     """
     LOGGER.debug("GET Upload Signed URL")
+    s3_client = s3_bucket.get_aws_client()
+    upload_signed_url = s3_bucket.create_presigned_url_upload_pdf(
+        filename, s3_client, 60
+    )
+
     return (
-        "/upload/signedurl/" + filename,
+        upload_signed_url,
         HTTPStatus.OK,
     )
 
@@ -249,8 +254,13 @@ def download_pdf(filename: str) -> Response:
     :return: a string "/download/signedurl/{filename}"
     """
     LOGGER.debug("GET Download Signed URL")
+    s3_client = s3_bucket.get_aws_client()
+    download_signed_url = s3_bucket.create_presigned_url_download_pdf(
+        filename, s3_client, 60
+    )
+
     return (
-        "/download/signedurl/" + filename,
+        download_signed_url,
         HTTPStatus.OK,
     )
 
