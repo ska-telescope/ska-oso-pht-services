@@ -1,7 +1,7 @@
 # TODO: connect s3 credentials using SKAO Vault
 
 # import ska_oso_pht_services.utils.config as config
-# import boto3
+import boto3
 
 # AWS_SERVER_PUBLIC_KEY = config.AWS_SERVER_PUBLIC_KEY
 # AWS_SERVER_SECRET_KEY = config.AWS_SERVER_SECRET_KEY
