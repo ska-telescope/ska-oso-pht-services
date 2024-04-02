@@ -24,6 +24,8 @@ venv
 .idea
 .eclipse
 .vscode
+node_modules
+yarn.lock
 
 **/Chart.yaml-e
 **/*.py-e
