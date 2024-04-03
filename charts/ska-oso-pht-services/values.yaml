@@ -9,7 +9,7 @@ subsystem: ska-oso-pht-services
 
 global:
   minikube: true
-  cluster_domain: cluster.local
+  cluster_domain: techops.internal.skao.int
 
 rest:
   component: rest
@@ -20,7 +20,7 @@ rest:
   image:
     registry: artefact.skao.int
     image: ska-oso-pht-services
-    tag: ~  # Defaults to the chart appVersion if not set
+    tag: ~ # Defaults to the chart appVersion if not set
     pullPolicy: IfNotPresent
   oda:
     backendType: filesystem
@@ -28,10 +28,10 @@ rest:
   use_skuid: true
   resources:
     requests:
-      cpu:  100m
+      cpu: 100m
       memory: 1024Mi
     limits:
-      cpu:  1000m
+      cpu: 1000m
       memory: 1024Mi
   ingress:
     enabled: true

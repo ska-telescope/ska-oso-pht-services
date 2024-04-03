@@ -1,3 +1,6 @@
+global:
+  cluster_domain: techops.internal.skao.int
+
 # Override some of the ODA values.yaml
 # See the umbrella and ODA main chart for all configurable values
 ska-db-oda-umbrella:
