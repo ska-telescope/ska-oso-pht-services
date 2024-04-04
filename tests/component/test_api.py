@@ -17,6 +17,7 @@ PHT_URL = getenv(
 )
 
 
+# TODO: revisit test cases
 def test_proposal_create():
     """
     Test that the POST /proposals path receives the request
@@ -29,7 +30,7 @@ def test_proposal_create():
         headers={"Content-type": "application/json"},
     )
     assert response.status_code == HTTPStatus.OK
-    # assert response.text == f"prsl-t0001-{datetime.today().strftime('%Y%m%d')}-00002"
+    assert f"prsl-t0001-{datetime.today().strftime('%Y%m%d')}" in response.text
 
 
 def test_proposal_get():
@@ -41,6 +42,9 @@ def test_proposal_get():
     response = requests.get(f"{PHT_URL}/proposals/prsl-1234")
 
     # assert_json_is_equal(response.content, VALID_PROPOSAL_DATA_JSON)
+    result = transform_update_proposal(json.loads(response.content))
+
+    assert result["prsl_id"] == "prsl-1234"
     assert response.status_code == HTTPStatus.OK
 
 
@@ -56,9 +60,13 @@ def test_proposal_get_list():
     )
 
     response = requests.get(f"{PHT_URL}/proposals/list/DefaultUser")
+    result = json.loads(response.content)
+
+    print(response.content)
+    print(response.content)
 
     assert response.status_code == HTTPStatus.OK
-    # assert len(response.json()) == 2
+    assert result[0]["metadata"]["created_by"] == "DefaultUser"
 
 
 def test_proposal_put():
