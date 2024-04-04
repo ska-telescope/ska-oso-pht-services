@@ -8,11 +8,8 @@ import requests
 
 from ska_oso_pht_services.connectors.pht_handler import transform_update_proposal
 
-from ..unit.util import (
-    VALID_PROPOSAL_DATA_JSON,
-    VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
-    assert_json_is_equal,
-)
+# TODO: add assert_json_is_equal
+from ..unit.util import VALID_PROPOSAL_DATA_JSON, VALID_PROPOSAL_FRONTEND_UPDATE_JSON
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 PHT_URL = getenv(
