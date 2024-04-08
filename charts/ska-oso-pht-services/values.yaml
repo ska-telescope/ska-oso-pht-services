@@ -20,7 +20,7 @@ rest:
   image:
     registry: artefact.skao.int
     image: ska-oso-pht-services
-    tag: ~ # Defaults to the chart appVersion if not set
+    tag: 1.0.2-dirty # Defaults to the chart appVersion if not set
     pullPolicy: IfNotPresent
   oda:
     backendType: filesystem
@@ -41,3 +41,16 @@ nodeSelector: {}
 affinity: {}
 
 tolerations: []
+
+secretProvider:
+  enabled: true
+  name: vault-ska-vault-example-csi
+  provider:
+    name: "vault"
+    vaultAddress: "https://vault.skao.int"
+    roleName: "kube-role"
+    secretsPath: "kv/data/users/jackmktam/pht_s3_bucket"
+    secrets:
+    - secretKey: "aws_pht_bucket_name"
+    - secretKey: "aws_server_public_key"
+    - secretKey: "aws_server_secret_key"
