@@ -113,9 +113,9 @@ spec:
           {{- range .Values.secretProvider.provider.secrets }}
           - name: {{ .targetEnv | default .secretKey }}
             valueFrom:
-            secretKeyRef:
-              name: {{ template "ska-oso-pht-services.name" $ }}-{{ $.Values.rest.component }}-{{ $.Release.Name }}-bucket-credentials
-              key: {{ .secretKey }}
+              secretKeyRef:
+                name: {{ template "ska-oso-pht-services.name" $ }}-{{ $.Values.rest.component }}-{{ $.Release.Name }}-bucket-credentials
+                key: {{ .secretKey }}
           {{- end }}
           {{- else }}
           - name: AWS_PHT_BUCKET_NAME
