@@ -44,7 +44,6 @@ tolerations: []
 
 secretProvider:
   enabled: true
-  name: vault-ska-vault-example-csi
   provider:
     name: "vault"
     vaultAddress: "https://vault.skao.int"
@@ -52,5 +51,8 @@ secretProvider:
     secretsPath: "kv/data/users/jackmktam/pht_s3_bucket"
     secrets:
     - secretKey: "aws_pht_bucket_name"
+      targetEnv: AWS_PHT_BUCKET_NAME
     - secretKey: "aws_server_public_key"
+      targetEnv: AWS_SERVER_PUBLIC_KEY
     - secretKey: "aws_server_secret_key"
+      targetEnv: AWS_SERVER_SECRET_KEY
