@@ -67,7 +67,7 @@ def set_default_headers_on_response(response: Response) -> Response:
 
 def get_secret_key():
     # Assuming the secret key is mounted at a specific path
-    secret_path = "/mnt/secrets-store"
+    secret_path = "/mnt/secrets-store/aws_pht_bucket_name"
     with open(secret_path, "r") as secret_file:
         secret_key = secret_file.read().strip()
     return secret_key
