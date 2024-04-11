@@ -114,7 +114,7 @@ spec:
           - name: {{ .targetEnv | default .secretKey }}
             valueFrom:
             secretKeyRef:
-              name: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}-bucket-credentials
+              name: {{ template "ska-oso-pht-services.name" $ }}-{{ $.Values.rest.component }}-{{ $.Release.Name }}-bucket-credentials
               key: {{ .secretKey }}
           {{- end }}
           {{- else }}
