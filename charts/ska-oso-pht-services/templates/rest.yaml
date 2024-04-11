@@ -55,7 +55,7 @@ spec:
   parameters:
     vaultAddress: {{ .Values.secretProvider.provider.vaultAddress }}
     roleName: {{ .Values.secretProvider.provider.roleName }}
-    objects:
+    objects: |
 {{- range .Values.secretProvider.provider.secrets }}
       - objectName: {{ .secretKey }}
         secretPath: {{ $.Values.secretProvider.provider.secretsPath }}
