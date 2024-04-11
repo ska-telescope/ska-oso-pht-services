@@ -65,6 +65,14 @@ def set_default_headers_on_response(response: Response) -> Response:
     return response
 
 
+def get_secret_key():
+    # Assuming the secret key is mounted at a specific path
+    secret_path = "/mnt/secrets-store"
+    with open(secret_path, "r") as secret_file:
+        secret_key = secret_file.read().strip()
+    return secret_key
+
+
 def create_app(open_api_spec=None) -> App:
     """
     Create the Connexion application with required config
@@ -74,6 +82,7 @@ def create_app(open_api_spec=None) -> App:
         open_api_spec = resolve_openapi_spec()
 
     app = App(__name__, specification_dir="openapi/")
+    app.config["AWS_PHT_BUCKET_NAME"] = get_secret_key()
 
     validator_map = {
         "body": CustomRequestBodyValidator,
