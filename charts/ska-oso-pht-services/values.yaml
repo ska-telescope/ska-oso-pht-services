@@ -50,8 +50,8 @@ secretProvider:
     roleName: "kube-role"
     secretsPath: "kv/data/users/jackmktam/pht_s3_bucket"
     secrets:
-    - secretKey: "aws_pht_bucket_name"
-      targetEnv: AWS_PHT_BUCKET_NAME
+    - secretKey: "aws_pht_bucket_name_test"
+      targetEnv: AWS_PHT_BUCKET_NAME_TEST
     - secretKey: "aws_server_public_key"
       targetEnv: AWS_SERVER_PUBLIC_KEY
     - secretKey: "aws_server_secret_key"
