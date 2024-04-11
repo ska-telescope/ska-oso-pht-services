@@ -82,7 +82,6 @@ def create_app(open_api_spec=None) -> App:
         open_api_spec = resolve_openapi_spec()
 
     app = App(__name__, specification_dir="openapi/")
-    app.app.config["AWS_PHT_BUCKET_NAME"] = get_secret_key()
 
     validator_map = {
         "body": CustomRequestBodyValidator,
@@ -100,5 +99,6 @@ def create_app(open_api_spec=None) -> App:
     oda.init_app(app.app)
 
     app.app.after_request(set_default_headers_on_response)
+    app.app.config["AWS_PHT_BUCKET_NAME"] = get_secret_key()
 
     return app
