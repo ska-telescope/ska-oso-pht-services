@@ -65,12 +65,12 @@ def set_default_headers_on_response(response: Response) -> Response:
     return response
 
 
-# def get_secret_key():
-#     # Assuming the secret key is mounted at a specific path
-#     secret_path = "/mnt/secrets-store/aws_pht_bucket_name"
-#     with open(secret_path, "r") as secret_file:
-#         secret_key = secret_file.read().strip()
-#     return secret_key
+def get_secret_key():
+    # Assuming the secret key is mounted at a specific path
+    secret_path = "/mnt/secrets-store/aws_pht_bucket_name"
+    with open(secret_path, "r") as secret_file:
+        secret_key = secret_file.read().strip()
+    return secret_key
 
 
 def create_app(open_api_spec=None) -> App:
@@ -98,7 +98,7 @@ def create_app(open_api_spec=None) -> App:
 
     oda.init_app(app.app)
 
-    # app.app.after_request(set_default_headers_on_response)
-    # app.app.config["AWS_PHT_BUCKET_NAME"] = get_secret_key()
+    app.app.after_request(set_default_headers_on_response)
+    app.app.config["AWS_PHT_BUCKET_NAME"] = get_secret_key()
 
     return app

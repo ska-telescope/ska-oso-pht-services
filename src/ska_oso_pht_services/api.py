@@ -12,6 +12,7 @@ from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
+from flask import Flask
 from ska_db_oda.domain.query import MatchType, UserQuery
 from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
@@ -23,12 +24,11 @@ from ska_oso_pht_services.connectors.pht_handler import (
 )
 from ska_oso_pht_services.utils import coordinates
 
-# from . import app
-
 Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
 
+app = Flask(__name__)
 
 def load_string_from_file(filename):
     """
@@ -292,10 +292,10 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
         )
 
 
-# @error_handler
-# def get_aws_s3_bucket_name() -> Response:
-#     LOGGER.debug("GET aws s3 bucket name")
-#     return (
-#         app.config["AWS_PHT_BUCKET_NAME"],
-#         HTTPStatus.OK,
-#     )
+@error_handler
+def get_aws_s3_bucket_name() -> Response:
+    LOGGER.debug("GET aws s3 bucket name")
+    return (
+        app.config["AWS_PHT_BUCKET_NAME"],
+        HTTPStatus.OK,
+    )
