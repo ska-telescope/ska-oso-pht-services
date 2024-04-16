@@ -23,7 +23,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
 )
 from ska_oso_pht_services.utils import coordinates
 
-from . import app
+# from . import app
 
 Response = Proposal
 
@@ -292,10 +292,10 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
         )
 
 
-@error_handler
-def get_aws_s3_bucket_name() -> Response:
-    LOGGER.debug("GET aws s3 bucket name")
-    return (
-        app.config["AWS_PHT_BUCKET_NAME"],
-        HTTPStatus.OK,
-    )
+# @error_handler
+# def get_aws_s3_bucket_name() -> Response:
+#     LOGGER.debug("GET aws s3 bucket name")
+#     return (
+#         app.config["AWS_PHT_BUCKET_NAME"],
+#         HTTPStatus.OK,
+#     )

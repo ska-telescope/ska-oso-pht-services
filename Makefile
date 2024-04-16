@@ -79,6 +79,7 @@ REST_POD_NAME=$(shell kubectl get pods -o name -n $(KUBE_NAMESPACE) -l app=ska-o
 
 k8s-pre-test:
 	kubectl exec $(REST_POD_NAME) -n $(KUBE_NAMESPACE) -- mkdir -p /var/lib/oda/prsl/prsl-1234
+	kubectl exec $(REST_POD_NAME) -n $(KUBE_NAMESPACE) -- ls /mnt/secrets-store
 	kubectl cp tests/unit/testfile_sample_proposal.json $(KUBE_NAMESPACE)/$(REST_POD_NAME):/var/lib/oda/prsl/prsl-1234/1.json
 
 k8s-post-test:
