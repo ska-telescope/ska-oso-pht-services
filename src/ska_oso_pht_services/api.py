@@ -28,7 +28,7 @@ Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
 
-app = Flask(__name__)
+import connexion
 
 def load_string_from_file(filename):
     """
@@ -297,7 +297,8 @@ def get_aws_s3_bucket_name() -> Response:
     try:
         LOGGER.debug("GET aws s3 bucket name")
         return (
-            app.config["AWS_PHT_BUCKET_NAME"],
+            connexion.request.app.config.get('AWS_PHT_BUCKET_NAME'),
+            # app.config["AWS_PHT_BUCKET_NAME"],
             HTTPStatus.OK,
         )
     except Exception as err:
