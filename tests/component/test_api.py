@@ -114,3 +114,14 @@ def test_proposal_put():
 
     # TODO: review pdm for datatype for investigators and investigator_id
     # assert expected == result
+
+def test_get_aws_s3_bucket_name():
+    """
+    Test that the GET /proposals/{identifier} path receives the request
+    and returns the correct response prsl-1234 is pulled in filesystem on k8s-pre-test
+    """
+
+    response = requests.get(f"{PHT_URL}/testing/aws-s3-bucket-name")
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.text == 'test_bucket_name_updated'
