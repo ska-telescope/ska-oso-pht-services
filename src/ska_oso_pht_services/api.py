@@ -294,8 +294,15 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
 
 @error_handler
 def get_aws_s3_bucket_name() -> Response:
-    LOGGER.debug("GET aws s3 bucket name")
-    return (
-        app.config["AWS_PHT_BUCKET_NAME"],
-        HTTPStatus.OK,
-    )
+    try:
+        LOGGER.debug("GET aws s3 bucket name")
+        return (
+            app.config["AWS_PHT_BUCKET_NAME"],
+            HTTPStatus.OK,
+        )
+    except Exception as err:
+            LOGGER.exception("Exception when getting testing aws s3 bucket name")
+            return (
+                {"error": f"INTERNAL_SERVER_ERROR"},
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+            )

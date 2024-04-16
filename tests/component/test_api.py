@@ -117,8 +117,7 @@ def test_proposal_put():
 
 def test_get_aws_s3_bucket_name():
     """
-    Test that the GET /proposals/{identifier} path receives the request
-    and returns the correct response prsl-1234 is pulled in filesystem on k8s-pre-test
+    Test that the GET /testing/aws-s3-bucket-name path
     """
 
     response = requests.get(f"{PHT_URL}/testing/aws-s3-bucket-name")
