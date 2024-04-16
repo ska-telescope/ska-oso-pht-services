@@ -1,5 +1,5 @@
 {{ if .Values.rest.enabled }}
-{{ if .Values.rest.ingress.enabled }}
+{{- if .Values.rest.ingress.enabled }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -24,7 +24,7 @@ spec:
                 name: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}
                 port:
                   number: 5000
-{{ end }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -43,8 +43,8 @@ spec:
   selector:
     app: {{ template "ska-oso-pht-services.name" . }}
     component: {{ .Values.rest.component }}
+{{- if .Values.secretProvider.enabled }}
 ---
-{{ if .Values.secretProvider.enabled }}
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
 metadata:
@@ -69,7 +69,7 @@ spec:
         - objectName: {{ .secretKey }}
           key: {{ .secretKey }}
 {{- end }}
-{{ end }}
+{{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -108,9 +108,9 @@ spec:
               name: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}-environment
         ports:
           - containerPort: 5000
-        env: ###
-          {{- if .Values.secretProvider.enabled }}
-          {{- range .Values.secretProvider.provider.secrets }}
+        env:
+        {{- if .Values.secretProvider.enabled }}
+        {{- range .Values.secretProvider.provider.secrets }}
           - name: {{ .targetEnv | default .secretKey }}
             valueFrom:
               secretKeyRef:
@@ -119,11 +119,11 @@ spec:
           {{- end }}
           {{- else }}
           - name: AWS_PHT_BUCKET_NAME
-              value: "{{ .Values.global.env.aws_pht_bucket_name }}"
+            value: "{{ .Values.global.env.aws_pht_bucket_name }}"
           - name : AWS_SERVER_PUBLIC_KEY
-              value: "{{ .Values.global.env.aws_server_public_key }}"
+            value: "{{ .Values.global.env.aws_server_public_key }}"
           - name: AWS_SERVER_SECRET_KEY
-              value: "{{ .Values.global.env.aws_server_secret_key }}"
+            value: "{{ .Values.global.env.aws_server_secret_key }}"
           {{- end }}
         volumeMounts:
           {{- if .Values.secretProvider.enabled }}
@@ -134,14 +134,14 @@ spec:
         resources:
 {{ toYaml .Values.rest.resources | indent 10 }}
       volumes:
-    {{- if .Values.secretProvider.enabled }}
-      - name: secrets-store-inline
-        csi:
-          driver: secrets-store.csi.k8s.io
-          readOnly: true
-          volumeAttributes:
-            secretProviderClass: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}
-    {{- end }}
+        {{- if .Values.secretProvider.enabled }}
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ template "ska-oso-pht-services.name" . }}-{{ .Values.rest.component }}-{{ .Release.Name }}
+        {{- end }}
   {{- with .Values.nodeSelector }}
 nodeSelector:
   {{ toYaml . | indent 8 }}

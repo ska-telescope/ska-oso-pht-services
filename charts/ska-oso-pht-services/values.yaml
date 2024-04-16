@@ -1,15 +1,14 @@
-# Default values for oet.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-minikube: true
-
 system: TM-mid
 telescope: SKA-mid
 subsystem: ska-oso-pht-services
 
 global:
-  minikube: true
+  minikube: false
   cluster_domain: techops.internal.skao.int
+  env:
+    aws_pht_bucket_name:
+    aws_server_public_key:
+    aws_server_secret_key:
 
 rest:
   component: rest
