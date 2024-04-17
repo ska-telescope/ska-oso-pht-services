@@ -79,8 +79,6 @@ REST_POD_NAME=$(shell kubectl get pods -o name -n $(KUBE_NAMESPACE) -l app=ska-o
 
 k8s-pre-test:
 	kubectl exec $(REST_POD_NAME) -n $(KUBE_NAMESPACE) -- mkdir -p /var/lib/oda/prsl/prsl-1234
-	kubectl exec $(REST_POD_NAME) -n $(KUBE_NAMESPACE) -- ls /mnt/secrets-store
-	kubectl exec $(REST_POD_NAME) -n $(KUBE_NAMESPACE) -- cat /mnt/secrets-store/aws_pht_bucket_name
 	kubectl cp tests/unit/testfile_sample_proposal.json $(KUBE_NAMESPACE)/$(REST_POD_NAME):/var/lib/oda/prsl/prsl-1234/1.json
 
 k8s-post-test:
@@ -122,7 +120,8 @@ dev-up: K8S_CHART_PARAMS = \
 	--set global.minikube=true \
 	--set global.env.aws_pht_bucket_name=$(AWS_PHT_BUCKET_NAME) \
 	--set global.env.aws_server_public_key=$(AWS_SERVER_PUBLIC_KEY) \
-	--set global.env.aws_server_secret_key=$(AWS_SERVER_SECRET_KEY)
+	--set global.env.aws_server_secret_key=$(AWS_SERVER_SECRET_KEY) \
+	--set global.cluster_domain=cluster.local
 
 dev-up: k8s-namespace k8s-install-chart k8s-wait ## bring up developer deployment
 
