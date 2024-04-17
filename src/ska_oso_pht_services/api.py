@@ -4,6 +4,7 @@ These functions map to the API paths, with the returned value being the API resp
 Connexion maps the function name to the operationId in the OpenAPI document path
 """
 
+import os
 import json
 import logging
 import os.path
@@ -297,7 +298,8 @@ def get_aws_s3_bucket_name() -> Response:
     try:
         LOGGER.debug("GET aws s3 bucket name")
         return (
-            connexion.request.app.config.get('AWS_PHT_BUCKET_NAME'),
+            #connexion.request.app.config.get('AWS_PHT_BUCKET_NAME'),
+            os.getenv("AWS_PHT_BUCKET_NAME", "default_aws_pht_bucket_name"),
             # app.config["AWS_PHT_BUCKET_NAME"],
             HTTPStatus.OK,
         )
