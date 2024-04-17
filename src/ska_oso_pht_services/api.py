@@ -4,7 +4,6 @@ These functions map to the API paths, with the returned value being the API resp
 Connexion maps the function name to the operationId in the OpenAPI document path
 """
 
-import os
 import json
 import logging
 import os.path
@@ -13,7 +12,6 @@ from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
-from flask import Flask
 from ska_db_oda.domain.query import MatchType, UserQuery
 from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
@@ -29,7 +27,6 @@ Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
 
-import connexion
 
 def load_string_from_file(filename):
     """
@@ -291,21 +288,3 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
         return coordinates.round_coord_to_3_decimal_places(
             response["ra"], response["dec"], response["velocity"], response["redshift"]
         )
-
-
-@error_handler
-def get_aws_s3_bucket_name() -> Response:
-    try:
-        LOGGER.debug("GET aws s3 bucket name")
-        return (
-            #connexion.request.app.config.get('AWS_PHT_BUCKET_NAME'),
-            os.getenv("AWS_PHT_BUCKET_NAME", "default_aws_pht_bucket_name"),
-            # app.config["AWS_PHT_BUCKET_NAME"],
-            HTTPStatus.OK,
-        )
-    except Exception as err:
-            LOGGER.exception("Exception when getting testing aws s3 bucket name")
-            return (
-                {"error": f"INTERNAL_SERVER_ERROR"},
-                HTTPStatus.INTERNAL_SERVER_ERROR,
-            )

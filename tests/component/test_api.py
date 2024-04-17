@@ -114,13 +114,3 @@ def test_proposal_put():
 
     # TODO: review pdm for datatype for investigators and investigator_id
     # assert expected == result
-
-def test_get_aws_s3_bucket_name():
-    """
-    Test that the GET /testing/aws-s3-bucket-name path
-    """
-
-    response = requests.get(f"{PHT_URL}/testing/aws-s3-bucket-name")
-
-    assert response.status_code == HTTPStatus.OK
-    assert response.text == 'test_bucket_name_updated'
