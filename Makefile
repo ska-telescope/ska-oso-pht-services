@@ -1,3 +1,4 @@
+-include .make/release.mk
 #
 # CAR_OCI_REGISTRY_HOST, CAR_OCI_REGISTRY_USERNAME and PROJECT_NAME are combined to define
 # the Docker tag for this project. The definition below inherits the standard
