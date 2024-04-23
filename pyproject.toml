@@ -29,6 +29,10 @@ url = 'https://artefact.skao.int/repository/pypi-internal/simple'
 default = false
 secondary = false
 
+[[tool.poetry.source]]
+name = "PyPI-public"
+url = 'https://pypi.org/simple'
+
 [tool.poetry.dependencies]
 python = "^3.10"
 astroquery = "^0.4.6"
