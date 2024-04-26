@@ -15,6 +15,9 @@ ska-db-oda-umbrella:
         type: postgres
         postgres:
           host:
+      syncSecret:
+        enabled: true
+      enableSecretRotation: true
   postgresql:
     enabled: true
   pgadmin4:

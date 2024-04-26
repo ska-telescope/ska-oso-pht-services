@@ -34,6 +34,9 @@ rest:
       memory: 1024Mi
   ingress:
     enabled: true
+  syncSecret:
+    enabled: true
+  enableSecretRotation: true
 
 nodeSelector: {}
 
