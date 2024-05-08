@@ -3,7 +3,7 @@
 
 global:
   cluster_domain: techops.internal.skao.int
-  
+
 ska-db-oda-umbrella:
   ska-db-oda:
     enabled: true
@@ -15,9 +15,6 @@ ska-db-oda-umbrella:
         type: postgres
         postgres:
           host:
-      syncSecret:
-        enabled: true
-      enableSecretRotation: true
   postgresql:
     enabled: true
   pgadmin4:
