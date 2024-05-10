@@ -7,9 +7,15 @@ from gunicorn import glogging
 from ska_ser_logging import configure_logging, get_default_formatter
 
 from ska_oso_pht_services import create_app
+from ska_oso_pht_services.api_clients.osd_api import osd_client
 
 app = create_app()
 
+# #######################
+# checking importing the module works
+c = osd_client
+c.get_something()
+# #######################
 
 class UniformLogger(glogging.Logger):
     def setup(self, cfg):
