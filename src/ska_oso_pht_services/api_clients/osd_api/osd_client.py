@@ -1,9 +1,9 @@
 import json
 import requests
 
-api_url = "https://jsonplaceholder.typicode.com/todos/1"
+api_url = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd?cycle_id=1&osd_version=1.0.0&source=file&capabilities=mid"
 
-def get_something():
+def get_osd():
     """
     Create something
     """
@@ -15,7 +15,7 @@ def get_something():
         # ... Handle the response data
         data = json.loads(response.text)
         print(data)
-        print(data['title'])
+        print('###### test #####', data['capabilities']['mid']['AA2']['available_bandwidth_hz'])
     elif response.status_code == 404:
         # Resource not found
         print('Requested resource not found')
