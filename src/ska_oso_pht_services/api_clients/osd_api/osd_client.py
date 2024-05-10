@@ -3,6 +3,9 @@ import requests
 
 SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd"
 
+class APIError(Exception):
+    pass
+
 def get_osd(cycle_id):
     """
     get osd data
@@ -17,7 +20,7 @@ def get_osd(cycle_id):
         return data
     elif response.status_code == 404:
         # Resource not found
-        return "Requested resource not found"
+        raise APIError("Requested resource not found")
     else:
         # Other error occurred
-        return f"An error occurred:', {response.status_code}"
+        raise APIError(f"An error occurred: {response.status_code}")

@@ -14,8 +14,11 @@ app = create_app()
 # #######################
 # checking importing the module works
 c = osd_client
-osd_data = c.get_osd(2)
-print('osd_data', osd_data)
+try:
+    osd_data = c.get_osd(1)
+    print('osd_data', osd_data)
+except osd_client.APIError as e:
+    print(f"An error occurred: {str(e)}")
 # #######################
 
 class UniformLogger(glogging.Logger):
