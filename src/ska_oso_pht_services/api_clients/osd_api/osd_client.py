@@ -1,24 +1,23 @@
 import json
 import requests
 
-api_url = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd?cycle_id=1&osd_version=1.0.0&source=file&capabilities=mid"
+SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd"
 
-def get_osd():
+def get_osd(cycle_id):
     """
-    Create something
+    get osd data
     """
-    print('::: in get_something()')
-    response = requests.get(api_url)
+    url_path = f"/osd/api/v1/osd"
+    response = requests.get(f"{SKA_OSD_API_URL}{url_path}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
         print('Request was successful')
         # ... Handle the response data
         data = json.loads(response.text)
-        print(data)
-        print('###### test #####', data['capabilities']['mid']['AA2']['available_bandwidth_hz'])
+        return data
     elif response.status_code == 404:
         # Resource not found
-        print('Requested resource not found')
+        return "Requested resource not found"
     else:
         # Other error occurred
-        print('An error occurred:', response.status_code)
+        return f"An error occurred:', {response.status_code}"

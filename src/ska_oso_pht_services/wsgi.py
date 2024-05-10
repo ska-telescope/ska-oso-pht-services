@@ -14,7 +14,8 @@ app = create_app()
 # #######################
 # checking importing the module works
 c = osd_client
-c.get_osd()
+osd_data = c.get_osd(2)
+print('osd_data', osd_data)
 # #######################
 
 class UniformLogger(glogging.Logger):
