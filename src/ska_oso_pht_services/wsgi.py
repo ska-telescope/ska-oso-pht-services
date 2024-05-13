@@ -10,7 +10,6 @@ from ska_oso_pht_services import create_app
 
 app = create_app()
 
-
 class UniformLogger(glogging.Logger):
     def setup(self, cfg):
         # override the configuration but inherit gunicorn logging level
