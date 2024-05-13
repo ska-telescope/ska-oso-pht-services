@@ -1,23 +1,27 @@
 import json
+
 import requests
 
 SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd"
 
+
 class APIError(Exception):
     pass
 
+
 def get_osd(cycle_id):
     """
-    Functionality: 
-    The get_osd function is used to fetch the OSD data 
-    for a specified cycle ID. It makes a GET request to the OSD API endpoint 
-    with the specified cycle ID as a query parameter. If the request is successful, 
-    it returns the OSD data in the form of a dictionary. 
-    If the requested resource is not found, it raises an APIError with an appropriate message. 
-    If any other error occurs, it raises an APIError with an appropriate message.
+    Functionality:
+    The get_osd function is used to fetch the OSD data for a specified cycle
+    ID. It makes a GET request to the OSD API endpoint with the specified cycle
+    ID as a query parameter. If the request is successful, it returns the OSD data
+    in the form of a dictionary. If the requested resource is not found, it raises
+    an APIError with an appropriate message. If any other error occurs, it raises
+    an APIError with an appropriate message.
 
     Parameter:
-    cycle_id (str): A string representing the cycle ID for which the OSD data is to be fetched.
+    cycle_id (str): A string representing the cycle ID for which the OSD data
+    is to be fetched.
 
     Returns:
     dict: A dictionary containing the OSD data for the specified cycle ID.

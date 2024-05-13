@@ -17,13 +17,12 @@ from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 from ska_oso_pht_services import oda
+from ska_oso_pht_services.api_clients.osd_api import osd_client
 from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
 from ska_oso_pht_services.utils import coordinates, s3_bucket
-
-from ska_oso_pht_services.api_clients.osd_api import osd_client
 
 Response = Proposal
 
@@ -217,18 +216,19 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 @error_handler
 def proposal_validate() -> Response:
     """
-    Function that requests to dummy endpoint POST /proposals/validate are mapped to
+    Function that requests to dummy endpoint POST /proposals/validate are mapped to.
 
-     It makes use of the get_osd function to fetch the OSD data for a specified cycle ID 
-     and returns the data along with HTTP status code 200 if the validation is successful. 
-     If an APIError occurs during the validation process, 
-     it returns a string containing the error message.
+    It makes use of the get_osd function to fetch the OSD data for a specified cycle ID
+    and returns the OSD static data along with HTTP status code 200.
+    If an APIError occurs during the fetching process, it returns a string containing
+    the error message.
 
-     Input Parameters: None
+    Input Parameters: None
 
-    :returns: Response object containing the OSD data for the specified cycle ID and HTTP status code 200 
-    if the validation is successful. If an APIError occurs during the validation process, 
-    it returns a string containing the error message"
+    Returns:
+    Response object containing the OSD data for the specified cycle ID and HTTP
+    status code 200 if the request is successful. If an APIError occurs during the
+    validation process, it returns a string containing the error message.
     """
     LOGGER.debug("POST PROPOSAL validate")
     c = osd_client
@@ -239,7 +239,7 @@ def proposal_validate() -> Response:
         return (
             osd_data,
             HTTPStatus.OK,
-            )
+        )
     except osd_client.APIError as err:
         LOGGER.exception(f"An error occurred: {str(err)}")
         return str(err)
