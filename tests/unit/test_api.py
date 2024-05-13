@@ -14,6 +14,7 @@ from .util import (
     VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
     VALID_PROPOSAL_UPDATE_RESULT_JSON,
+    VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON,
     assert_json_is_equal,
 )
 
@@ -105,7 +106,7 @@ def test_proposal_validate(client):
     result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
 
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "post /proposals/validate"
+    assert_json_is_equal(result.text, VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON)
 
 
 class TestGetSignedUrl:

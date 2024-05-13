@@ -49,3 +49,6 @@ VALID_PROPOSAL_UPDATE_RESULT_JSON = load_string_from_file(
 VALID_PROPOSAL_GET_LIST_RESULT_JSON = load_string_from_file(
     "testfile_sample_get_list_proposal_result.json"
 )
+VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON = load_string_from_file(
+    "testfile_get_osd_cycle1.json"
+)
