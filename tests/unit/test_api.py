@@ -10,11 +10,11 @@ from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 from .util import (
+    VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON,
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
     VALID_PROPOSAL_UPDATE_RESULT_JSON,
-    VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON,
     assert_json_is_equal,
 )
 
@@ -102,12 +102,11 @@ def test_proposal_edit(mock_oda, client):
     assert result.status_code == HTTPStatus.OK
 
 
-#def test_proposal_validate(client):
-    #result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
+# def test_proposal_validate(client):
+# result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
 
-    #assert result.status_code == HTTPStatus.OK
-    #assert_json_is_equal(result.text, VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON)
-
+# assert result.status_code == HTTPStatus.OK
+# assert_json_is_equal(result.text, VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON)
 
 
 class TestGetSignedUrl:
