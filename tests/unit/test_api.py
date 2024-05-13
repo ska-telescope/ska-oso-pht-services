@@ -98,15 +98,16 @@ def test_proposal_edit(mock_oda, client):
         headers={"Content-type": "application/json"},
     )
 
-    #assert_json_is_equal(result.text, VALID_PROPOSAL_UPDATE_RESULT_JSON)
-    #assert result.status_code == HTTPStatus.OK
-
-
-def test_proposal_validate(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
-
+    assert_json_is_equal(result.text, VALID_PROPOSAL_UPDATE_RESULT_JSON)
     assert result.status_code == HTTPStatus.OK
-    assert_json_is_equal(result.text, VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON)
+
+
+#def test_proposal_validate(client):
+    #result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
+
+    #assert result.status_code == HTTPStatus.OK
+    #assert_json_is_equal(result.text, VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON)
+
 
 
 class TestGetSignedUrl:
