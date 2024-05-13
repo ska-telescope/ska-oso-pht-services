@@ -23,6 +23,8 @@ from ska_oso_pht_services.connectors.pht_handler import (
 )
 from ska_oso_pht_services.utils import coordinates, s3_bucket
 
+from ska_oso_pht_services.api_clients.osd_api import osd_client
+
 Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
@@ -217,10 +219,30 @@ def proposal_validate() -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
-    :return: a string "post /proposals/validate"
+     It makes use of the get_osd function to fetch the OSD data for a specified cycle ID 
+     and returns the data along with HTTP status code 200 if the validation is successful. 
+     If an APIError occurs during the validation process, 
+     it returns a string containing the error message.
+
+     Input Parameters: None
+
+    :returns: Response object containing the OSD data for the specified cycle ID and HTTP status code 200 
+    if the validation is successful. If an APIError occurs during the validation process, 
+    it returns a string containing the error message"
     """
     LOGGER.debug("POST PROPOSAL validate")
-    return "post /proposals/validate"
+    c = osd_client
+    try:
+        # TODO: replace hard coded cycle id by a parameter
+        cycle_id = 1
+        osd_data = c.get_osd(cycle_id)
+        return (
+            osd_data,
+            HTTPStatus.OK,
+            )
+    except osd_client.APIError as err:
+        LOGGER.exception(f"An error occurred: {str(err)}")
+        return str(err)
 
 
 @error_handler

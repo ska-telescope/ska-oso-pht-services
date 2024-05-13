@@ -4,22 +4,12 @@ Entry point for application
 import logging
 
 from gunicorn import glogging
+from ska_oso_pht_services.api import LOGGER
 from ska_ser_logging import configure_logging, get_default_formatter
 
 from ska_oso_pht_services import create_app
-from ska_oso_pht_services.api_clients.osd_api import osd_client
 
 app = create_app()
-
-# #######################
-# checking importing the module works
-c = osd_client
-try:
-    osd_data = c.get_osd(1)
-    print('osd_data', osd_data)
-except osd_client.APIError as e:
-    print(f"An error occurred: {str(e)}")
-# #######################
 
 class UniformLogger(glogging.Logger):
     def setup(self, cfg):
