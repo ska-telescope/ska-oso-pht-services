@@ -4,7 +4,6 @@ Entry point for application
 import logging
 
 from gunicorn import glogging
-from ska_oso_pht_services.api import LOGGER
 from ska_ser_logging import configure_logging, get_default_formatter
 
 from ska_oso_pht_services import create_app
