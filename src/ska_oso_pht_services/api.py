@@ -241,7 +241,7 @@ def proposal_validate() -> Response:
             HTTPStatus.OK,
         )
     except osd_client.APIError as err:
-        LOGGER.exception(f"An error occurred: {str(err)}")
+        LOGGER.exception("An error occurred: %s", str(err))
         return str(err)
 
 
