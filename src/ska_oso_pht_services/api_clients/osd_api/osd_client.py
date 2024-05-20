@@ -40,6 +40,9 @@ print('osd_url', osd_url)
 
 SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
 
+url_path = "/osd/api/v1/osd"
+endpoint = "/osd"
+
 
 class APIError(Exception):
     pass
@@ -65,9 +68,8 @@ def get_osd(cycle_id):
     Raises:
     APIError: If the requested resource is not found or any other error occurs.
     """
-    url_path = "/osd/api/v1/osd"
-    endpoint = "/osd"
-    response = requests.get(f"{SKA_OSD_API_URL}{endpoint}?cycle_id={cycle_id}")
+    
+    response = requests.get(f"{SKA_OSD_API_URL}?cycle_id={cycle_id}")
     print('full url', f"{osd_url}{endpoint}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
