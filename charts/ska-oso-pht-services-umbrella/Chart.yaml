@@ -16,3 +16,8 @@ dependencies:
   version: 2.1.6
   repository: https://artefact.skao.int/repository/helm-internal
   condition: ska-db-oda.enabled
+
+# OSD is used by PHT services for static data validation as part of the validate endpoint
+- name: ska-ost-osd
+  version: 1.0.2
+  repository: https://artefact.skao.int/repository/helm-internal

@@ -24,6 +24,9 @@ rest:
   oda:
     backendType: filesystem
     url: ~ # Defaults to the ODA Kubernetes service address if not set
+  osd:
+    backendType: filesystem
+    url: ~ # Defaults to the OSD Kubernetes service address if not set
   use_skuid: true
   resources:
     requests:
