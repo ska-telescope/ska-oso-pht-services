@@ -34,11 +34,11 @@ KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-ost-osd")
 osd_url = getenv("OSD_API_URL", f"http://192.168.49.2/{KUBE_NAMESPACE}/osd/api/v1/osd")
 #osd_url = config["osd"]["apiUrl"]
 print('osd_url', osd_url)
-
+#http://192.168.49.2/ska-ost-osd/osd/api/v1/osd?
 #KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 #API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v1"
 
-SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd"
+SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
 
 
 class APIError(Exception):
@@ -67,7 +67,7 @@ def get_osd(cycle_id):
     """
     url_path = "/osd/api/v1/osd"
     endpoint = "/osd"
-    response = requests.get(f"{osd_url}{endpoint}?cycle_id={cycle_id}")
+    response = requests.get(f"{SKA_OSD_API_URL}{endpoint}?cycle_id={cycle_id}")
     print('full url', f"{osd_url}{endpoint}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
