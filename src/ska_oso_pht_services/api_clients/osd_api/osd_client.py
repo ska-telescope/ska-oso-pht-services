@@ -30,7 +30,8 @@ from os import getenv
 
 # Load the OSD API URL from the environment variables
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-ost-osd")
-osd_url = getenv("OSD_API_URL", f"http://ska-oso-pht-services:5000/{KUBE_NAMESPACE}/osd/api/v1/osd")
+#osd_url = getenv("OSD_API_URL", f"http://ska-oso-pht-services:5000/{KUBE_NAMESPACE}/osd/api/v1/osd")
+osd_url = getenv("OSD_API_URL", f"http://192.168.49.2/{KUBE_NAMESPACE}/osd/api/v1/osd")
 #osd_url = config["osd"]["apiUrl"]
 print('osd_url', osd_url)
 
