@@ -69,8 +69,8 @@ def get_osd(cycle_id):
     APIError: If the requested resource is not found or any other error occurs.
     """
     
-    response = requests.get(f"{SKA_OSD_API_URL}?cycle_id={cycle_id}")
-    print('full url', f"{osd_url}{endpoint}?cycle_id={cycle_id}")
+    response = requests.get(f"{osd_url}?cycle_id={cycle_id}")
+    #print('full url', f"{osd_url}{endpoint}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
         data = json.loads(response.text)
