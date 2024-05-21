@@ -48,7 +48,7 @@ def validate_proposal(proposal) -> dict:
                 # check if dec is string/decimal
                 if isinstance(target["reference_coordinate"]["dec"], str):
                     skycoord_ra_dec = SkyCoord(
-                        f'{target["reference_coordinate"]["ra"]}{target["reference_coordinate"]["dec"]}',
+                        f'{target["reference_coordinate"]["ra"]}{target["reference_coordinate"]["dec"]}',  # noqa: E501
                         unit=(u.hourangle, u.deg),
                     )
                     dec_to_decimal = skycoord_ra_dec.dec.degree
@@ -74,7 +74,7 @@ def validate_proposal(proposal) -> dict:
                     targets_in_degree, "target_name", linked_source
                 )
 
-                if target_detail == None:
+                if target_detail is None:
                     result = False
                     messages.append(
                         f'Target {linked_source} in Observation {obs["obset_id"]} is'

@@ -136,7 +136,7 @@ def test_proposal_validate():
     result = json.loads(response.content)
 
     assert response.status_code == HTTPStatus.OK
-    assert result["result"] == True
+    assert result["result"] is True
 
 
 def test_proposal_validate_target_not_found():
@@ -154,4 +154,4 @@ def test_proposal_validate_target_not_found():
     result = json.loads(response.content)
 
     assert response.status_code == HTTPStatus.OK
-    assert result["result"] == False
+    assert result["result"] is False
