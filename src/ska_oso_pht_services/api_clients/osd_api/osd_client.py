@@ -49,14 +49,14 @@ def get_osd(cycle_id):
     if response.status_code == 200:
         # Successful response
         data = json.loads(response.text)
-        myobject = {
-            "data": data,
-            "OSD_API_URL": OSD_API_URL,
-            "ODA_BACKEND_TYPE": ODA_BACKEND_TYPE,
-            "ODA_URL": ODA_URL,
-        }
-        # return data
-        return myobject
+        # myobject = {
+        #     "data": data,
+        #     "OSD_API_URL": OSD_API_URL,
+        #     "ODA_BACKEND_TYPE": ODA_BACKEND_TYPE,
+        #     "ODA_URL": ODA_URL,
+        # }
+        return data
+        #return myobject
     elif response.status_code == 404:
         # Resource not found
         raise APIError(f"Requested resource not found: {response.status_code}")
