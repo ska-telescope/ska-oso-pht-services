@@ -12,7 +12,7 @@ from tests.unit.util import VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON, assert_json_is
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 OSD_API_URL = getenv(
     "OSD_API_URL",
-    "http://ska-ost-osd-rest-test:5000/{KUBE_NAMESPACE}/osd/api/v1/osd",
+    "https://k8s.stfc.skao.int/{KUBE_NAMESPACE}/osd/api/v1/osd",
 )
 
 
