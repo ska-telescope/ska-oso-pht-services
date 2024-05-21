@@ -13,6 +13,10 @@ from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND,
     VALID_PROPOSAL_UPDATE_RESULT_JSON,
     assert_json_is_equal,
 )
@@ -102,10 +106,27 @@ def test_proposal_edit(mock_oda, client):
 
 
 def test_proposal_validate(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        headers={"Content-type": "application/json"},
+    )
 
+    assert_json_is_equal(result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON)
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "post /proposals/validate"
+
+
+def test_proposal_validate_target_not_found(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert_json_is_equal(
+        result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
+    )
+    assert result.status_code == HTTPStatus.OK
 
 
 class TestGetSignedUrl:

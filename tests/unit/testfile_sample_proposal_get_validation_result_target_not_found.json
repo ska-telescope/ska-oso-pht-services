@@ -1,0 +1,8 @@
+{
+    "result": false,
+    "validation_errors": [
+      "Target M3 in Observation 8495bjjhdugdh is not found in proposal target",
+      "Target M2 in Observation obs-12345 is not found in proposal target",
+      "Target M3 in Observation obs-12345 is not found in proposal target"
+    ]
+  }
