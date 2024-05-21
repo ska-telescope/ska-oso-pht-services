@@ -2,6 +2,11 @@ import json
 
 import requests
 
+import os
+
+osd_api_url = os.environ['OSD_API_URL']
+print('osd_api_url', osd_api_url)
+
 SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
 
 
