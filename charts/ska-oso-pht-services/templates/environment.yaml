@@ -18,4 +18,4 @@ data:
   ODA_URL: http://ska-db-oda-rest-{{ .Release.Name }}:5000/{{ .Release.Namespace }}/oda/api/v2
   {{- end }}
   SKUID_URL: ska-ser-skuid-{{ .Release.Name }}-svc.{{ .Release.Namespace }}.svc.{{ .Values.global.cluster_domain }}:9870
-  OSD_API_URL: "http://192.168.49.2/{{ .Release.Name }}:5000/{{ .Release.Namespace }}/osd/api/v1/osd"
+  OSD_API_URL: "http://ska-ost-osd-rest-{{ .Release.Name }}:5000/{{ .Release.Namespace }}/osd/api/v1/osd"
