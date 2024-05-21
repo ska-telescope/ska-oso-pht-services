@@ -4,9 +4,10 @@ from os import getenv
 import requests
 
 # KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
+KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 OSD_API_URL = getenv(
     "OSD_API_URL",
-    "http://ska-ost-osd-rest-test:5000/ska-oso-pht-services/osd/api/v1/osd",
+    "http://ska-ost-osd-rest-test:5000/{KUBE_NAMESPACE}/osd/api/v1/osd",
 )
 # OSD_API_URL = getenv('OSD_API_URL')
 print("OSD_API_URL", OSD_API_URL)
