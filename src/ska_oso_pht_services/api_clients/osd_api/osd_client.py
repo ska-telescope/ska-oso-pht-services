@@ -1,11 +1,6 @@
 import json
-import requests
 
-# from os import getenv
-# Load the OSD API URL from the environment variables
-# KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-ost-osd")
-# osd_url = getenv("OSD_API_URL", f"http://ska-oso-pht-services:5000/{KUBE_NAMESPACE}/osd/api/v1/osd")
-# osd_url = getenv("OSD_API_URL", f"http://192.168.49.2/{KUBE_NAMESPACE}/osd/api/v1/osd")
+import requests
 
 SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
 
@@ -34,7 +29,7 @@ def get_osd(cycle_id):
     Raises:
     APIError: If the requested resource is not found or any other error occurs.
     """
-    
+
     response = requests.get(f"{SKA_OSD_API_URL}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
