@@ -1,8 +1,9 @@
-#import json
+# import json
 import unittest
 
 from ska_oso_pht_services.api_clients.osd_api import osd_client
-#from tests.unit.util import VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON, assert_json_is_equal
+
+# from tests.unit.util import VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON, assert_json_is_equal
 
 
 class TestOSDCLIENT(unittest.TestCase):
