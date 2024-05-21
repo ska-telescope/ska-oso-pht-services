@@ -21,7 +21,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
-from ska_oso_pht_services.utils import coordinates, s3_bucket
+from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
 Response = Proposal
 
@@ -213,14 +213,29 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
 
 @error_handler
-def proposal_validate() -> Response:
+def proposal_validate(body: dict) -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
-    :return: a string "post /proposals/validate"
+    :return: a tuple of a boolean of result and
+        an array of message if result is False
     """
     LOGGER.debug("POST PROPOSAL validate")
-    return "post /proposals/validate"
+
+    try:
+        result = validation.validate_proposal(body)
+        return (
+            result,
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when validaing proposal")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
+    # return validation.validate_proposal(body)
+    # return "post validate"
 
 
 @error_handler
