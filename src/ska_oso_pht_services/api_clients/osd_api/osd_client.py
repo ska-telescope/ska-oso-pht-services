@@ -2,10 +2,16 @@ import json
 
 import requests
 
-import os
+from os import getenv
 
-osd_api_url = os.environ['OSD_API_URL']
-print('osd_api_url', osd_api_url)
+OSD_API_URL = getenv('OSD_API_URL')
+print('OSD_API_URL', OSD_API_URL)
+
+ODA_BACKEND_TYPE = getenv('ODA_BACKEND_TYPE')
+print('ODA_BACKEND_TYPE', ODA_BACKEND_TYPE)
+
+ODA_URL = getenv('ODA_URL')
+print('ODA_URL', ODA_URL)
 
 SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
 
@@ -39,7 +45,14 @@ def get_osd(cycle_id):
     if response.status_code == 200:
         # Successful response
         data = json.loads(response.text)
-        return data
+        myobject = {
+            'data': data,
+            'OSD_API_URL': OSD_API_URL,
+            'ODA_BACKEND_TYPE': ODA_BACKEND_TYPE,
+            'ODA_URL': ODA_URL
+        }
+        # return data
+        return myobject
     elif response.status_code == 404:
         # Resource not found
         raise APIError(f"Requested resource not found: {response.status_code}")
