@@ -4,6 +4,8 @@ import requests
 
 from os import getenv
 
+#KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
+#OSD_API_URL = getenv('OSD_API_URL', 'http://ska-ost-osd-rest-test:5000/{KUBE_NAMESPACE}/osd/api/v1/osd')
 OSD_API_URL = getenv('OSD_API_URL')
 print('OSD_API_URL', OSD_API_URL)
 
@@ -13,7 +15,7 @@ print('ODA_BACKEND_TYPE', ODA_BACKEND_TYPE)
 ODA_URL = getenv('ODA_URL')
 print('ODA_URL', ODA_URL)
 
-SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
+#SKA_OSD_API_URL = "http://192.168.49.2/ska-ost-osd/osd/api/v1/osd"
 
 
 class APIError(Exception):
