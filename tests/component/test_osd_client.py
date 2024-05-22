@@ -10,6 +10,10 @@ from ska_oso_pht_services.api_clients.osd_api import osd_client
 from tests.unit.util import VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON, assert_json_is_equal
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
+# OSD_API_URL = getenv(
+#     "OSD_API_URL",
+#     "https://k8s.stfc.skao.int/{KUBE_NAMESPACE}/osd/api/v1/osd",
+# )
 OSD_API_URL = getenv(
     "OSD_API_URL",
     "https://k8s.stfc.skao.int/{KUBE_NAMESPACE}/osd/api/v1/osd",
