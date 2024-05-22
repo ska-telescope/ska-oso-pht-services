@@ -1,12 +1,12 @@
-import json
+# import json
 import unittest
 from http import HTTPStatus
 from os import getenv
 
 import requests
 
-from ska_oso_pht_services.api_clients.osd_api import osd_client
-from tests.unit.util import VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON, assert_json_is_equal
+# from ska_oso_pht_services.api_clients.osd_api import osd_client
+# from tests.unit.util import VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON, assert_json_is_equal
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 # OSD_API_URL = getenv(
