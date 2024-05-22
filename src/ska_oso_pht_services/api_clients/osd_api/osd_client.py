@@ -33,7 +33,6 @@ def get_osd(cycle_id):
     """
 
     response = requests.get(f"{OSD_API_URL}/{OSD_ENDPOINT}?cycle_id={cycle_id}")
-    print("url", f"{OSD_API_URL}/{OSD_ENDPOINT}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
         data = json.loads(response.text)
