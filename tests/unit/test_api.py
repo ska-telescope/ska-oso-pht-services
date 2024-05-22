@@ -9,7 +9,7 @@ from unittest import mock
 from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
-from .util import (  # VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON,
+from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
