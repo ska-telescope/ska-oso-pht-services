@@ -231,18 +231,24 @@ def proposal_validate() -> Response:
     validation process, it returns a string containing the error message.
     """
     LOGGER.debug("POST PROPOSAL validate")
+
+    # get osd data
     c = osd_client
+    osd_data
     try:
         # TODO: replace hard coded cycle id by a parameter
         cycle_id = 1
         osd_data = c.get_osd(cycle_id)
-        return (
-            osd_data,
-            HTTPStatus.OK,
-        )
     except osd_client.APIError as err:
         LOGGER.exception("An error occurred: %s", str(err))
-        return str(err)
+        osd_data = str(err)
+
+    response = {
+        'message': 'post /proposals/validate',
+        'response': osd_data
+    }
+    
+    return response
 
 
 @error_handler
