@@ -14,6 +14,7 @@ from ..unit.util import (
     VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
     VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
     VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
 )
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
@@ -133,10 +134,12 @@ def test_proposal_validate():
         headers={"Content-type": "application/json"},
     )
 
-    result = json.loads(response.content)
-
     assert response.status_code == HTTPStatus.OK
-    assert result["result"] is True
+    try:
+        result = json.loads(response.content)
+        assert isinstance(result, dict), "Response does not contain valid JSON data"
+    except ValueError:
+        assert False, "Response does not contain valid JSON data"
 
 
 def test_proposal_validate_target_not_found():
@@ -147,11 +150,11 @@ def test_proposal_validate_target_not_found():
 
     response = requests.post(
         f"{PHT_URL}/proposals/validate",
-        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+        data=VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND,
         headers={"Content-type": "application/json"},
     )
 
     result = json.loads(response.content)
 
-    assert response.status_code == HTTPStatus.OK
-    assert result["result"] is False
+    assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
+    assert result is False

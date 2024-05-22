@@ -230,10 +230,10 @@ def proposal_validate(body: dict) -> Response:
     LOGGER.debug("POST PROPOSAL validate")
 
     # get osd data
-    c = osd_client
-    cycle_id = 1  # TODO: replace hard coded cycle id by a parameter
-    osd_data = c.get_osd(cycle_id)
-    LOGGER.debug(osd_data)
+    # c = osd_client
+    # cycle_id = 1  # TODO: replace hard coded cycle id by a parameter
+    # osd_data = c.get_osd(cycle_id)
+    # LOGGER.debug(osd_data)
 
     try:
         result = validation.validate_proposal(body)
