@@ -134,12 +134,10 @@ def test_proposal_validate():
         headers={"Content-type": "application/json"},
     )
 
+    result = json.loads(response.content)
+
     assert response.status_code == HTTPStatus.OK
-    try:
-        result = json.loads(response.content)
-        assert isinstance(result, dict), "Response does not contain valid JSON data"
-    except ValueError:
-        assert False, "Response does not contain valid JSON data"
+    assert result["result"] is True
 
 
 def test_proposal_validate_target_not_found():
@@ -150,11 +148,11 @@ def test_proposal_validate_target_not_found():
 
     response = requests.post(
         f"{PHT_URL}/proposals/validate",
-        data=VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND,
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
         headers={"Content-type": "application/json"},
     )
 
     result = json.loads(response.content)
 
-    assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
-    assert result is False
+    assert response.status_code == HTTPStatus.OK
+    assert result["result"] is False
