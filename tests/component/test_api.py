@@ -13,7 +13,7 @@ from ..unit.util import VALID_PROPOSAL_DATA_JSON, VALID_PROPOSAL_FRONTEND_UPDATE
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 PHT_URL = getenv(
-    "PHT_URL", f"http://ska-oso-pht-services-rest-test:5000/{KUBE_NAMESPACE}/pht/api/v1"
+    "PHT_URL", f"http://ska-ost-osd-rest-test:5000/{KUBE_NAMESPACE}/pht/api/v1"
 )
 
 
