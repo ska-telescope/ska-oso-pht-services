@@ -9,7 +9,12 @@ import requests
 from ska_oso_pht_services.connectors.pht_handler import transform_update_proposal
 
 # TODO: add assert_json_is_equal
-from ..unit.util import VALID_PROPOSAL_DATA_JSON, VALID_PROPOSAL_FRONTEND_UPDATE_JSON
+from ..unit.util import (
+    VALID_PROPOSAL_DATA_JSON,
+    VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+)
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 PHT_URL = getenv(
@@ -114,3 +119,39 @@ def test_proposal_put():
 
     # TODO: review pdm for datatype for investigators and investigator_id
     # assert expected == result
+
+
+def test_proposal_validate():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages
+    """
+
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        headers={"Content-type": "application/json"},
+    )
+
+    result = json.loads(response.content)
+
+    assert response.status_code == HTTPStatus.OK
+    assert result["result"] is True
+
+
+def test_proposal_validate_target_not_found():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages
+    """
+
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+        headers={"Content-type": "application/json"},
+    )
+
+    result = json.loads(response.content)
+
+    assert response.status_code == HTTPStatus.OK
+    assert result["result"] is False

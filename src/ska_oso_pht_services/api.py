@@ -22,7 +22,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
-from ska_oso_pht_services.utils import coordinates, s3_bucket
+from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
 Response = Proposal
 
@@ -214,9 +214,9 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
 
 @error_handler
-def proposal_validate() -> Response:
+def proposal_validate(body: dict) -> Response:
     """
-    Function that requests to dummy endpoint POST /proposals/validate are mapped to.
+    Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
     It makes use of the get_osd function to fetch the OSD data for a specified cycle ID.
     If an APIError occurs during the fetching process, osd_data will contain a string with the error message.
@@ -225,17 +225,30 @@ def proposal_validate() -> Response:
     Input Parameters: None
 
     Returns:
-    a string "post /proposals/validate"
+    a tuple of a boolean of result and
+        an array of message if result is False
     """
     LOGGER.debug("POST PROPOSAL validate")
 
-    # get osd data
+    ### get osd data
     c = osd_client
     cycle_id = 1 # TODO: replace hard coded cycle id by a parameter
     osd_data = c.get_osd(cycle_id)
     LOGGER.debug("osd_data", osd_data)
+    ###
 
-    return "post /proposals/validate"
+    try:
+        result = validation.validate_proposal(body)
+        return (
+            result,
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when validaing proposal")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
 
 
 @error_handler

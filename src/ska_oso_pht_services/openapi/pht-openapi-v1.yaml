@@ -77,9 +77,8 @@ paths:
         "200":
           description: OK
           content:
-            text/plain:
-              schema:
-                type: string
+            application/json:
+              schema: {}
   /proposals/list/{identifier}:
     parameters:
     - name: identifier
