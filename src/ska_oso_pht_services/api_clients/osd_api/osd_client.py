@@ -56,7 +56,7 @@ def get_osd(cycle_id):
             "ODA_BACKEND_TYPE": ODA_BACKEND_TYPE,
             "ODA_URL": ODA_URL,
         }
-        #return data
+        # return data
         return myobject
     elif response.status_code == 404:
         # Resource not found
