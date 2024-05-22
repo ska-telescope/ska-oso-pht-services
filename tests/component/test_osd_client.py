@@ -12,7 +12,7 @@ OSD_API_URL = getenv(
     "OSD_API_URL",
     f"http://ska-ost-osd-rest-test:5000/{KUBE_NAMESPACE}/osd/api/v1",
 )
-OSD_ENDPOINT = '/osd'
+OSD_ENDPOINT = 'osd'
 
 class TestOSDCLIENT(unittest.TestCase):
 
