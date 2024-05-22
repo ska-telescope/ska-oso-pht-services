@@ -1,12 +1,15 @@
+import logging
+
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 
-from ska_oso_pht_services.api import LOGGER
 from ska_oso_pht_services.api_clients.osd_api import osd_client
 
 # TODO: use values from OSD after connection is ready
 
 c = osd_client
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _search_objects_by_key(objects, key, value):
