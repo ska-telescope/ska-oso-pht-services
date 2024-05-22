@@ -1,7 +1,12 @@
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 
+from ska_oso_pht_services.api import LOGGER
+from ska_oso_pht_services.api_clients.osd_api import osd_client
+
 # TODO: use values from OSD after connection is ready
+
+c = osd_client
 
 
 def _search_objects_by_key(objects, key, value):
@@ -20,12 +25,17 @@ def validate_proposal(proposal) -> dict:
     """
     validate targets in a proposal
 
+    Makes use of the get_osd() function to fetch the OSD data for a specified cycle ID.
+
     Parameters:
     proposal_str (str): proposal
 
     Returns:
     dict: result of validation and messages
     """
+
+    osd_data = c.get_osd(1)  # TODO: replace hard coded cycle id by a parameter
+    LOGGER.debug(osd_data)
 
     lat_low = -26.82472208
     lat_mid = -30.712925

@@ -17,7 +17,6 @@ from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 from ska_oso_pht_services import oda
-from ska_oso_pht_services.api_clients.osd_api import osd_client
 from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
@@ -228,12 +227,6 @@ def proposal_validate(body: dict) -> Response:
         an array of message if result is False
     """
     LOGGER.debug("POST PROPOSAL validate")
-
-    # get osd data
-    # c = osd_client
-    # cycle_id = 1  # TODO: replace hard coded cycle id by a parameter
-    # osd_data = c.get_osd(cycle_id)
-    # LOGGER.debug(osd_data)
 
     try:
         result = validation.validate_proposal(body)
