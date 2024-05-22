@@ -218,37 +218,24 @@ def proposal_validate() -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to.
 
-    It makes use of the get_osd function to fetch the OSD data for a specified cycle ID
-    and returns the OSD static data along with HTTP status code 200.
-    If an APIError occurs during the fetching process, it returns a string containing
-    the error message.
+    It makes use of the get_osd function to fetch the OSD data for a specified cycle ID.
+    If an APIError occurs during the fetching process, osd_data will contain a string with the error message.
+    osd_data will be used for further manipulation/validation.
 
     Input Parameters: None
 
     Returns:
-    Response object containing the OSD data for the specified cycle ID and HTTP
-    status code 200 if the request is successful. If an APIError occurs during the
-    validation process, it returns a string containing the error message.
+    a string "post /proposals/validate"
     """
     LOGGER.debug("POST PROPOSAL validate")
 
     # get osd data
     c = osd_client
-    osd_data
-    try:
-        # TODO: replace hard coded cycle id by a parameter
-        cycle_id = 1
-        osd_data = c.get_osd(cycle_id)
-    except osd_client.APIError as err:
-        LOGGER.exception("An error occurred: %s", str(err))
-        osd_data = str(err)
+    cycle_id = 1 # TODO: replace hard coded cycle id by a parameter
+    osd_data = c.get_osd(cycle_id)
+    LOGGER.debug("osd_data", osd_data)
 
-    response = {
-        'message': 'post /proposals/validate',
-        'response': osd_data
-    }
-    
-    return response
+    return "post /proposals/validate"
 
 
 @error_handler

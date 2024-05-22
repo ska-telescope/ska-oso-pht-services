@@ -4,7 +4,8 @@ from os import getenv
 import requests
 
 OSD_API_URL = getenv("OSD_API_URL")
-OSD_ENDPOINT = 'osd'
+OSD_ENDPOINT = "osd"
+
 
 class APIError(Exception):
     pass
@@ -32,19 +33,14 @@ def get_osd(cycle_id):
     """
 
     response = requests.get(f"{OSD_API_URL}/{OSD_ENDPOINT}?cycle_id={cycle_id}")
-    print('url', f"{OSD_API_URL}/{OSD_ENDPOINT}?cycle_id={cycle_id}")
+    print("url", f"{OSD_API_URL}/{OSD_ENDPOINT}?cycle_id={cycle_id}")
     if response.status_code == 200:
         # Successful response
         data = json.loads(response.text)
-        object = {
-            'data': data,
-            'osd_url': f"{OSD_API_URL}/{OSD_ENDPOINT}?cycle_id={cycle_id}"
-        }
-        #return data
-        return object
+        return data
     elif response.status_code == 404:
         # Resource not found
-        raise APIError(f"Requested resource not found: {response.status_code}")
+        return APIError(f"Requested resource not found: {response.status_code}")
     else:
         # Other error occurred
-        raise APIError(f"An error occurred: {response.status_code}")
+        return APIError(f"An error occurred: {response.status_code}")
