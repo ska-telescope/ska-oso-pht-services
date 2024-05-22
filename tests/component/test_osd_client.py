@@ -20,7 +20,7 @@ class TestOSDCLIENT(unittest.TestCase):
         response = requests.get(f"{OSD_API_URL}?cycle_id={cycle_id}")
         assert response.status_code == HTTPStatus.OK
 
-        response_content = response.content.decode('utf-8')
+        response_content = response.content.decode("utf-8")
         result = json.loads(response_content)
         expected_json = json.loads(VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON)
         assert_json_is_equal(json.dumps(result), json.dumps(expected_json))

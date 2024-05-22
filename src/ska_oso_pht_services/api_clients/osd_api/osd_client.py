@@ -3,16 +3,7 @@ from os import getenv
 
 import requests
 
-# KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
-# OSD_API_URL = getenv(
-#     "OSD_API_URL",
-#     f"http://ska-ost-osd-rest-test:5000/{KUBE_NAMESPACE}/osd/api/v1/osd",
-# )
 OSD_API_URL = getenv("OSD_API_URL")
-
-ODA_BACKEND_TYPE = getenv("ODA_BACKEND_TYPE")
-
-ODA_URL = getenv("ODA_URL")
 
 
 class APIError(Exception):
