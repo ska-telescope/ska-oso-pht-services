@@ -219,7 +219,6 @@ def proposal_validate(body: dict) -> Response:
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
     It makes use of the get_osd function to fetch the OSD data for a specified cycle ID.
-    If an APIError occurs during the fetching process, osd_data will contain a string with the error message.
     osd_data will be used for further manipulation/validation.
 
     Input Parameters: None
@@ -230,12 +229,11 @@ def proposal_validate(body: dict) -> Response:
     """
     LOGGER.debug("POST PROPOSAL validate")
 
-    ### get osd data
+    # get osd data
     c = osd_client
-    cycle_id = 1 # TODO: replace hard coded cycle id by a parameter
+    cycle_id = 1  # TODO: replace hard coded cycle id by a parameter
     osd_data = c.get_osd(cycle_id)
-    LOGGER.debug("osd_data", osd_data)
-    ###
+    LOGGER.debug(osd_data)
 
     try:
         result = validation.validate_proposal(body)
