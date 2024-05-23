@@ -9,9 +9,6 @@ from ska_oso_pht_services.api_clients.osd_api import osd_client
 
 c = osd_client
 
-LOGGER = logging.getLogger(__name__)
-
-
 def _search_objects_by_key(objects, key, value):
     for obj in objects:
         if key in obj and obj[key] == value:
@@ -37,8 +34,8 @@ def validate_proposal(proposal) -> dict:
     dict: result of validation and messages
     """
 
-    osd_data = c.get_osd(1)  # TODO: replace hard coded cycle id by a parameter
-    LOGGER.debug(osd_data)
+    # TODO use osd_data when ready
+    # osd_data = c.get_osd(1)  # TODO: replace hard coded cycle id by a parameter
 
     lat_low = -26.82472208
     lat_mid = -30.712925
