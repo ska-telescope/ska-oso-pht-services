@@ -217,9 +217,6 @@ def proposal_validate(body: dict) -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
-    It makes use of the get_osd function to fetch the OSD data for a specified cycle ID.
-    osd_data will be used for further manipulation/validation.
-
     Input Parameters: None
 
     Returns:
