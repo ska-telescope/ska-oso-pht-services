@@ -9,6 +9,7 @@ from ska_oso_pht_services.api_clients.osd_api import osd_client
 
 c = osd_client
 
+
 def _search_objects_by_key(objects, key, value):
     for obj in objects:
         if key in obj and obj[key] == value:
