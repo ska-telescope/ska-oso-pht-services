@@ -67,9 +67,6 @@ def test_proposal_get_list():
     response = requests.get(f"{PHT_URL}/proposals/list/DefaultUser")
     result = json.loads(response.content)
 
-    print(response.content)
-    print(response.content)
-
     assert response.status_code == HTTPStatus.OK
     assert result[0]["metadata"]["created_by"] == "DefaultUser"
 
@@ -102,17 +99,8 @@ def test_proposal_put():
     expected = transform_update_proposal(
         json.loads(VALID_PROPOSAL_FRONTEND_UPDATE_JSON)
     )
-    print("response content")
-    print(response.content)
 
     result = transform_update_proposal(json.loads(response.content))
-
-    print("transformed response content")
-    print(result)
-
-    print('result["metadata"]["version"]')
-    print(type(result["metadata"]["version"]))
-    print(result["metadata"]["version"])
 
     del result["metadata"]
     del expected["metadata"]
