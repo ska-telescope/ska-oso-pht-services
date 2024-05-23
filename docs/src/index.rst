@@ -18,5 +18,11 @@ This project provides back-end web services for manipulating, validating and sto
   persistence
   restapi
 
+.. toctree::
+  :maxdepth: 1
+  :caption: Releases
+
+  CHANGELOG.rst
+
 
 
