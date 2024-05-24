@@ -23,8 +23,6 @@ from ska_oso_pht_services.connectors.pht_handler import (
 )
 from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
-from ska_oso_pht_services.api_clients.osd_api import osd_client
-
 Response = Proposal
 
 LOGGER = logging.getLogger(__name__)
@@ -225,25 +223,20 @@ def proposal_validate(body: dict) -> Response:
     a tuple of a boolean of result and
         an array of message if result is False
     """
-    # TODO use osd_data when ready
-    c = osd_client
-    osd_data = c.get_osd(1)  # TODO: replace hard coded cycle id by a parameter
-    return osd_data
+    LOGGER.debug("POST PROPOSAL validate")
 
-    # LOGGER.debug("POST PROPOSAL validate")
-
-    # try:
-    #     result = validation.validate_proposal(body)
-    #     return (
-    #         result,
-    #         HTTPStatus.OK,
-    #     )
-    # except ValueError as err:
-    #     LOGGER.exception("ValueError when validaing proposal")
-    #     return (
-    #         {"error": f"Bad Request '{err.args[0]}'"},
-    #         HTTPStatus.BAD_REQUEST,
-    #     )
+    try:
+        result = validation.validate_proposal(body)
+        return (
+            result,
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when validaing proposal")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
 
 
 @error_handler
