@@ -136,7 +136,6 @@ def get_coordinates(object_name: str):
             redshift = _calculate_redshift(velocity)
         else:
             redshift = None
-
     else:
         # If not found in SIMBAD, search in NED
         try:
