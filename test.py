@@ -1,3 +1,8 @@
+
+import json
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+
 import astropy.units as u
 from astropy.coordinates import Angle, SkyCoord
 from astroquery.exceptions import RemoteServiceError
@@ -159,3 +164,6 @@ def get_coordinates(object_name: str):
         "velocity": velocity,
         "redshift": redshift,
     }
+
+
+print(get_coordinates("M3"))
