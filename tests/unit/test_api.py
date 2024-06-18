@@ -162,7 +162,7 @@ class TestGetCoordinates:
                 "equatorial": {
                     "ra": "00:42:44.330",
                     "dec": "+41:16:07.500",
-                    "redshift": -0.001,
+                    "redshift": -0.001001,
                     "velocity": -300.0,
                 }
             },
