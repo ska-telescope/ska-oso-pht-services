@@ -75,8 +75,8 @@ def validate_proposal(proposal) -> dict:
                 if target_detail is None:
                     result = False
                     messages.append(
-                        f"Target {linked_source} in Observation {obs["obset_id"]} is\
-                        not found in proposal target"
+                        f'Target {linked_source} in Observation {obs["obset_id"]} is'
+                        " not found in proposal target"
                     )
                 else:
                     if obs["array"] == "MID":
@@ -87,10 +87,10 @@ def validate_proposal(proposal) -> dict:
                         ):
                             result = False
                             messages.append(
-                                    f"Target {linked_source} with declination:\
-                                    {target_detail['dec']} in Observation: \
-                                    {obs['obset_id']} is out of range for {obs['array']}"
-                                )
+                                f"Target {linked_source} with declination:"
+                                f' {target_detail["dec"]} in Observation'
+                                f' {obs["obset_id"]} is out of range'
+                            )
                     elif obs["array"] == "LOW":
                         dec_min_low, dec_max_low = _calculate_dec(lat_low, min_ele)
                         if (
@@ -99,9 +99,9 @@ def validate_proposal(proposal) -> dict:
                         ):
                             result = False
                             messages.append(
-                                f"Target {linked_source} with declination: \
-                                {target_detail['dec']} in Observation \
-                                {obs['obset_id']} is out of range"
+                                f"Target {linked_source} with declination:"
+                                f' {target_detail["dec"]} in Observation'
+                                f' {obs["obset_id"]} is out of range'
                             )
     except ValueError as err:
         messages.append(str(err))
