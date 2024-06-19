@@ -49,3 +49,22 @@ VALID_PROPOSAL_UPDATE_RESULT_JSON = load_string_from_file(
 VALID_PROPOSAL_GET_LIST_RESULT_JSON = load_string_from_file(
     "testfile_sample_get_list_proposal_result.json"
 )
+VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON = load_string_from_file(
+    "testfile_get_osd_cycle1.json"
+)
+
+VALID_PROPOSAL_GET_VALIDATE_BODY_JSON = load_string_from_file(
+    "testfile_sample_proposal_get_validation_body.json"
+)
+
+VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON = load_string_from_file(
+    "testfile_sample_proposal_get_validation_result.json"
+)
+
+VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND = load_string_from_file(
+    "testfile_sample_proposal_get_validation_body_target_not_found.json"
+)
+
+VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND = load_string_from_file(
+    "testfile_sample_proposal_get_validation_result_target_not_found.json"
+)

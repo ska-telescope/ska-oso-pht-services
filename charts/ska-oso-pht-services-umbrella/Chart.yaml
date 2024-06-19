@@ -2,17 +2,22 @@ apiVersion: v2
 name: ska-oso-pht-services-umbrella
 description: Helm umbrella chart for the PHT Services
 type: application
-version: 1.0.1
-appVersion: 1.0.1
+version: 1.1.2
+appVersion: 1.1.2
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
 - name: ska-oso-pht-services
-  version: 1.0.1
+  version: 1.1.2
   repository: file://../ska-oso-pht-services
 
 # ODA is used by PHT services for data persisted, and is accessed via the REST API of the ska-db-oda application.
 # The ODA umbrella chart includes ODA API, PostgreSQL database and SKUID
 - name: ska-db-oda-umbrella
-  version: 2.1.3
+  version: 2.1.6
   repository: https://artefact.skao.int/repository/helm-internal
   condition: ska-db-oda.enabled
+
+# OSD is used by PHT services for static data validation as part of the validate endpoint
+- name: ska-ost-osd
+  version: 1.0.2
+  repository: https://artefact.skao.int/repository/helm-internal

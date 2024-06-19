@@ -1,3 +1,4 @@
+-include .make/release.mk
 #
 # CAR_OCI_REGISTRY_HOST, CAR_OCI_REGISTRY_USERNAME and PROJECT_NAME are combined to define
 # the Docker tag for this project. The definition below inherits the standard
@@ -8,7 +9,12 @@ CAR_OCI_REGISTRY_HOST ?= artefact.skao.int
 CAR_OCI_REGISTRY_USERNAME ?= ska-telescope
 PROJECT_NAME = ska-oso-pht-services
 KUBE_NAMESPACE ?= ska-oso-pht-services
+CLUSTER_DOMAIN ?= cluster.local
 RELEASE_NAME ?= test
+
+AWS_PHT_BUCKET_NAME ?=
+AWS_SERVER_PUBLIC_KEY ?=
+AWS_SERVER_SECRET_KEY ?=
 
 # Set sphinx documentation build to fail on warnings (as it is configured
 # in .readthedocs.yaml as well)
@@ -27,6 +33,9 @@ ifneq ($(ENV_CHECK),)
 K8S_CHART_PARAMS = --set ska-oso-pht-services.rest.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
 	--set ska-oso-pht-services.rest.image.registry=$(CI_REGISTRY)/ska-telescope/oso/ska-oso-pht-services
 endif
+
+K8S_CHART_PARAMS += \
+	--set global.cluster_domain=$(CLUSTER_DOMAIN)
 
 # For the staging environment, make k8s-install-chart-car will pull the chart from CAR so we do not need to
 # change any values
@@ -107,7 +116,14 @@ models:  ## generate models from OpenAPI spec
 
 dev-up: K8S_CHART_PARAMS = \
 	--set ska-oso-pht-services.rest.image.tag=$(VERSION) \
-	--set ska-oso-pht-services.rest.ingress.enabled=true
+	--set ska-oso-pht-services.rest.ingress.enabled=true \
+	--set ska-oso-pht-services.secretProvider.enabled=false \
+	--set global.minikube=true \
+	--set global.env.aws_pht_bucket_name=$(AWS_PHT_BUCKET_NAME) \
+	--set global.env.aws_server_public_key=$(AWS_SERVER_PUBLIC_KEY) \
+	--set global.env.aws_server_secret_key=$(AWS_SERVER_SECRET_KEY) \
+	--set global.cluster_domain=cluster.local
+
 dev-up: k8s-namespace k8s-install-chart k8s-wait ## bring up developer deployment
 
 dev-down: k8s-uninstall-chart k8s-delete-namespace  ## tear down developer deployment

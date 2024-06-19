@@ -27,13 +27,13 @@ paths:
                 type: string
   /proposals/{identifier}:
     parameters:
-      - name: identifier
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+    - name: identifier
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
     get:
       summary: Get a proposal
       description: |
@@ -44,7 +44,7 @@ paths:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: './prsl-openapi-v1.yaml#/Proposal'
     put:
       summary: Edit a proposal
@@ -77,18 +77,17 @@ paths:
         "200":
           description: OK
           content:
-            text/plain:
-              schema:
-                type: string
+            application/json:
+              schema: {}
   /proposals/list/{identifier}:
     parameters:
-      - name: identifier
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+    - name: identifier
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
     get:
       summary: Get a list of proposal
       description: |
@@ -99,24 +98,73 @@ paths:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   anyOf:
-                    - $ref: './prsl-openapi-v1.yaml#/Proposal'
-  /upload/pdf:
-    post:
+                  - $ref: './prsl-openapi-v1.yaml#/Proposal'
+  /upload/signedurl/{filename}:
+    get:
       summary: Upload a pdf
       description: |
         Upload a pdf
       operationId: ska_oso_pht_services.api.upload_pdf
-      requestBody:
-        content:
-          application/json:
-            schema: {}
+      parameters:
+      - name: filename
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         "200":
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
+          content:
+            text/plain:
+              schema:
+                type: string
+  /download/signedurl/{filename}:
+    get:
+      summary: Download signed url
+      description: |
+        Download signed url
+      operationId: ska_oso_pht_services.api.download_pdf
+      parameters:
+      - name: filename
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
           content:
             text/plain:
               schema:
@@ -128,20 +176,20 @@ paths:
         get coordinates
       operationId: ska_oso_pht_services.api.get_systemcoordinates
       parameters:
-        - name: identifier
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-        - name: reference_frame
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
+      - name: identifier
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: reference_frame
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         "200":
           description: OK

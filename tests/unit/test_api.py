@@ -13,6 +13,10 @@ from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON,
+    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND,
     VALID_PROPOSAL_UPDATE_RESULT_JSON,
     assert_json_is_equal,
 )
@@ -102,63 +106,103 @@ def test_proposal_edit(mock_oda, client):
 
 
 def test_proposal_validate(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/proposals/validate", data={})
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        headers={"Content-type": "application/json"},
+    )
 
+    assert_json_is_equal(result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON)
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "post /proposals/validate"
 
 
-def test_upload_pdf(client):
-    result = client.post("/ska-oso-pht-services/pht/api/v1/upload/pdf", data={})
+def test_proposal_validate_target_not_found(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+        headers={"Content-type": "application/json"},
+    )
 
+    assert_json_is_equal(
+        result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
+    )
     assert result.status_code == HTTPStatus.OK
-    assert result.text == "post /upload/pdf"
+
+
+class TestGetSignedUrl:
+    test_case = "prsl-1234-science.pdf"
+
+    def test_get_upload_signed_url(self, client):
+        for data in self.test_case:
+            self.get_upload_signed_url(client, *data)
+
+    def test_get_download_signed_url(self, client):
+        for data in self.test_case:
+            self.get_download_signed_url(client, *data)
+
+    def get_upload_signed_url(self, client, name):
+        base_url = "/ska-oso-pht-services/pht/api/v1/upload/signedurl/"
+
+        response = client.get(f"{base_url}{name}")
+        assert response.status_code == HTTPStatus.OK
+
+    def get_download_signed_url(self, client, name):
+        base_url = "/ska-oso-pht-services/pht/api/v1/download/signedurl/"
+
+        response = client.get(f"{base_url}{name}")
+        assert response.status_code == HTTPStatus.OK
 
 
 class TestGetCoordinates:
     test_cases = [
         (
-            "LHS337",
-            "any",
-            {
-                "equatorial": {
-                    "right_ascension": "12:38:49.098",
-                    "declination": "-38:22:53.670",
-                }
-            },
-        ),
-        (
             "M31",
             "test",
             {
                 "equatorial": {
-                    "right_ascension": "00:42:44.330",
-                    "declination": "+41:16:07.500",
+                    "ra": "00:42:44.330",
+                    "dec": "+41:16:07.500",
+                    "redshift": -0.001,
+                    "velocity": -300.0,
                 }
             },
         ),
         (
-            "NGC253",
-            "any",
+            "N10",
+            "galactic",
             {
-                "equatorial": {
-                    "right_ascension": "00:47:33.134",
-                    "declination": "-25:17:19.680",
+                "galactic": {
+                    "lat": -78.5856,
+                    "lon": 354.21,
+                    "redshift": 0.022946,
+                    "velocity": 6800.0,
                 }
             },
         ),
-        ("N10", "galactic", {"galactic": {"latitude": -78.5856, "longitude": 354.21}}),
         (
             "N10",
             "equatorial",
             {
                 "equatorial": {
-                    "declination": "-33:51:30.197",
-                    "right_ascension": "00:08:34.539",
+                    "dec": "-33:51:30.197",
+                    "ra": "00:08:34.539",
+                    "redshift": 0.022946,
+                    "velocity": 6800.0,
                 }
             },
         ),
-        ("M1", "", {"equatorial": {"declination": "", "right_ascension": ""}}),
+        (
+            "M1",
+            "",
+            {
+                "equatorial": {
+                    "dec": "",
+                    "ra": "",
+                    "redshift": None,
+                    "velocity": None,
+                }
+            },
+        ),
     ]
 
     def get_coordinates_generic(self, client, name, reference_frame, expected_response):

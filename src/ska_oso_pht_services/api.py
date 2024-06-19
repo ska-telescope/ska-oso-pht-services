@@ -21,7 +21,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
-from ska_oso_pht_services.utils import coordinates
+from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
 Response = Proposal
 
@@ -213,25 +213,72 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
 
 @error_handler
-def proposal_validate() -> Response:
+def proposal_validate(body: dict) -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
-    :return: a string "post /proposals/validate"
+    Input Parameters: None
+
+    Returns:
+    a tuple of a boolean of result and
+        an array of message if result is False
     """
     LOGGER.debug("POST PROPOSAL validate")
-    return "post /proposals/validate"
+
+    try:
+        result = validation.validate_proposal(body)
+        return (
+            result,
+            HTTPStatus.OK,
+        )
+    except ValueError as err:
+        LOGGER.exception("ValueError when validaing proposal")
+        return (
+            {"error": f"Bad Request '{err.args[0]}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
 
 
 @error_handler
-def upload_pdf() -> Response:
+def upload_pdf(filename: str) -> Response:
     """
-    Function that requests to dummy endpoint POST /upload/pdf are mapped to
+    Function that requests to endpoint GET /upload/signedurl/{filename}
+    are mapped to
 
-    :return: a string "post /upload/pdf"
+    :param filename: filename of the uploaded document
+    :return: a string "/upload/signedurl/{filename}"
     """
-    LOGGER.debug("POST PROPOSAL upload pdf")
-    return "post /upload/pdf"
+    LOGGER.debug("GET Upload Signed URL")
+    s3_client = s3_bucket.get_aws_client()
+    upload_signed_url = s3_bucket.create_presigned_url_upload_pdf(
+        filename, s3_client, 60
+    )
+
+    return (
+        upload_signed_url,
+        HTTPStatus.OK,
+    )
+
+
+@error_handler
+def download_pdf(filename: str) -> Response:
+    """
+    Function that requests to endpoint GET /download/signedurl/{filename}
+    are mapped to
+
+    :param filename: filename of the uploaded document
+    :return: a string "/download/signedurl/{filename}"
+    """
+    LOGGER.debug("GET Download Signed URL")
+    s3_client = s3_bucket.get_aws_client()
+    download_signed_url = s3_bucket.create_presigned_url_download_pdf(
+        filename, s3_client, 60
+    )
+
+    return (
+        download_signed_url,
+        HTTPStatus.OK,
+    )
 
 
 @error_handler
@@ -250,9 +297,7 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
              containing a nested dictionary with galactic or equatorial coordinates:
              {"galactic":
                 {"latitude": 78.7068,"longitude": 42.217}
-             }
-             or
-             {"equatorial":
+             } or {"equatorial":
                 {"right_ascension": "+28:22:38.200",
                 "declination": "13:41:11.620"}
              }
@@ -262,8 +307,10 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
     LOGGER.debug("POST PROPOSAL get coordinates: %s", identifier)
     response = coordinates.get_coordinates(identifier)
     if reference_frame.lower() == "galactic":
-        return coordinates.convert_to_galactic(response["ra"], response["dec"])
+        return coordinates.convert_to_galactic(
+            response["ra"], response["dec"], response["velocity"], response["redshift"]
+        )
     else:
         return coordinates.round_coord_to_3_decimal_places(
-            response["ra"], response["dec"]
+            response["ra"], response["dec"], response["velocity"], response["redshift"]
         )
