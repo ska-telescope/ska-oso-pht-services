@@ -99,7 +99,9 @@ def _calculate_redshift(radial_velocity, speed_light=299792.458):
         redshift = radial_velocity / speed_light
     else:
         # Relativistic formula
-        redshift = (1 + radial_velocity/speed_light)**0.5 / (1 - radial_velocity/speed_light)**0.5 - 1
+        redshift = (1 + radial_velocity / speed_light) ** 0.5 / (
+            1 - radial_velocity / speed_light
+        ) ** 0.5 - 1
     return redshift
 
 

@@ -12,6 +12,7 @@ def _search_objects_by_key(objects, key, value):
             return obj
     return None
 
+
 def _calculate_dec(lat, min_elevation):
     return lat - 90 + min_elevation, 90 - lat - min_elevation
 
@@ -31,7 +32,7 @@ def validate_proposal(proposal) -> dict:
 
     # TODO use osd_data when ready
     # c = osd_client
-    # osd_data = c.get_osd(1)  
+    # osd_data = c.get_osd(1)
     # TODO: replace hard coded cycle id by a parameter
 
     lat_low = -26.82472208
@@ -61,10 +62,19 @@ def validate_proposal(proposal) -> dict:
                 )
             elif target["reference_coordinate"]["kind"] == "galactic":
                 targets_in_degree.append(
-                    {"target_name": target["target_name"], 
-                    "dec": float(SkyCoord(l=target["reference_coordinate"]["lon"] * u.degree, \
-                            b=target["reference_coordinate"]["lat"] * u.degree, frame="galactic")
-                            .transform_to("icrs").dec.to_string(decimal=True, unit=u.degree))})
+                    {
+                        "target_name": target["target_name"],
+                        "dec": float(
+                            SkyCoord(
+                                l=target["reference_coordinate"]["lon"] * u.degree,
+                                b=target["reference_coordinate"]["lat"] * u.degree,
+                                frame="galactic",
+                            )
+                            .transform_to("icrs")
+                            .dec.to_string(decimal=True, unit=u.degree)
+                        ),
+                    }
+                )
 
         for obs in proposal["proposal_info"]["observation_set"]:
             for linked_source in obs["linked_sources"]:
