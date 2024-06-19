@@ -1,8 +1,5 @@
 from datetime import datetime
 
-import astropy.units as u
-from astropy.coordinates import Angle
-
 
 def transform_update_proposal(data: dict) -> dict:
     """

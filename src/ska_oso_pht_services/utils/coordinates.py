@@ -135,7 +135,7 @@ def get_coordinates(object_name: str):
             ),
             None,
         )
-        if velocity != None:
+        if velocity is not None:
             redshift = _calculate_redshift(velocity)
         else:
             redshift = None
