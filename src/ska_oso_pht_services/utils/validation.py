@@ -12,10 +12,8 @@ def _search_objects_by_key(objects, key, value):
             return obj
     return None
 
-
-def _convert_galactic_to_equatorial_and_get_dec(lat, lon):
-    gc = SkyCoord(l=lon * u.degree, b=lat * u.degree, frame="galactic")
-    return float(gc.transform_to("icrs").dec.to_string(decimal=True, unit=u.degree))
+def _calculate_dec(lat, min_elevation):
+    return lat - 90 + min_elevation, 90 - lat - min_elevation
 
 
 def validate_proposal(proposal) -> dict:
@@ -33,17 +31,12 @@ def validate_proposal(proposal) -> dict:
 
     # TODO use osd_data when ready
     # c = osd_client
-    # osd_data = c.get_osd(1)  # TODO: replace hard coded cycle id by a parameter
+    # osd_data = c.get_osd(1)  
+    # TODO: replace hard coded cycle id by a parameter
 
     lat_low = -26.82472208
     lat_mid = -30.712925
     min_ele = 15  # TODO: replace when OSD is in place in our backend
-
-    dec_min_low = lat_low - 90 + min_ele
-    dec_max_low = 90 - lat_low - min_ele
-
-    dec_min_mid = lat_mid - 90 + min_ele
-    dec_max_mid = 90 - lat_mid - min_ele
 
     result = True
 
@@ -67,17 +60,14 @@ def validate_proposal(proposal) -> dict:
                     {"target_name": target["target_name"], "dec": dec_to_decimal}
                 )
             elif target["reference_coordinate"]["kind"] == "galactic":
-                dec = _convert_galactic_to_equatorial_and_get_dec(
-                    target["reference_coordinate"]["lat"],
-                    target["reference_coordinate"]["lon"],
-                )
                 targets_in_degree.append(
-                    {"target_name": target["target_name"], "dec": dec}
-                )
+                    {"target_name": target["target_name"], 
+                    "dec": float(SkyCoord(l=target["reference_coordinate"]["lon"] * u.degree, \
+                            b=target["reference_coordinate"]["lat"] * u.degree, frame="galactic")
+                            .transform_to("icrs").dec.to_string(decimal=True, unit=u.degree))})
 
         for obs in proposal["proposal_info"]["observation_set"]:
             for linked_source in obs["linked_sources"]:
-                print(linked_source)
                 target_detail = _search_objects_by_key(
                     targets_in_degree, "target_name", linked_source
                 )
@@ -90,6 +80,7 @@ def validate_proposal(proposal) -> dict:
                     )
                 else:
                     if obs["array"] == "MID":
+                        dec_min_mid, dec_max_mid = _calculate_dec(lat_mid, min_ele)
                         if (
                             target_detail["dec"] < dec_min_mid
                             or target_detail["dec"] > dec_max_mid
@@ -101,6 +92,7 @@ def validate_proposal(proposal) -> dict:
                                 f' {obs["obset_id"]} is out of range'
                             )
                     elif obs["array"] == "LOW":
+                        dec_min_low, dec_max_low = _calculate_dec(lat_low, min_ele)
                         if (
                             target_detail["dec"] < dec_min_low
                             or target_detail["dec"] > dec_max_low
