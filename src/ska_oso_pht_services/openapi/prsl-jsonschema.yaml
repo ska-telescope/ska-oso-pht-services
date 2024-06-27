@@ -1,0 +1,1142 @@
+$defs:
+  CrossScanParameters:
+    description: 'CrossScanParameters defines the properties of an observing pattern
+      that
+
+      uses a cross scan observing pattern, typically used for pointing
+
+      calibrations.'
+    properties:
+      kind:
+        const: CrossScanParameters
+        default: CrossScanParameters
+        enum:
+        - CrossScanParameters
+        title: Kind
+        type: string
+      offset_arcsec:
+        default: 0.0
+        title: Offset Arcsec
+        type: number
+    title: CrossScanParameters
+    type: object
+  DataProductSDP:
+    properties:
+      data_products_sdp_id:
+        description: Unique identifier for the Data Products SDP class
+        title: Data Products Sdp Id
+        type: string
+      options:
+        description: Observatory options
+        items:
+          type: string
+        title: Options
+        type: array
+      observation_set_refs:
+        description: Observation
+        items:
+          type: string
+        title: Observation Set Refs
+        type: array
+      image_size:
+        description: Image Size
+        title: Image Size
+        type: string
+      pixel_size:
+        description: Pixel Size
+        title: Pixel Size
+        type: string
+      weighting:
+        description: Weighting
+        title: Weighting
+        type: string
+    required:
+    - data_products_sdp_id
+    - options
+    - observation_set_refs
+    - image_size
+    - pixel_size
+    - weighting
+    title: DataProductSDP
+    type: object
+  DataProductSRC:
+    properties:
+      data_products_src_id:
+        description: Unique identifier for the Data Products SRC-Net class
+        title: Data Products Src Id
+        type: string
+    required:
+    - data_products_src_id
+    title: DataProductSRC
+    type: object
+  Document:
+    properties:
+      document_id:
+        description: Unique identifier for the Documents class
+        title: Document Id
+        type: string
+      link:
+        description: URL link of the document
+        format: uri
+        maxLength: 2083
+        minLength: 1
+        title: Link
+        type: string
+      type:
+        description: Type/usage of document being stored
+        title: Type
+        type: string
+    required:
+    - document_id
+    - link
+    - type
+    title: Document
+    type: object
+  EquatorialCoordinates:
+    description: SiderealTarget represents the argument for SKA scheduling block.
+    properties:
+      kind:
+        const: equatorial
+        default: equatorial
+        enum:
+        - equatorial
+        title: Kind
+        type: string
+      ra:
+        anyOf:
+        - type: number
+        - type: string
+        default: 0.0
+        title: Ra
+      dec:
+        anyOf:
+        - type: number
+        - type: string
+        default: 0.0
+        title: Dec
+      reference_frame:
+        allOf:
+        - $ref: '#/$defs/EquatorialCoordinatesReferenceFrame'
+        default: icrs
+      unit:
+        anyOf:
+        - type: string
+        - items:
+            type: string
+          type: array
+        - maxItems: 2
+          minItems: 2
+          prefixItems:
+          - type: string
+          - type: string
+          type: array
+        default:
+        - hourangle
+        - deg
+        title: Unit
+    title: EquatorialCoordinates
+    type: object
+  EquatorialCoordinatesReferenceFrame:
+    description: Enumeration of reference frames supported by an EquatorialCoordinates
+    enum:
+    - icrs
+    - fk5
+    title: EquatorialCoordinatesReferenceFrame
+    type: string
+  FivePointParameters:
+    description: 'FivePointParameters defines the properties of an observing pattern
+      that
+
+      uses a five-point observing pattern centred on a reference position.'
+    properties:
+      kind:
+        const: FivePointParameters
+        default: FivePointParameters
+        enum:
+        - FivePointParameters
+        title: Kind
+        type: string
+      offset_arcsec:
+        default: 0.0
+        title: Offset Arcsec
+        type: number
+    title: FivePointParameters
+    type: object
+  HorizontalCoordinates:
+    description: DriftScanTarget defines AltAz target for SKA scheduling block.
+    properties:
+      kind:
+        const: horizontal
+        default: horizontal
+        enum:
+        - horizontal
+        title: Kind
+        type: string
+      az:
+        title: Az
+        type: number
+      el:
+        title: El
+        type: number
+      unit:
+        anyOf:
+        - type: string
+        - items:
+            type: string
+          type: array
+        - maxItems: 2
+          minItems: 2
+          prefixItems:
+          - type: string
+          - type: string
+          type: array
+        default:
+        - deg
+        - deg
+        title: Unit
+      reference_frame:
+        allOf:
+        - $ref: '#/$defs/HorizontalCoordinatesReferenceFrame'
+        default: altaz
+    required:
+    - az
+    - el
+    title: HorizontalCoordinates
+    type: object
+  HorizontalCoordinatesReferenceFrame:
+    const: altaz
+    description: Enumeration of reference frames supported by a HorizontalCoordinates.
+    enum:
+    - altaz
+    title: HorizontalCoordinatesReferenceFrame
+    type: string
+  Info:
+    properties:
+      title:
+        default: ''
+        description: Title of the proposal
+        title: Title
+        type: string
+      proposal_type:
+        allOf:
+        - $ref: '#/$defs/ProposalType'
+        description: Proposal type and optional sub-type combination
+      abstract:
+        default: ''
+        description: Abstract of the proposal
+        title: Abstract
+        type: string
+      science_category:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Science category of the proposal
+        title: Science Category
+      targets:
+        description: List of targets associated with the proposal
+        items:
+          $ref: '#/$defs/Target'
+        title: Targets
+        type: array
+      documents:
+        description: List of documents associated with the proposal
+        items:
+          $ref: '#/$defs/Document'
+        title: Documents
+        type: array
+      investigators:
+        description: Information on the investigators that have been invited onto
+          the proposal
+        items:
+          $ref: '#/$defs/Investigator'
+        title: Investigators
+        type: array
+      observation_sets:
+        description: List of observations associated with the proposal
+        items:
+          $ref: '#/$defs/ObservationSets'
+        title: Observation Sets
+        type: array
+      data_product_sdps:
+        description: List of data products associated with the SDP
+        items:
+          $ref: '#/$defs/DataProductSDP'
+        title: Data Product Sdps
+        type: array
+      data_product_src_nets:
+        description: List of data products associated with the SRC-Net
+        items:
+          $ref: '#/$defs/DataProductSRC'
+        title: Data Product Src Nets
+        type: array
+      results:
+        description: List of target/observation set combinations with SensCalc results
+        items:
+          $ref: '#/$defs/Result'
+        title: Results
+        type: array
+    title: Info
+    type: object
+  Integration:
+    properties:
+      supplied_type:
+        const: integration
+        default: integration
+        enum:
+        - integration
+        title: Supplied Type
+        type: string
+      continuum:
+        anyOf:
+        - $ref: '#/$defs/Quantity'
+        - type: 'null'
+        description: Continuum
+      spectral:
+        anyOf:
+        - $ref: '#/$defs/Quantity'
+        - type: 'null'
+        description: Spectral
+    required:
+    - continuum
+    - spectral
+    title: Integration
+    type: object
+  Investigator:
+    properties:
+      investigator_id:
+        description: Unique identifier for the Proposal investigators class
+        title: Investigator Id
+        type: string
+      given_name:
+        description: First/fore name of the investigator
+        title: Given Name
+        type: string
+      family_name:
+        description: family name of the investigator
+        title: Family Name
+        type: string
+      email:
+        description: Email address for the investigator
+        format: email
+        title: Email
+        type: string
+      organization:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Organization to which the investigator belongs
+        title: Organization
+      for_phd:
+        default: false
+        description: Is this to count towards a qualification
+        title: For Phd
+        type: boolean
+      principal_investigator:
+        default: false
+        description: Is this a principle investigator for the proposal
+        title: Principal Investigator
+        type: boolean
+    required:
+    - investigator_id
+    - given_name
+    - family_name
+    - email
+    title: Investigator
+    type: object
+  LowArray:
+    properties:
+      array:
+        const: ska_low
+        default: ska_low
+        enum:
+        - ska_low
+        title: Array
+        type: string
+      subarray:
+        allOf:
+        - $ref: '#/$defs/SubArrayLOW'
+        default: aa1
+        description: Sub Array
+      number_of_stations:
+        default: 0
+        description: Number of stations to use in the observation
+        maximum: 512
+        minimum: 0
+        title: Number Of Stations
+        type: integer
+      spectral_averaging:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Spectral Averaging
+        title: Spectral Averaging
+    title: LowArray
+    type: object
+  Metadata:
+    description: Represents metadata about other entities.
+    properties:
+      version:
+        default: 1
+        title: Version
+        type: integer
+      created_by:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        title: Created By
+      created_on:
+        format: date-time
+        title: Created On
+        type: string
+      last_modified_by:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        title: Last Modified By
+      last_modified_on:
+        format: date-time
+        title: Last Modified On
+        type: string
+    title: Metadata
+    type: object
+  MidArray:
+    properties:
+      array:
+        const: ska_mid
+        default: ska_mid
+        enum:
+        - ska_mid
+        title: Array
+        type: string
+      subarray:
+        allOf:
+        - $ref: '#/$defs/SubArrayMID'
+        default: aa1
+        description: Sub Array
+      weather:
+        default: 3
+        description: Amount of accepted rainfall in mm
+        maximum: 25
+        minimum: 3
+        title: Weather
+        type: integer
+      number_15_antennas:
+        default: 0
+        description: Number of 15mm antennas to use in the observation
+        maximum: 133
+        minimum: 0
+        title: Number 15 Antennas
+        type: integer
+      number_13_antennas:
+        default: 0
+        description: Number of 13.5mm antennas to use in the observation
+        maximum: 64
+        minimum: 0
+        title: Number 13 Antennas
+        type: integer
+      number_sub_bands:
+        default: 0
+        description: Number of Sub bands
+        maximum: 32
+        minimum: 0
+        title: Number Sub Bands
+        type: integer
+      elevation:
+        default: 15
+        description: Elevation from the horizon to be used
+        maximum: 90
+        minimum: 15
+        title: Elevation
+        type: integer
+      tapering:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: tapering
+        title: Tapering
+    title: MidArray
+    type: object
+  ObservationSets:
+    properties:
+      observation_set_id:
+        description: Unique identifier for Observation Sets
+        title: Observation Set Id
+        type: string
+      group_id:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Grouping identifier
+        title: Group Id
+      observing_band:
+        allOf:
+        - $ref: '#/$defs/ObservingBand'
+        description: Observing Band
+      array_details:
+        description: Array details specific to the telescope selected
+        discriminator:
+          mapping:
+            ska_low: '#/$defs/LowArray'
+            ska_mid: '#/$defs/MidArray'
+          propertyName: array
+        oneOf:
+        - $ref: '#/$defs/MidArray'
+        - $ref: '#/$defs/LowArray'
+        title: Array Details
+      observation_type_details:
+        allOf:
+        - $ref: '#/$defs/ObservationTypeDetails'
+        description: Observation type details
+      details:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Details
+        title: Details
+    required:
+    - observation_set_id
+    - observing_band
+    - observation_type_details
+    title: ObservationSets
+    type: object
+  ObservationType:
+    enum:
+    - continuum
+    - zoom
+    title: ObservationType
+    type: string
+  ObservationTypeDetails:
+    properties:
+      observation_type:
+        allOf:
+        - $ref: '#/$defs/ObservationType'
+        description: Observation type
+      bandwidth:
+        allOf:
+        - $ref: '#/$defs/Quantity'
+        description: Bandwidth
+      central_frequency:
+        allOf:
+        - $ref: '#/$defs/Quantity'
+        description: Central Frequency
+      supplied:
+        anyOf:
+        - $ref: '#/$defs/Supplied'
+        - type: 'null'
+        default: null
+        description: Integration Time or sensitivity object
+      spectral_resolution:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Spectral Resolution
+        title: Spectral Resolution
+      effective_resolution:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Effective resolution
+        title: Effective Resolution
+      image_weighting:
+        anyOf:
+        - type: string
+        - type: 'null'
+        default: null
+        description: Image Weighting
+        title: Image Weighting
+    required:
+    - observation_type
+    - bandwidth
+    - central_frequency
+    title: ObservationTypeDetails
+    type: object
+  ObservingBand:
+    enum:
+    - low_band
+    - mid_band_1
+    - mid_band_2
+    - mid_band_3
+    - mid_band_4
+    title: ObservingBand
+    type: string
+  PointingKind:
+    enum:
+    - FivePointParameters
+    - SinglePointParameters
+    - CrossScanParameters
+    - RasterParameters
+    - StarRasterParameters
+    title: PointingKind
+    type: string
+  PointingPattern:
+    description: 'PointingPattern holds the user-configured pointing patterns and
+      current active
+
+      pattern for receptor pointing patterns associated with a target.
+
+
+      One of each pointing pattern type can be held in the parameters list. Only the
+
+      active pattern will be used for observing; the remainder provide an easy way
+      to
+
+      recover previously edited observing parameters for the target.'
+    properties:
+      active:
+        allOf:
+        - $ref: '#/$defs/PointingKind'
+        default: SinglePointParameters
+      parameters:
+        items:
+          discriminator:
+            mapping:
+              CrossScanParameters: '#/$defs/CrossScanParameters'
+              FivePointParameters: '#/$defs/FivePointParameters'
+              RasterParameters: '#/$defs/RasterParameters'
+              SinglePointParameters: '#/$defs/SinglePointParameters'
+              StarRasterParameters: '#/$defs/StarRasterParameters'
+            propertyName: kind
+          oneOf:
+          - $ref: '#/$defs/FivePointParameters'
+          - $ref: '#/$defs/CrossScanParameters'
+          - $ref: '#/$defs/SinglePointParameters'
+          - $ref: '#/$defs/RasterParameters'
+          - $ref: '#/$defs/StarRasterParameters'
+        minItems: 1
+        title: Parameters
+        type: array
+    title: PointingPattern
+    type: object
+  ProposalStatus:
+    enum:
+    - accepted
+    - draft
+    - rejected
+    - submitted
+    - under review
+    - withdrawn
+    title: ProposalStatus
+    type: string
+  ProposalSubType:
+    enum:
+    - target_of_opportunity
+    - joint_proposal
+    - coordinated_proposal
+    - long_term_proposal
+    title: ProposalSubType
+    type: string
+  ProposalType:
+    description: Represents the categories of a proposal.
+    properties:
+      main_type:
+        allOf:
+        - $ref: '#/$defs/ProposalTypeENUM'
+        default: standard_proposal
+        description: Type of the proposal
+      sub_type:
+        description: Optional sub-type of the proposal
+        items:
+          $ref: '#/$defs/ProposalSubType'
+        title: Sub Type
+        type: array
+    title: ProposalType
+    type: object
+  ProposalTypeENUM:
+    enum:
+    - standard_proposal
+    - key_science_proposal
+    - director_time_proposal
+    title: ProposalTypeENUM
+    type: string
+  Quantity:
+    properties:
+      value:
+        title: Value
+        type: number
+      unit:
+        title: Unit
+        type: string
+    required:
+    - value
+    title: Quantity
+    type: object
+  RadialVelocity:
+    description: 'Radial velocity measures the line-of-sight velocity of an astronomical
+
+      source.
+
+
+      In principle, the radial velocity can be converted to and from the target
+
+      redshift. However, these values are persisted separately to give the user
+
+      the option of inputting either value.
+
+
+      A velocity must also define the reference frame and definition that are
+
+      applicable to the velocity. By default, these have values of:
+
+
+      - definition = RADIO
+
+      - reference_frame = LSRK
+
+      - redshift = 0.0'
+    properties:
+      quantity:
+        $ref: '#/$defs/RadialVelocityQuantity'
+      definition:
+        allOf:
+        - $ref: '#/$defs/RadialVelocityDefinition'
+        default: RADIO
+      reference_frame:
+        allOf:
+        - $ref: '#/$defs/RadialVelocityReferenceFrame'
+        default: LSRK
+      redshift:
+        default: 0.0
+        title: Redshift
+        type: number
+    title: RadialVelocity
+    type: object
+  RadialVelocityDefinition:
+    description: "Enumeration of reference definitions supported by a RadialVelocity.\n\
+      \nThe sky frequency (\u03BD) at which we must observe a spectral line is derived\n\
+      from the rest frequency of the spectral line (\u03BD\u2080), the line-of-sight\n\
+      velocity of the source (V), and the speed of light (c). The relativistic\nvelocity,\
+      \ or true line-of-sight velocity, is related to the observed and\nrest frequencies\
+      \ by\n\n    V= c * (\u03BD\u2080\xB2\u2212 \u03BD\xB2) / (v\u2080\xB2 + v\xB2\
+      )\n\nThis equation is a bit cumbersome to use; in astronomy two different\n\
+      approximations are typically used:\n\nOptical Velocity:\n\n    Voptical = c\
+      \ * (\u03BB \u2212 \u03BB\u2080) / \u03BB\u2080 = cz\n\n(z is the redshift of\
+      \ the source; \u03BB and \u03BB\u2080 are the corresponding observed\nand rest\
+      \ wavelengths, respectively)\n\nRadio Velocity:\n\n    Vradio = c * (\u03BD\u2080\
+      \ \u2212 \u03BD) / v\u2080 = c * (\u03BB\u2212\u03BB\u2080) / \u03BB\n\nThe\
+      \ radio and optical velocities are not identical. Particularly, Voptical\nand\
+      \ Vradio diverge for large velocities. Optical velocities are commonly\nused\
+      \ for (Helio/Barycentric) extragalactic observations; (LSRK) radio\nvelocities\
+      \ are typical for Galactic observations.\n\nTaken from https://science.nrao.edu/facilities/vla/docs/manuals/obsguide/modes/line"
+    enum:
+    - OPTICAL
+    - RADIO
+    - RELATIVISTIC
+    title: RadialVelocityDefinition
+    type: string
+  RadialVelocityQuantity:
+    properties:
+      value:
+        title: Value
+        type: number
+      unit:
+        enum:
+        - m / s
+        - km / s
+        title: Unit
+        type: string
+    required:
+    - value
+    title: RadialVelocityQuantity
+    type: object
+  RadialVelocityReferenceFrame:
+    description: "Reference frame in which the radial velocity is defined.\n\nThe\
+      \ Earth rotates, revolves around the Sun, rotates around the Galaxy,\nmoves\
+      \ within the Local Group, and shows motion against the Cosmic\nMicrowave Background.\
+      \ As for the convention above, any source velocity\nmust therefore also always\
+      \ be specified relative to a reference frame.\n\nVarious velocity rest frames\
+      \ are used in the literature. The following\ntable lists their name, the motion\
+      \ that is corrected for, and the maximum\namplitude of the velocity correction.\
+      \ Each rest frame correction is\nincremental to the preceding row:\n\nVelocity\
+      \                     Rest Frame                              Correct for +\
+      \ max correction (km/s)\n===========================  ======================================\
+      \  ======================================\nTopocentric                  Telescope\
+      \                                   Nothing (0)\nGeocentric                \
+      \   Earth Center                            Earth rotation (0.5)\nEarth-Moon\
+      \ Barycentric       Earth+Moon center of mass               Motion around Earth+Moon\
+      \ center of mass (0.013)\nHeliocentric                 Center of the Sun   \
+      \                        Earth orbital motion (30)\nBarycentric            \
+      \      Earth+Sun center of mass                    Earth+Sun center of mass\
+      \ (0.012)\nLocal Standard of Rest           Center of Mass of local stars  \
+      \             Solar motion relative to nearby stars (20)\nGalactocentric   \
+      \            Center of Milky Way                     Milky Way Rotation (230)\n\
+      Local Group Barycentric      Local Group center of mass              Milky Way\
+      \ Motion (100)\nVirgocentric                     Center of the Local Virgo supercluster\
+      \  Local Group motion (300)\nCosmic Microwave Background  CMB              \
+      \                       Local Supercluster Motion (600)\n\nThe velocity frame\
+      \ should be chosen based on the science. For most\nobservations, however, one\
+      \ of the following three reference frames is\ncommonly used:\n\n- Topocentric\
+      \ is the reference frame of the observatory (defining the sky\n  frequency of\
+      \ the observations). Visibilities in a measurement set are\n  typically stored\
+      \ in this frame.\n\n- Local Standard of Rest is the native output of images\
+      \ in CASA. Note that\n  there are two varieties of LSR: the kinematic LSR (LSRK)\
+      \ and the dynamic\n  (LSRD) definitions for the kinematic and dynamic centers,\
+      \ respectively.\n  In almost all cases LSRK is being used and the less precise\
+      \ name LSR is\n  usually used synonymously with the more modern LSRK definition.\n\
+      \n- Barycentric is a commonly used frame that has virtually replaced the\n \
+      \ older Heliocentric standard. Given the small difference between the\n  Barycentric\
+      \ and Heliocentric frames, they are frequently used\n  interchangeably.\n\n\
+      Taken from https://science.nrao.edu/facilities/vla/docs/manuals/obsguide/modes/line"
+    enum:
+    - TOPOCENTRIC
+    - LSRK
+    - BARYCENTRIC
+    title: RadialVelocityReferenceFrame
+    type: string
+  RasterParameters:
+    description: 'RasterParameters defines the properties of an observing pattern
+      that
+
+      uses a raster pattern centred on a reference position.'
+    properties:
+      kind:
+        const: RasterParameters
+        default: RasterParameters
+        enum:
+        - RasterParameters
+        title: Kind
+        type: string
+      row_length_arcsec:
+        default: 0.0
+        title: Row Length Arcsec
+        type: number
+      row_offset_arcsec:
+        default: 0.0
+        title: Row Offset Arcsec
+        type: number
+      n_rows:
+        default: 1
+        title: N Rows
+        type: integer
+      pa:
+        default: 0.0
+        title: Pa
+        type: number
+      unidirectional:
+        default: false
+        title: Unidirectional
+        type: boolean
+    title: RasterParameters
+    type: object
+  Result:
+    properties:
+      observation_set_ref:
+        description: Observation set related to the results
+        title: Observation Set Ref
+        type: string
+      target_ref:
+        description: Target related to the results
+        title: Target Ref
+        type: string
+      result_details:
+        description: results specific to the observation/target combination
+        discriminator:
+          mapping:
+            integration: '#/$defs/Integration'
+            sensitivity: '#/$defs/Sensitivity'
+          propertyName: supplied_type
+        oneOf:
+        - $ref: '#/$defs/Integration'
+        - $ref: '#/$defs/Sensitivity'
+        title: Result Details
+      continuum_confusion_noise:
+        allOf:
+        - $ref: '#/$defs/Quantity'
+        description: continuum confusion noise
+      synthesized_beam_size:
+        allOf:
+        - $ref: '#/$defs/Quantity'
+        description: synthesized beam size
+      spectral_confusion_noise:
+        allOf:
+        - $ref: '#/$defs/Quantity'
+        description: spectral confusion noise
+    required:
+    - observation_set_ref
+    - target_ref
+    - result_details
+    - continuum_confusion_noise
+    - synthesized_beam_size
+    - spectral_confusion_noise
+    title: Result
+    type: object
+  ResultsType:
+    enum:
+    - integration
+    - sensitivity
+    title: ResultsType
+    type: string
+  Sensitivity:
+    properties:
+      supplied_type:
+        const: sensitivity
+        default: sensitivity
+        enum:
+        - sensitivity
+        title: Supplied Type
+        type: string
+      weighted_continuum_sensitivity:
+        anyOf:
+        - $ref: '#/$defs/Quantity'
+        - type: 'null'
+        description: weighted continuum sensitivity
+      weighted_spectral_sensitivity:
+        anyOf:
+        - $ref: '#/$defs/Quantity'
+        - type: 'null'
+        description: weighted spectral sensitivity
+      total_continuum_sensitivity:
+        anyOf:
+        - $ref: '#/$defs/Quantity'
+        - type: 'null'
+        description: Total continuum sensitivity
+      total_spectral_sensitivity:
+        anyOf:
+        - $ref: '#/$defs/Quantity'
+        - type: 'null'
+        description: Total spectral sensitivity
+      surface_brightness_sensitivity:
+        allOf:
+        - $ref: '#/$defs/SurfaceBrightnessSensitivity'
+        description: Surface brightness sensitivity
+    required:
+    - weighted_continuum_sensitivity
+    - weighted_spectral_sensitivity
+    - total_continuum_sensitivity
+    - total_spectral_sensitivity
+    - surface_brightness_sensitivity
+    title: Sensitivity
+    type: object
+  SinglePointParameters:
+    description: 'SinglePointParameters defines the properties for an observing pattern
+
+      consisting of a single receptor pointing with an optional offset from
+
+      the reference position.'
+    properties:
+      kind:
+        const: SinglePointParameters
+        default: SinglePointParameters
+        enum:
+        - SinglePointParameters
+        title: Kind
+        type: string
+      offset_x_arcsec:
+        default: 0.0
+        title: Offset X Arcsec
+        type: number
+      offset_y_arcsec:
+        default: 0.0
+        title: Offset Y Arcsec
+        type: number
+    title: SinglePointParameters
+    type: object
+  SolarSystemObject:
+    description: Planet represents the argument for SKA scheduling block.
+    properties:
+      kind:
+        const: sso
+        default: sso
+        enum:
+        - sso
+        title: Kind
+        type: string
+      name:
+        $ref: '#/$defs/SolarSystemObjectName'
+    required:
+    - name
+    title: SolarSystemObject
+    type: object
+  SolarSystemObjectName:
+    description: SolarSystemObjectName represents name of the solar system object.
+    enum:
+    - mercury
+    - venus
+    - mars
+    title: SolarSystemObjectName
+    type: string
+  StarRasterParameters:
+    description: 'StarRasterParameters defines the properties of an observing pattern
+      that
+
+      uses a star raster pattern centred on a reference position.'
+    properties:
+      kind:
+        const: StarRasterParameters
+        default: StarRasterParameters
+        enum:
+        - StarRasterParameters
+        title: Kind
+        type: string
+      row_length_arcsec:
+        default: 0.0
+        title: Row Length Arcsec
+        type: number
+      n_rows:
+        default: 1
+        title: N Rows
+        type: integer
+      row_offset_angle:
+        default: 0.0
+        title: Row Offset Angle
+        type: number
+      unidirectional:
+        default: false
+        title: Unidirectional
+        type: boolean
+    title: StarRasterParameters
+    type: object
+  SubArrayLOW:
+    enum:
+    - aa0.5
+    - aa1
+    - aa2
+    - aa2 (core only)
+    - aa*
+    - aa* (core only)
+    - aa4
+    - aa4 (core only)
+    - custom
+    title: SubArrayLOW
+    type: string
+  SubArrayMID:
+    enum:
+    - aa0.5
+    - aa1
+    - aa2
+    - aa*
+    - aa* (15-m antennas only)
+    - aa4
+    - aa4 (15-m antennas only)
+    - aa*/aa4 (13.5-m antennas only)
+    - custom
+    title: SubArrayMID
+    type: string
+  Supplied:
+    properties:
+      type:
+        allOf:
+        - $ref: '#/$defs/ResultsType'
+        description: Indicates which option the quantity relates to
+      quantity:
+        $ref: '#/$defs/Quantity'
+    required:
+    - type
+    - quantity
+    title: Supplied
+    type: object
+  SurfaceBrightnessSensitivity:
+    properties:
+      continuum:
+        title: Continuum
+        type: number
+      spectral:
+        anyOf:
+        - type: number
+        - type: 'null'
+        title: Spectral
+      unit:
+        anyOf:
+        - type: string
+        - type: 'null'
+        title: Unit
+    required:
+    - continuum
+    - spectral
+    - unit
+    title: SurfaceBrightnessSensitivity
+    type: object
+  Target:
+    description: 'Target represents the receptor pointing for an SKA observation,
+      consisting
+
+      of a reference position and a pointing pattern to be used when observing
+
+      the target.
+
+
+      Default pointing patterns and equatorial coordinates will be set if not
+
+      provided.'
+    properties:
+      target_id:
+        default: ''
+        title: Target Id
+        type: string
+      pointing_pattern:
+        $ref: '#/$defs/PointingPattern'
+      reference_coordinate:
+        discriminator:
+          mapping:
+            equatorial: '#/$defs/EquatorialCoordinates'
+            horizontal: '#/$defs/HorizontalCoordinates'
+            sso: '#/$defs/SolarSystemObject'
+          propertyName: kind
+        oneOf:
+        - $ref: '#/$defs/EquatorialCoordinates'
+        - $ref: '#/$defs/SolarSystemObject'
+        - $ref: '#/$defs/HorizontalCoordinates'
+        title: Reference Coordinate
+      radial_velocity:
+        $ref: '#/$defs/RadialVelocity'
+    title: Target
+    type: object
+description: 'Proposal: Represents an astronomy proposal.'
+properties:
+  prsl_id:
+    anyOf:
+    - type: string
+    - type: 'null'
+    description: Alphanumeric unique identifier of the proposal.
+    title: Prsl Id
+  status:
+    allOf:
+    - $ref: '#/$defs/ProposalStatus'
+    default: draft
+  submitted_on:
+    anyOf:
+    - format: date-time
+      type: string
+    - type: 'null'
+    default: null
+    description: The date and time the proposal was submitted.
+    title: Submitted On
+  submitted_by:
+    anyOf:
+    - type: string
+    - type: 'null'
+    default: null
+    description: User id of the user that submitted the proposal
+    title: Submitted By
+  investigator_refs:
+    description: IDs of the investigators that have accepted involvement in the proposal.
+    items:
+      type: string
+    title: Investigator Refs
+    type: array
+  metadata:
+    allOf:
+    - $ref: '#/$defs/Metadata'
+    description: The metadata of this Proposal.
+  cycle:
+    default: ''
+    description: The cycle to which validation standards are applied
+    title: Cycle
+    type: string
+  info:
+    allOf:
+    - $ref: '#/$defs/Info'
+    description: The information of the Proposal.
+required:
+- status
+title: Proposal
+type: object
