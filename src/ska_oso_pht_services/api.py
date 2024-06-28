@@ -168,6 +168,10 @@ def proposal_create(body) -> Response:
         print("proposal_create body ")
         print(body)
 
+        # print("proposal_create transform_body ")
+        # print(transform_body)
+
+        # prsl = Proposal.model_validate(transform_body) #test transformed
         prsl = Proposal.model_validate(body)
         print("proposal_create prsl after ")
         print(prsl)
@@ -203,13 +207,14 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
     try:
         #######     TODO: revisit transform     ####
-        # transform_body = transform_update_proposal(body)
+        transform_body = transform_update_proposal(body)
         # prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
 
         print("proposal_edit body ")
         print(body)
 
-        prsl = Proposal.model_validate(body)
+        prsl = Proposal.model_validate(transform_body)  # test transformed
+        # prsl = Proposal.model_validate(body)
         print("proposal_edit prsl after ")
         print(prsl)
         print(type(prsl))

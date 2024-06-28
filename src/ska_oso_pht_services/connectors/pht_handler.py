@@ -1,4 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timezone
+
+import astropy.units as u
+from astropy.coordinates import Angle
 
 
 def transform_update_proposal(data: dict) -> dict:
@@ -13,7 +16,7 @@ def transform_update_proposal(data: dict) -> dict:
 
     Parameters:
     data (dict): A dictionary containing various fields, including 'proposal_id',
-                 'submitted_by', 'submitted_on', and nested 'proposal_info'
+                 'submitted_by', 'submitted_on', and nested 'info'
                  which includes 'investigators' and 'targets'.
 
     Returns:
@@ -25,38 +28,26 @@ def transform_update_proposal(data: dict) -> dict:
         # Constructing and returning the updated data
         return {
             "prsl_id": data["prsl_id"] if data["prsl_id"] != "new" else "12345",
+            "cycle": data["cycle"],
             "submitted_by": data["submitted_by"],
-            "submitted_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "submitted_on": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "status": "submitted" if data["submitted_on"] else "draft",
-            "investigators": [
+            "investigator_refs": [
                 user["investigator_id"]
-                for user in data.get("proposal_info", {}).get("investigators", [])
+                for user in data.get("info", {}).get("investigators", [])
             ],
-            "proposal_info": data.get("proposal_info", {}),
-            "metadata": {
-                "created_by": "next",
-                "last_modified_by": "next",
-                "created_date": "2022-10-03T01:23:45.678Z",
-                "last_modified_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "version": 1,
-            },
+            "info": data.get("info", {}),
         }
     else:
         return {
             "prsl_id": data["prsl_id"],
+            "cycle": data["cycle"],
             "status": "submitted" if data["submitted_on"] else "draft",
-            "investigators": [
+            "investigator_refs": [
                 user["investigator_id"]
-                for user in data.get("proposal_info", {}).get("investigators", [])
+                for user in data.get("info", {}).get("investigators", [])
             ],
-            "proposal_info": data.get("proposal_info", {}),
-            "metadata": {
-                "created_by": "next",
-                "last_modified_by": "next",
-                "created_date": "2022-10-03T01:23:45.678Z",
-                "last_modified_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "version": 1,
-            },
+            "info": data.get("info", {}),
         }
 
 
@@ -70,20 +61,30 @@ def transform_create_proposal(data: dict) -> dict:
 
     Parameters:
     data (dict): A dictionary containing various fields, including 'proposal_id',
-                 'submitted_by', 'submitted_on', and nested 'proposal_info'
+                 'submitted_by', 'submitted_on', and nested 'info'
                  which includes 'investigators' and 'targets'.
 
     Returns:
     dict: The updated data dictionary.
     """
-    return {
-        "status": "draft",
-        "proposal_info": data.get("proposal_info", {}),
-        "metadata": {
-            "created_by": "next",
-            "last_modified_by": "next",
-            "created_date": "2022-10-03T01:23:45.678Z",
-            "last_modified_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "version": 1,
-        },
-    }
+
+    print("transform_create_proposal: data")
+    print(data)
+
+    def result():
+        return {
+            "prsl_id": None,
+            "status": "draft",
+            "info": data.get("info", {}),
+            "cycle": data.get("cycle", {}),
+            "investigator_refs": [
+                user["investigator_id"]
+                for user in data.get("info", {}).get("investigators", [])
+            ],
+        }
+
+    test_result = result()
+    print("test_result")
+    print(test_result)
+
+    return test_result
