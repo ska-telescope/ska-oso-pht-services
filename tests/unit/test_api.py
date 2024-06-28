@@ -162,7 +162,7 @@ class TestGetCoordinates:
                 "equatorial": {
                     "ra": "00:42:44.330",
                     "dec": "+41:16:07.500",
-                    "redshift": -0.001,
+                    "redshift": -0.0010006922855944561,
                     "velocity": -300.0,
                 }
             },
@@ -174,7 +174,7 @@ class TestGetCoordinates:
                 "galactic": {
                     "lat": -78.5856,
                     "lon": 354.21,
-                    "redshift": 0.022946,
+                    "redshift": 0.022945539640067736,
                     "velocity": 6800.0,
                 }
             },
@@ -186,7 +186,7 @@ class TestGetCoordinates:
                 "equatorial": {
                     "dec": "-33:51:30.197",
                     "ra": "00:08:34.539",
-                    "redshift": 0.022946,
+                    "redshift": 0.022945539640067736,
                     "velocity": 6800.0,
                 }
             },

@@ -41,7 +41,7 @@ def round_coord_to_3_decimal_places(
     }
 
 
-def convert_ra_dec_deg(ra_str, dec_str):
+def convert_ra_dec_deg(ra_str: str, dec_str: str):
     """
     Convert RA and Dec from sexagesimal (string format) to decimal degrees.
 
@@ -86,6 +86,25 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
     }
 
 
+def _calculate_redshift(radial_velocity, speed_light=299792.458):
+    """
+    Calculate the redshift from the radial velocity.
+
+    :param radial_velocity: Radial velocity in km/s
+    :param speed_light: Speed of light in km/s (default is 299792.458 km/s)
+    :return: redshift
+    """
+    # Non-relativistic approximation
+    if abs(radial_velocity) < 0.01 * speed_light:
+        redshift = radial_velocity / speed_light
+    else:
+        # Relativistic formula
+        redshift = (1 + radial_velocity / speed_light) ** 0.5 / (
+            1 - radial_velocity / speed_light
+        ) ** 0.5 - 1
+    return redshift
+
+
 def get_coordinates(object_name: str):
     """
     Query celestial coordinates for a given object name from SIMBAD and NED databases.
@@ -116,8 +135,8 @@ def get_coordinates(object_name: str):
             ),
             None,
         )
-        if result_table_simbad["Z_VALUE"][0]:
-            redshift = result_table_simbad["Z_VALUE"][0]
+        if velocity is not None:
+            redshift = _calculate_redshift(velocity)
         else:
             redshift = None
     else:

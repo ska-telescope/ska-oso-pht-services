@@ -1,8 +1,5 @@
 from datetime import datetime
 
-import astropy.units as u
-from astropy.coordinates import Angle
-
 
 def transform_update_proposal(data: dict) -> dict:
     """
@@ -22,11 +19,6 @@ def transform_update_proposal(data: dict) -> dict:
     Returns:
     dict: The transformed and updated data dictionary.
     """
-    # Transforming targets
-    for target in data.get("proposal_info", {}).get("targets", []):
-        for key, unit in [("right_ascension", u.hour), ("declination", u.deg)]:
-            target[key] = round(Angle(target[key], unit=unit).degree, 3)
-            target[f"{key}_unit"] = "deg"
 
     # Constructing and returning the updated data
     if data["submitted_by"] != "":
