@@ -6,7 +6,8 @@ import json
 from http import HTTPStatus
 from unittest import mock
 
-from ska_oso_pdm.generated.models.proposal import Proposal
+#from ska_oso_pdm.generated.models.proposal import Proposal
+from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 from .util import (
@@ -42,26 +43,29 @@ def test_proposal_create(mock_oda, client):
     )
 
     assert response.status_code == HTTPStatus.OK
-    assert response.text == "prsl-1234"
+    assert response.text == "prp-ska01-202204-01"
 
 
 @mock.patch("ska_oso_pht_services.api.oda")
 def test_proposal_get(mock_oda, client):
     uow_mock = mock.MagicMock()
     uow_mock.prsls.__contains__.return_value = True
-    uow_mock.prsls.get.return_value = OPENAPI_CODEC.loads(
-        Proposal, VALID_PROPOSAL_DATA_JSON
-    )
+    uow_mock.prsls.get.return_value = Proposal.model_validate(json.loads(VALID_PROPOSAL_DATA_JSON))
 
     mock_oda.uow.__enter__.return_value = uow_mock
 
     result = client.get(
-        "/ska-oso-pht-services/pht/api/v1/proposals/prsl-1234",
+        "/ska-oso-pht-services/pht/api/v1/proposals/prp-ska01-202204-01",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
 
     assert result.status_code == HTTPStatus.OK
+    
+    print('result.text')
+    print(result.text)
+    print('VALID_PROPOSAL_DATA_JSON')
+    print(VALID_PROPOSAL_DATA_JSON)
     assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
 
 
