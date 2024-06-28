@@ -13,8 +13,11 @@ from http import HTTPStatus
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
 from ska_db_oda.domain.query import MatchType, UserQuery
-from ska_oso_pdm.generated.models.proposal import Proposal
-from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
+
+# from ska_oso_pdm.generated.models.proposal import Proposal
+from ska_oso_pdm import Proposal
+from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC  # old
+from ska_oso_pdm.openapi import OpenAPICodec  # new
 
 from ska_oso_pht_services import oda
 from ska_oso_pht_services.connectors.pht_handler import (
@@ -100,8 +103,12 @@ def proposal_get(identifier: str) -> Response:
     try:
         LOGGER.debug("GET PROPOSAL prsl_id: %s", identifier)
         with oda.uow as uow:
-            prsl = uow.prsls.get(identifier)
-        return prsl.to_dict(), HTTPStatus.OK
+            retrieved_prsl = uow.prsls.get(identifier)
+            print("proposal_get type(prsl)")
+            print(type(retrieved_prsl))
+            print(retrieved_prsl)
+        # TODO: revisit TypeError: Object of type Url is not JSON serializable error when using model_dump()
+        return json.loads(retrieved_prsl.model_dump_json()), HTTPStatus.OK
     except KeyError:
         LOGGER.exception("KeyError when adding Proposal to the ODA")
         return (
@@ -128,7 +135,8 @@ def proposal_get_list(identifier: str) -> Response:
         with oda.uow as uow:
             query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
             prsl = uow.prsls.query(query_param)
-        return [x.to_dict() for x in prsl], HTTPStatus.OK
+        # TODO: revisit TypeError: Object of type Url is not JSON serializable error when using model_dump()
+        return [json.loads(x.model_dump_json()) for x in prsl], HTTPStatus.OK
     except KeyError:
         LOGGER.exception("KeyError when adding Proposal to the ODA")
         return (
@@ -153,9 +161,17 @@ def proposal_create(body) -> Response:
     LOGGER.debug("POST PROPOSAL create")
 
     try:
-        transform_body = transform_create_proposal(body)
+        # transform_body = transform_create_proposal(body)
 
-        prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
+        # prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body)) # handler to be revisited
+
+        print("proposal_create body ")
+        print(body)
+
+        prsl = Proposal.model_validate(body)
+        print("proposal_create prsl after ")
+        print(prsl)
+        print(type(prsl))
         with oda.uow as uow:
             updated_prsl = uow.prsls.add(prsl)
             uow.commit()
@@ -186,9 +202,17 @@ def proposal_edit(body: dict, identifier: str) -> Response:
     LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
 
     try:
-        transform_body = transform_update_proposal(body)
+        #######     TODO: revisit transform     ####
+        # transform_body = transform_update_proposal(body)
+        # prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
 
-        prsl = OPENAPI_CODEC.loads(Proposal, json.dumps(transform_body))
+        print("proposal_edit body ")
+        print(body)
+
+        prsl = Proposal.model_validate(body)
+        print("proposal_edit prsl after ")
+        print(prsl)
+        print(type(prsl))
 
         if prsl.prsl_id != identifier:
             return (
@@ -201,9 +225,10 @@ def proposal_edit(body: dict, identifier: str) -> Response:
             uow.commit()
             updated_prsl = uow.prsls.get(identifier)
         return (
-            updated_prsl.to_dict(),
+            json.loads(updated_prsl.model_dump_json()),
             HTTPStatus.OK,
         )
+
     except ValueError as err:
         LOGGER.exception("ValueError when adding Proposal to the ODA")
         return (
