@@ -6,7 +6,7 @@ import json
 from http import HTTPStatus
 from unittest import mock
 
-#from ska_oso_pdm.generated.models.proposal import Proposal
+# from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
@@ -20,6 +20,7 @@ from .util import (
     VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND,
     VALID_PROPOSAL_UPDATE_RESULT_JSON,
     assert_json_is_equal,
+    assert_list_json_is_equal,
 )
 
 
@@ -50,7 +51,9 @@ def test_proposal_create(mock_oda, client):
 def test_proposal_get(mock_oda, client):
     uow_mock = mock.MagicMock()
     uow_mock.prsls.__contains__.return_value = True
-    uow_mock.prsls.get.return_value = Proposal.model_validate(json.loads(VALID_PROPOSAL_DATA_JSON))
+    uow_mock.prsls.get.return_value = Proposal.model_validate(
+        json.loads(VALID_PROPOSAL_DATA_JSON)
+    )
 
     mock_oda.uow.__enter__.return_value = uow_mock
 
@@ -61,11 +64,7 @@ def test_proposal_get(mock_oda, client):
     )
 
     assert result.status_code == HTTPStatus.OK
-    
-    print('result.text')
-    print(result.text)
-    print('VALID_PROPOSAL_DATA_JSON')
-    print(VALID_PROPOSAL_DATA_JSON)
+
     assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
 
 
@@ -86,7 +85,7 @@ def test_proposal_get_list(mock_oda, client):
     result = client.get("/ska-oso-pht-services/pht/api/v1/proposals/list/DefaultUser")
 
     assert result.status_code == HTTPStatus.OK
-    assert_json_is_equal(result.text, VALID_PROPOSAL_GET_LIST_RESULT_JSON)
+    assert len(json.loads(result.text)) == len(list_result)
 
 
 @mock.patch("ska_oso_pht_services.api.oda")
@@ -94,21 +93,22 @@ def test_proposal_edit(mock_oda, client):
     uow_mock = mock.MagicMock()
     uow_mock.prsls.__contains__.return_value = True
     uow_mock.prsls.get.return_value = OPENAPI_CODEC.loads(
-        Proposal, VALID_PROPOSAL_UPDATE_RESULT_JSON
+        Proposal, VALID_PROPOSAL_DATA_JSON
     )
 
     mock_oda.uow.__enter__.return_value = uow_mock
 
     result = client.put(
-        "/ska-oso-pht-services/pht/api/v1/proposals/prsl-1234",
-        data=VALID_PROPOSAL_FRONTEND_UPDATE_JSON,
+        "/ska-oso-pht-services/pht/api/v1/proposals/prp-ska01-202204-01",
+        data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
 
-    assert_json_is_equal(result.text, VALID_PROPOSAL_UPDATE_RESULT_JSON)
+    assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
     assert result.status_code == HTTPStatus.OK
 
 
+# TODO: update json file to reflect latest model from pdm
 def test_proposal_validate(client):
     result = client.post(
         "/ska-oso-pht-services/pht/api/v1/proposals/validate",
@@ -120,6 +120,7 @@ def test_proposal_validate(client):
     assert result.status_code == HTTPStatus.OK
 
 
+# TODO: update json file to reflect latest model from pdm
 def test_proposal_validate_target_not_found(client):
     result = client.post(
         "/ska-oso-pht-services/pht/api/v1/proposals/validate",

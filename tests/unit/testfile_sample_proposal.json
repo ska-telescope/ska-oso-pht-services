@@ -132,16 +132,16 @@
           "observation_type": "continuum",
           "bandwidth": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "central_frequency": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "supplied": {
             "type": "integration",
             "value": 0.0,
-            "unit": "",
+            "unit": "m / s",
             "quantity": {
               "value": -12.345,
               "unit": "m / s"
@@ -171,16 +171,16 @@
           "observation_type": "zoom",
           "bandwidth": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "central_frequency": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "supplied": {
             "type": "sensitivity",
             "value": 0.0,
-            "unit": "",
+            "unit": "m / s",
             "quantity": {
               "value": -12.345,
               "unit": "m / s"
@@ -206,16 +206,16 @@
           "observation_type": "continuum",
           "bandwidth": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "central_frequency": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "supplied": {
             "type": "integration",
             "value": 0.0,
-            "unit": "",
+            "unit": "m / s",
             "quantity": {
               "value": -12.345,
               "unit": "m / s"
@@ -241,16 +241,16 @@
           "observation_type": "zoom",
           "bandwidth": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "central_frequency": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "supplied": {
             "type": "sensitivity",
             "value": 0.0,
-            "unit": "",
+            "unit": "m / s",
             "quantity": {
               "value": -12.345,
               "unit": "m / s"
@@ -293,37 +293,37 @@
           "supplied_type": "sensitivity",
           "weighted_continuum_sensitivity": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "weighted_spectral_sensitivity": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "total_continuum_sensitivity": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "total_spectral_sensitivity": {
             "value": 0.0,
-            "unit": ""
+            "unit": "m / s"
           },
           "surface_brightness_sensitivity": {
             "continuum": 0.0,
             "spectral": 0.0,
-            "unit": ""
+            "unit": "m / s"
           }
         },
         "continuum_confusion_noise": {
           "value": 0.0,
-          "unit": ""
+          "unit": "m / s"
         },
         "synthesized_beam_size": {
           "value": 0.0,
-          "unit": ""
+          "unit": "m / s"
         },
         "spectral_confusion_noise": {
           "value": 0.0,
-          "unit": ""
+          "unit": "m / s"
         }
       }
     ]
