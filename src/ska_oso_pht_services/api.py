@@ -203,6 +203,7 @@ def proposal_edit(body: dict, identifier: str) -> Response:
             uow.commit()
             updated_prsl = uow.prsls.get(identifier)
         return (
+            # TODO: revisit Url is not JSON serializable error using model_dump()
             json.loads(updated_prsl.model_dump_json()),
             HTTPStatus.OK,
         )
