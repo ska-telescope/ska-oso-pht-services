@@ -1,8 +1,5 @@
 from datetime import datetime, timezone
 
-import astropy.units as u
-from astropy.coordinates import Angle
-
 
 def transform_update_proposal(data: dict) -> dict:
     """
@@ -67,24 +64,13 @@ def transform_create_proposal(data: dict) -> dict:
     Returns:
     dict: The updated data dictionary.
     """
-
-    print("transform_create_proposal: data")
-    print(data)
-
-    def result():
-        return {
-            "prsl_id": None,
-            "status": "draft",
-            "info": data.get("info", {}),
-            "cycle": data.get("cycle", {}),
-            "investigator_refs": [
-                user["investigator_id"]
-                for user in data.get("info", {}).get("investigators", [])
-            ],
-        }
-
-    test_result = result()
-    print("test_result")
-    print(test_result)
-
-    return test_result
+    return {
+        "prsl_id": None,
+        "status": "draft",
+        "info": data.get("info", {}),
+        "cycle": data.get("cycle", {}),
+        "investigator_refs": [
+            user["investigator_id"]
+            for user in data.get("info", {}).get("investigators", [])
+        ],
+    }
