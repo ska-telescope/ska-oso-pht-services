@@ -48,7 +48,7 @@ def test_proposal_create():
 def test_proposal_get():
     """
     Test that the GET /proposals/{identifier} path receives the request
-    and returns the correct response prsl-1234 is pulled in filesystem on k8s-pre-test
+    and returns the correct response of the created proposal
     """
 
     response = requests.get(f"{PHT_URL}/proposals/{test_prsl_id}")

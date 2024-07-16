@@ -281,10 +281,10 @@ $defs:
   Integration:
     properties:
       supplied_type:
-        const: integration
-        default: integration
+        const: integration_time
+        default: integration_time
         enum:
-        - integration
+        - integration_time
         title: Supplied Type
         type: string
       continuum:
@@ -446,13 +446,6 @@ $defs:
         minimum: 0
         title: Number Sub Bands
         type: integer
-      elevation:
-        default: 15
-        description: Elevation from the horizon to be used
-        maximum: 90
-        minimum: 15
-        title: Elevation
-        type: integer
       tapering:
         anyOf:
         - type: string
@@ -479,6 +472,13 @@ $defs:
         allOf:
         - $ref: '#/$defs/ObservingBand'
         description: Observing Band
+      elevation:
+        default: 15
+        description: Elevation from the horizon to be used
+        maximum: 90
+        minimum: 15
+        title: Elevation
+        type: integer
       array_details:
         description: Array details specific to the telescope selected
         discriminator:
@@ -841,7 +841,7 @@ $defs:
         description: results specific to the observation/target combination
         discriminator:
           mapping:
-            integration: '#/$defs/Integration'
+            integration_time: '#/$defs/Integration'
             sensitivity: '#/$defs/Sensitivity'
           propertyName: supplied_type
         oneOf:
@@ -871,7 +871,7 @@ $defs:
     type: object
   ResultsType:
     enum:
-    - integration
+    - integration_time
     - sensitivity
     title: ResultsType
     type: string
@@ -950,6 +950,13 @@ $defs:
         - sso
         title: Kind
         type: string
+      reference_frame:
+        const: special
+        default: special
+        enum:
+        - special
+        title: Reference Frame
+        type: string
       name:
         $ref: '#/$defs/SolarSystemObjectName'
     required:
@@ -959,9 +966,15 @@ $defs:
   SolarSystemObjectName:
     description: SolarSystemObjectName represents name of the solar system object.
     enum:
-    - mercury
-    - venus
-    - mars
+    - Sun
+    - Moon
+    - Mercury
+    - Venus
+    - Mars
+    - Jupiter
+    - Saturn
+    - Uranus
+    - Neptune
     title: SolarSystemObjectName
     type: string
   StarRasterParameters:
@@ -1137,6 +1150,6 @@ properties:
     - $ref: '#/$defs/Info'
     description: The information of the Proposal.
 required:
-- status
+- prsl_id
 title: Proposal
 type: object

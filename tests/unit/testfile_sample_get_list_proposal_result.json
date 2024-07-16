@@ -118,6 +118,7 @@
         {
           "observation_set_id": "mid-001",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "mid_band_1",
           "array_details": {
             "array": "ska_mid",
@@ -126,23 +127,22 @@
             "number_15_antennas": 0,
             "number_13_antennas": 0,
             "number_sub_bands": 0,
-            "elevation": 15,
             "tapering": "DUMMY"
           },
           "observation_type_details": {
             "observation_type": "continuum",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
-              "type": "integration",
+              "type": "integration_time",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -157,6 +157,7 @@
         {
           "observation_set_id": "mid-002",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "mid_band_1",
           "array_details": {
             "array": "ska_mid",
@@ -165,23 +166,22 @@
             "number_15_antennas": 0,
             "number_13_antennas": 0,
             "number_sub_bands": 0,
-            "elevation": 15,
             "tapering": "DUMMY"
           },
           "observation_type_details": {
             "observation_type": "zoom",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
               "type": "sensitivity",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -196,6 +196,7 @@
         {
           "observation_set_id": "low-001",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "low_band",
           "array_details": {
             "array": "ska_low",
@@ -207,16 +208,16 @@
             "observation_type": "continuum",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
-              "type": "integration",
+              "type": "integration_time",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -231,6 +232,7 @@
         {
           "observation_set_id": "low-002",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "low_band",
           "array_details": {
             "array": "ska_low",
@@ -242,16 +244,16 @@
             "observation_type": "zoom",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
               "type": "sensitivity",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -294,37 +296,37 @@
             "supplied_type": "sensitivity",
             "weighted_continuum_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "weighted_spectral_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "total_continuum_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "total_spectral_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "surface_brightness_sensitivity": {
               "continuum": 0.0,
               "spectral": 0.0,
-              "unit": "m / s"
+              "unit": ""
             }
           },
           "continuum_confusion_noise": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           },
           "synthesized_beam_size": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           },
           "spectral_confusion_noise": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           }
         }
       ]
@@ -449,6 +451,7 @@
         {
           "observation_set_id": "mid-001",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "mid_band_1",
           "array_details": {
             "array": "ska_mid",
@@ -457,23 +460,22 @@
             "number_15_antennas": 0,
             "number_13_antennas": 0,
             "number_sub_bands": 0,
-            "elevation": 15,
             "tapering": "DUMMY"
           },
           "observation_type_details": {
             "observation_type": "continuum",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
-              "type": "integration",
+              "type": "integration_time",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -488,6 +490,7 @@
         {
           "observation_set_id": "mid-002",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "mid_band_1",
           "array_details": {
             "array": "ska_mid",
@@ -496,23 +499,22 @@
             "number_15_antennas": 0,
             "number_13_antennas": 0,
             "number_sub_bands": 0,
-            "elevation": 15,
             "tapering": "DUMMY"
           },
           "observation_type_details": {
             "observation_type": "zoom",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
               "type": "sensitivity",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -527,6 +529,7 @@
         {
           "observation_set_id": "low-001",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "low_band",
           "array_details": {
             "array": "ska_low",
@@ -538,16 +541,16 @@
             "observation_type": "continuum",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
-              "type": "integration",
+              "type": "integration_time",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -562,6 +565,7 @@
         {
           "observation_set_id": "low-002",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "low_band",
           "array_details": {
             "array": "ska_low",
@@ -573,16 +577,16 @@
             "observation_type": "zoom",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
               "type": "sensitivity",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -625,37 +629,37 @@
             "supplied_type": "sensitivity",
             "weighted_continuum_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "weighted_spectral_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "total_continuum_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "total_spectral_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "surface_brightness_sensitivity": {
               "continuum": 0.0,
               "spectral": 0.0,
-              "unit": "m / s"
+              "unit": ""
             }
           },
           "continuum_confusion_noise": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           },
           "synthesized_beam_size": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           },
           "spectral_confusion_noise": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           }
         }
       ]
@@ -780,6 +784,7 @@
         {
           "observation_set_id": "mid-001",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "mid_band_1",
           "array_details": {
             "array": "ska_mid",
@@ -788,23 +793,22 @@
             "number_15_antennas": 0,
             "number_13_antennas": 0,
             "number_sub_bands": 0,
-            "elevation": 15,
             "tapering": "DUMMY"
           },
           "observation_type_details": {
             "observation_type": "continuum",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
-              "type": "integration",
+              "type": "integration_time",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -819,6 +823,7 @@
         {
           "observation_set_id": "mid-002",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "mid_band_1",
           "array_details": {
             "array": "ska_mid",
@@ -827,23 +832,22 @@
             "number_15_antennas": 0,
             "number_13_antennas": 0,
             "number_sub_bands": 0,
-            "elevation": 15,
             "tapering": "DUMMY"
           },
           "observation_type_details": {
             "observation_type": "zoom",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
               "type": "sensitivity",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -858,6 +862,7 @@
         {
           "observation_set_id": "low-001",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "low_band",
           "array_details": {
             "array": "ska_low",
@@ -869,16 +874,16 @@
             "observation_type": "continuum",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
-              "type": "integration",
+              "type": "integration_time",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -893,6 +898,7 @@
         {
           "observation_set_id": "low-002",
           "group_id": "2",
+          "elevation": 23,
           "observing_band": "low_band",
           "array_details": {
             "array": "ska_low",
@@ -904,16 +910,16 @@
             "observation_type": "zoom",
             "bandwidth": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "central_frequency": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "supplied": {
               "type": "sensitivity",
               "value": 0.0,
-              "unit": "m / s",
+              "unit": "",
               "quantity": {
                 "value": -12.345,
                 "unit": "m / s"
@@ -956,37 +962,37 @@
             "supplied_type": "sensitivity",
             "weighted_continuum_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "weighted_spectral_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "total_continuum_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "total_spectral_sensitivity": {
               "value": 0.0,
-              "unit": "m / s"
+              "unit": ""
             },
             "surface_brightness_sensitivity": {
               "continuum": 0.0,
               "spectral": 0.0,
-              "unit": "m / s"
+              "unit": ""
             }
           },
           "continuum_confusion_noise": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           },
           "synthesized_beam_size": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           },
           "spectral_confusion_noise": {
             "value": 0.0,
-            "unit": "m / s"
+            "unit": ""
           }
         }
       ]
