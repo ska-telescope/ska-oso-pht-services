@@ -116,23 +116,23 @@ def test_proposal_put():
     # assert expected == result
 
 
-# TODO: uncomment/revisit test for validate endpoint after refactoring with new pdm data
-# def test_proposal_validate():
-#     """
-#     Test that the POST /proposals/validate path receives the request
-#     and returns result and messages
-#     """
+# TODO: revisit test for validate endpoint after refactoring with new pdm data
+def test_proposal_validate():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages
+    """
 
-#     response = requests.post(
-#         f"{PHT_URL}/proposals/validate",
-#         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
-#         headers={"Content-type": "application/json"},
-#     )
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        headers={"Content-type": "application/json"},
+    )
 
-#     result = json.loads(response.content)
+    result = json.loads(response.content)
 
-#     assert response.status_code == HTTPStatus.OK
-#     assert result["result"] is True
+    assert response.status_code == HTTPStatus.OK
+    assert result["result"] is True
 
 
 # def test_proposal_validate_target_not_found():

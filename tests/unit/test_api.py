@@ -105,16 +105,15 @@ def test_proposal_edit(mock_oda, client):
     assert result.status_code == HTTPStatus.OK
 
 
-# TODO: uncomment/revisit test for validate endpoint after refactoring with new pdm data
-# def test_proposal_validate(client):
-#     result = client.post(
-#         "/ska-oso-pht-services/pht/api/v1/proposals/validate",
-#         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
-#         headers={"Content-type": "application/json"},
-#     )
+def test_proposal_validate(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        headers={"Content-type": "application/json"},
+    )
 
-#     assert_json_is_equal(result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON)
-#     assert result.status_code == HTTPStatus.OK
+    assert_json_is_equal(result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON)
+    assert result.status_code == HTTPStatus.OK
 
 
 # TODO: uncomment/revisit test for validate endpoint after refactoring with new pdm data
