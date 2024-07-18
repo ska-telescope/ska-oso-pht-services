@@ -105,7 +105,8 @@ paths:
                 type: array
                 items:
                   anyOf:
-                  - $ref: './prsl-openapi-v1.yaml#/Proposal'
+                  - type: object
+                  # - $ref: './prsl-openapi-v1.yaml#/Proposal'
   /upload/signedurl/{filename}:
     get:
       summary: Upload a pdf
