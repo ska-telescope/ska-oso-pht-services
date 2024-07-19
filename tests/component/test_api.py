@@ -18,7 +18,7 @@ from ..unit.util import (  # pylint: disable=W0611
 
 KUBE_NAMESPACE = getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 PHT_URL = getenv(
-    "PHT_URL", f"http://ska-oso-pht-services-rest-test:5000/{KUBE_NAMESPACE}/pht/api/v1"
+    "PHT_URL", f"http://ska-oso-pht-services-rest-test:5000/{KUBE_NAMESPACE}/pht/api/v2"
 )
 
 test_prsl_id = ""

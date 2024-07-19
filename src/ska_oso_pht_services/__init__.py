@@ -11,7 +11,7 @@ from flask import Flask, Response
 from ska_db_oda.rest.flask_oda import FlaskODA
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
-API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v1"
+API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 
 oda = FlaskODA()
 

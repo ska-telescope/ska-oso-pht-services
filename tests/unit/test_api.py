@@ -35,7 +35,7 @@ def test_proposal_create(mock_oda, client):
     mock_oda.uow.__enter__.return_value = uow_mock
 
     response = client.post(
-        "/ska-oso-pht-services/pht/api/v1/proposals",
+        "/ska-oso-pht-services/pht/api/v2/proposals",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
@@ -55,7 +55,7 @@ def test_proposal_get(mock_oda, client):
     mock_oda.uow.__enter__.return_value = uow_mock
 
     result = client.get(
-        "/ska-oso-pht-services/pht/api/v1/proposals/prp-ska01-202204-01",
+        "/ska-oso-pht-services/pht/api/v2/proposals/prp-ska01-202204-01",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
@@ -79,7 +79,7 @@ def test_proposal_get_list(mock_oda, client):
 
     mock_oda.uow.__enter__.return_value = uow_mock
 
-    result = client.get("/ska-oso-pht-services/pht/api/v1/proposals/list/DefaultUser")
+    result = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
 
     assert result.status_code == HTTPStatus.OK
     assert len(json.loads(result.text)) == len(list_result)
@@ -96,7 +96,7 @@ def test_proposal_edit(mock_oda, client):
     mock_oda.uow.__enter__.return_value = uow_mock
 
     result = client.put(
-        "/ska-oso-pht-services/pht/api/v1/proposals/prp-ska01-202204-01",
+        "/ska-oso-pht-services/pht/api/v2/proposals/prp-ska01-202204-01",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
@@ -107,7 +107,7 @@ def test_proposal_edit(mock_oda, client):
 
 def test_proposal_validate(client):
     result = client.post(
-        "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+        "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
         headers={"Content-type": "application/json"},
     )
@@ -119,7 +119,7 @@ def test_proposal_validate(client):
 # TODO: uncomment/revisit test for validate endpoint after refactoring with new pdm data
 # def test_proposal_validate_target_not_found(client):
 #     result = client.post(
-#         "/ska-oso-pht-services/pht/api/v1/proposals/validate",
+#         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
 #         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
 #         headers={"Content-type": "application/json"},
 #     )
@@ -142,13 +142,13 @@ class TestGetSignedUrl:
             self.get_download_signed_url(client, *data)
 
     def get_upload_signed_url(self, client, name):
-        base_url = "/ska-oso-pht-services/pht/api/v1/upload/signedurl/"
+        base_url = "/ska-oso-pht-services/pht/api/v2/upload/signedurl/"
 
         response = client.get(f"{base_url}{name}")
         assert response.status_code == HTTPStatus.OK
 
     def get_download_signed_url(self, client, name):
-        base_url = "/ska-oso-pht-services/pht/api/v1/download/signedurl/"
+        base_url = "/ska-oso-pht-services/pht/api/v2/download/signedurl/"
 
         response = client.get(f"{base_url}{name}")
         assert response.status_code == HTTPStatus.OK
@@ -207,7 +207,7 @@ class TestGetCoordinates:
     ]
 
     def get_coordinates_generic(self, client, name, reference_frame, expected_response):
-        base_url = "/ska-oso-pht-services/pht/api/v1/coordinates/"
+        base_url = "/ska-oso-pht-services/pht/api/v2/coordinates/"
         if not reference_frame:
             response = client.get(f"{base_url}{name}")
             assert response.status_code == HTTPStatus.NOT_FOUND
