@@ -203,14 +203,10 @@ def proposal_edit(body: dict, identifier: str) -> Response:
             )
 
         with oda.uow as uow:
-            uow.prsls.add(prsl)
+            persisted_prsl =uow.prsls.add(prsl)
             uow.commit()
-            updated_prsl = uow.prsls.get(identifier)
-        return (
-            # TODO: revisit Url is not JSON serializable error using model_dump()
-            json.loads(updated_prsl.model_dump_json()),
-            HTTPStatus.OK,
-        )
+            
+        return persisted_prsl, HTTPStatus.OK
 
     except ValueError as err:
         LOGGER.exception("ValueError when adding Proposal to the ODA")
