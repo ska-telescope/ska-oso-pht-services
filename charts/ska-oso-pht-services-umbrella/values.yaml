@@ -12,7 +12,7 @@ ska-db-oda-umbrella:
       ingress:
         enabled: true
       backend:
-        type: postgres
+        type: rest
         postgres:
           host:
   postgresql:
