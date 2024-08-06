@@ -13,8 +13,10 @@ dependencies:
 # ODA is used by PHT services for data persisted, and is accessed via the REST API of the ska-db-oda application.
 # The ODA umbrella chart includes ODA API, PostgreSQL database and SKUID
 - name: ska-db-oda-umbrella
-  version: 5.2.0
-  repository: https://artefact.skao.int/repository/helm-internal
+  # version: 5.2.0
+  # repository: https://artefact.skao.int/repository/helm-internal
+  version: 5.3.0
+  repository: file://../../../ska-db-oda/charts/ska-db-oda-umbrella
   condition: ska-db-oda.enabled
 
 # OSD is used by PHT services for static data validation as part of the validate endpoint
