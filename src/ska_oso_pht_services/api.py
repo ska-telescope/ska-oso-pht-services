@@ -294,6 +294,27 @@ def download_pdf(filename: str) -> Response:
 
 
 @error_handler
+def delete_pdf(filename: str) -> Response:
+    """
+    Function that requests to endpoint GET /delete/signedurl/{filename}
+    are mapped to
+
+    :param filename: filename of the document to be deleted
+    :return: a string "/delete/signedurl/{filename}"
+    """
+    LOGGER.debug("GET Delete Signed URL")
+    s3_client = s3_bucket.get_aws_client()
+    delete_signed_url = s3_bucket.create_presigned_url_delete_pdf(
+        filename, s3_client, 60
+    )
+
+    return (
+        delete_signed_url,
+        HTTPStatus.OK,
+    )
+
+
+@error_handler
 def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
     """
     Function that requests to /coordinates are mapped to

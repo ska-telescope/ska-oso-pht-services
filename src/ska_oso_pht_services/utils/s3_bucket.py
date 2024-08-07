@@ -64,3 +64,24 @@ def create_presigned_url_upload_pdf(key, s3_client, expiry, bucket=AWS_PHT_BUCKE
     )
 
     return url
+
+
+def create_presigned_url_delete_pdf(key, s3_client, expiry, bucket=AWS_PHT_BUCKET_NAME):
+    """Generate a presigned URL S3 URL for a file
+    :param bucket: string
+    :param key: string
+    :param s3_client: boto3.client
+    :param expiry: int
+    :return: presigned url of file
+    """
+
+    url = s3_client.generate_presigned_url(
+        ClientMethod="delete_object",
+        Params={
+            "Bucket": bucket,
+            "Key": key,
+        },
+        ExpiresIn=expiry,
+    )
+
+    return url

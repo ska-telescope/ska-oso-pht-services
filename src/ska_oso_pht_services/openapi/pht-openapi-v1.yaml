@@ -173,6 +173,39 @@ paths:
             text/plain:
               schema:
                 type: string
+  /delete/signedurl/{filename}:
+    get:
+      summary: delete signed url
+      description: |
+        delete signed url
+      operationId: ska_oso_pht_services.api.delete_pdf
+      parameters:
+      - name: filename
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
+          content:
+            text/plain:
+              schema:
+                type: string
   /coordinates/{identifier}/{reference_frame}:
     get:
       summary: get coordinates
