@@ -1,5 +1,6 @@
 import astropy.units as u
 from astropy.coordinates import SkyCoord
+from ska_oso_pdm import Proposal
 
 # from ska_oso_pht_services.api_clients.osd_api import osd_client
 
@@ -17,7 +18,7 @@ def _calculate_dec(lat, min_elevation):
     return lat - 90 + min_elevation, 90 - lat - min_elevation
 
 
-def validate_proposal(proposal) -> dict:
+def old_validate_proposal(proposal) -> dict:
     """
     validate targets in a proposal
 
@@ -118,3 +119,54 @@ def validate_proposal(proposal) -> dict:
         return {"result": False, "validation_errors": messages}
 
     return {"result": result, "validation_errors": messages}
+
+def validate_proposal(proposal: Proposal) -> dict:
+    """
+    validate targets in a proposal
+
+    Makes use of the get_osd() function to fetch the OSD data for a specified cycle ID.
+
+    Parameters:
+    proposal_str (str): proposal
+
+    Returns:
+    dict: result of validation and messages
+    """
+
+    # TODO use osd_data when ready
+    # c = osd_client
+    # osd_data = c.get_osd(1)
+    # TODO: replace hard coded cycle id by a parameter
+
+
+    validate_result = True
+
+    messages = []
+    try:
+        # check that proposal has at least one obervation set
+        print('start checking at least one obs set')
+        
+        if len(proposal.info.observation_sets)  == 0:
+            messages.append('Proposal has no oberservation sets')
+        
+        # each observation target should have a valid senscal result
+        print('start checking each observation target should have a valid senscal result')
+        for target in proposal.info.targets:
+            
+            print('target')
+            print(target)
+            print('not any(target.target_id == result.target_ref for result in proposal.info.results)')
+            print(not any(target.target_id == result.target_ref for result in proposal.info.results))
+            
+            if(not any(target.target_id == result.target_ref for result in proposal.info.results)):
+                print('not any')
+                validate_result = False
+                messages.append(f'Target {target.target_id} has no valid senscalc result')
+        
+    except ValueError as err:
+        print('except validate_proposal' + err)
+        messages.append('Exception: ' + str(err))
+        return {"result": False, "validation_errors": messages}
+    print('return messages')
+    print(messages)
+    return {"result": validate_result, "validation_errors": messages}
