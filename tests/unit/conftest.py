@@ -34,3 +34,4 @@ def client(test_app):  # pylint: disable=redefined-outer-name
     Create a test client from the app instance, without running a live server
     """
     return test_app.test_client()
+

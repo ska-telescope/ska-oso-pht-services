@@ -222,13 +222,6 @@ class TestGetCoordinates:
             self.get_coordinates_generic(client, *data)
 
 
-import pytest
-from app import app
-
-@pytest.fixture
-def client():
-    with app.test_client() as client:
-        yield client
 
 def test_send_email_success(client, mocker):
     # Mock the smtplib.SMTP object to avoid actually sending emails during the test
