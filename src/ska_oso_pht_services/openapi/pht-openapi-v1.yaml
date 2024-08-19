@@ -235,6 +235,24 @@ paths:
               schema:
                 type: string
 
+  /send-email:
+    post:
+      summary: Send email
+      description: |
+        send email
+      operationId: ska_oso_pht_services.api.send_email
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+
+              
 components:
   schemas:
     ValidationResponse:

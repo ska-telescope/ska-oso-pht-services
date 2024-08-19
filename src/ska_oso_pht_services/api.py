@@ -10,6 +10,12 @@ import os.path
 from functools import wraps
 from http import HTTPStatus
 
+
+from flask import Flask, request, jsonify
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify
 from ska_db_oda.domain.query import MatchType, UserQuery
@@ -347,3 +353,36 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
         return coordinates.round_coord_to_3_decimal_places(
             response["ra"], response["dec"], response["velocity"], response["redshift"]
         )
+
+
+@error_handler
+def send_email():
+    data = request.get_json()
+    email = data['email']
+    subject = data['subject']
+    message = data['message']
+    try:
+        # SMTP configuration
+        smtp_server = 'eu-smtp-outbound-1.mimecast.com'
+        smtp_port = 587
+        smtp_user = 'proposal-preparation-tool@skao.int'
+        smtp_password = ''    
+
+        msg = MIMEMultipart()
+        msg['From'] = smtp_user
+        msg['To'] = email
+        msg['Subject'] = subject
+
+        msg.attach(MIMEText(message, 'plain'))
+
+        # Connect to the SMTP server
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Upgrade the connection to secure
+        print("got here")
+        server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_user, email, msg.as_string())
+        server.quit()
+
+        return jsonify({'message': 'Email sent successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
