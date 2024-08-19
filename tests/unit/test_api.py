@@ -220,3 +220,47 @@ class TestGetCoordinates:
     def test_get_coordinates(self, client):
         for data in self.test_cases:
             self.get_coordinates_generic(client, *data)
+
+
+import pytest
+from app import app
+
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
+
+def test_send_email_success(client, mocker):
+    # Mock the smtplib.SMTP object to avoid actually sending emails during the test
+    mock_smtp = mocker.patch('smtplib.SMTP')
+    
+    # Mock the response of sendmail method
+    mock_smtp_instance = mock_smtp.return_value.__enter__.return_value
+    mock_smtp_instance.sendmail.return_value = {}
+
+    # Define the email data to be sent
+    response = client.post('/send-email', json={
+        'email': 'recipient@example.com',
+        'subject': 'Test Email',
+        'message': 'This is a test email.'
+    })
+
+    # Assert that the response status code is 200 (success)
+    assert response.status_code == 200
+    assert b'Email sent successfully' in response.data
+
+def test_send_email_failure(client, mocker):
+    # Mock the smtplib.SMTP object to raise an exception
+    mock_smtp = mocker.patch('smtplib.SMTP')
+    mock_smtp.side_effect = Exception("SMTP connection error")
+
+    # Define the email data to be sent
+    response = client.post('/send-email', json={
+        'email': 'recipient@example.com',
+        'subject': 'Test Email',
+        'message': 'This is a test email.'
+    })
+
+    # Assert that the response status code is 500 (internal server error)
+    assert response.status_code == 500
+    assert b'SMTP connection error' in response.data

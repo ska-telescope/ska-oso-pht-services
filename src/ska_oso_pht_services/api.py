@@ -376,11 +376,10 @@ def send_email():
         # Connect to the SMTP server
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()  # Upgrade the connection to secure
-        print("got here")
         server.login(smtp_user, smtp_password)
         server.sendmail(smtp_user, email, msg.as_string())
         server.quit()
 
         return jsonify({"message": "Email sent successfully!"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception as error:
+        return jsonify({"error": str(error)}), 500
