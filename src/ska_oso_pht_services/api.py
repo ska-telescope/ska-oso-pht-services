@@ -3,21 +3,18 @@ These functions map to the API paths, with the returned value being the API resp
 
 Connexion maps the function name to the operationId in the OpenAPI document path
 """
-
 import json
 import logging
+import os
 import os.path
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from functools import wraps
 from http import HTTPStatus
 
-
-from flask import Flask, request, jsonify
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
 from astroquery.exceptions import RemoteServiceError
-from flask import jsonify
+from flask import Flask, jsonify, request
 from ska_db_oda.domain.query import MatchType, UserQuery
 from ska_oso_pdm import Proposal
 
@@ -357,23 +354,24 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
 
 @error_handler
 def send_email():
+    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "SMTP_PASSWORD")
     data = request.get_json()
-    email = data['email']
-    subject = data['subject']
-    message = data['message']
+    email = data["email"]
+    subject = data["subject"]
+    message = data["message"]
     try:
         # SMTP configuration
-        smtp_server = 'eu-smtp-outbound-1.mimecast.com'
+        smtp_server = "eu-smtp-outbound-1.mimecast.com"
         smtp_port = 587
-        smtp_user = 'proposal-preparation-tool@skao.int'
-        smtp_password = ''    
+        smtp_user = "proposal-preparation-tool@skao.int"
+        smtp_password = SMTP_PASSWORD
 
         msg = MIMEMultipart()
-        msg['From'] = smtp_user
-        msg['To'] = email
-        msg['Subject'] = subject
+        msg["From"] = smtp_user
+        msg["To"] = email
+        msg["Subject"] = subject
 
-        msg.attach(MIMEText(message, 'plain'))
+        msg.attach(MIMEText(message, "plain"))
 
         # Connect to the SMTP server
         server = smtplib.SMTP(smtp_server, smtp_port)
@@ -383,6 +381,6 @@ def send_email():
         server.sendmail(smtp_user, email, msg.as_string())
         server.quit()
 
-        return jsonify({'message': 'Email sent successfully!'}), 200
+        return jsonify({"message": "Email sent successfully!"}), 200
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500

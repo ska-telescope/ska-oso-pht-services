@@ -44,6 +44,7 @@ export AWS_PHT_BUCKET_NAME=<AWS Bucket Name>
 export AWS_SERVER_PUBLIC_KEY=<AWS Public Key>
 export AWS_SERVER_SECRET_KEY=<AWS Secret Key>
 export AWS_REGION_NAME=<AWS Region Name>
+export SMTP_PASSWORD=<SMTP Password>
 ```
 
 Install the Helm umbrella chart into a Kubernetes cluster with ingress enabled:

@@ -124,6 +124,8 @@ spec:
             value: "{{ .Values.global.env.aws_server_public_key }}"
           - name: AWS_SERVER_SECRET_KEY
             value: "{{ .Values.global.env.aws_server_secret_key }}"
+          - name: SMTP_PASSWORD
+            value: "{{ .Values.global.env.smtp_password }}"
           {{- end }}
         volumeMounts:
           {{- if .Values.secretProvider.enabled }}

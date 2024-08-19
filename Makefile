@@ -15,6 +15,7 @@ RELEASE_NAME ?= test
 AWS_PHT_BUCKET_NAME ?=
 AWS_SERVER_PUBLIC_KEY ?=
 AWS_SERVER_SECRET_KEY ?=
+SMTP_PASSWORD ?=
 
 # Set sphinx documentation build to fail on warnings (as it is configured
 # in .readthedocs.yaml as well)
@@ -122,6 +123,7 @@ dev-up: K8S_CHART_PARAMS = \
 	--set global.env.aws_pht_bucket_name=$(AWS_PHT_BUCKET_NAME) \
 	--set global.env.aws_server_public_key=$(AWS_SERVER_PUBLIC_KEY) \
 	--set global.env.aws_server_secret_key=$(AWS_SERVER_SECRET_KEY) \
+	--set global.env.smtp_password=$(SMTP_PASSWORD) \
 	--set global.cluster_domain=cluster.local \
 	--set ska-db-oda-umbrella.pgadmin4.serverDefinitions.servers.firstServer.Host=$(POSTGRES_HOST)
 

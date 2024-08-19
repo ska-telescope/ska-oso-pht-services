@@ -8,6 +8,7 @@ global:
     aws_pht_bucket_name:
     aws_server_public_key:
     aws_server_secret_key:
+    smtp_password:
   cluster_domain: techops.internal.skao.int
 
 rest:
@@ -55,3 +56,5 @@ secretProvider:
       targetEnv: AWS_SERVER_PUBLIC_KEY
     - secretKey: "aws_server_secret_key"
       targetEnv: AWS_SERVER_SECRET_KEY
+    - secretKey: "smtp_password"
+      targetEnv: SMTP_PASSWORD
