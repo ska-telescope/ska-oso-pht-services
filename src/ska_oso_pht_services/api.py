@@ -20,11 +20,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
-from ska_oso_pht_services.utils import (  # pylint: disable=W0611
-    coordinates,
-    s3_bucket,
-    validation,
-)
+from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
 Response = Proposal
 

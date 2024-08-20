@@ -78,23 +78,6 @@ VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON = load_string_from_file(
     "testfile_get_osd_cycle1.json"
 )
 
-# VALID_PROPOSAL_GET_VALIDATE_BODY_JSON = load_string_from_file(
-#     "testfile_sample_proposal_get_validation_body.json"
-# )
-
-# VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON = load_string_from_file(
-#     "testfile_sample_proposal_get_validation_result.json"
-# )
-
-# VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND = load_string_from_file(
-#     "testfile_sample_proposal_get_validation_body_target_not_found.json"
-# )
-
-# VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND = load_string_from_file(
-#     "testfile_sample_proposal_get_validation_result_target_not_found.json"
-# )
-
-# New for validate function body
 VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT = load_string_from_file(
     "testfile_sample_proposal_post_validation_body_no_target_in_result.json"
 )
@@ -111,8 +94,6 @@ VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING = load_string_from_file(
     "testfile_sample_proposal_post_validate_body_passing.json"
 )
 
-
-# result
 VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT = load_string_from_file(
     "testfile_sample_proposal_post_validation_result_no_target_in_result.json"
 )

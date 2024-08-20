@@ -10,7 +10,7 @@ from unittest import mock
 from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
-from .util import (  # pylint: disable=W0611
+from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
     VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
