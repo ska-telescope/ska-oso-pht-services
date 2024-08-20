@@ -15,13 +15,38 @@ def assert_json_is_equal(json_a, json_b):
     # as the test string, even though they are equivalent JSON objects, e.g.,
     # subarray_id could be defined after dish. Ensure a stable test by
     # comparing the JSON objects themselves.
+
+    # TODO: revisit sorted json
     obj_a = json.loads(json_a)
     obj_b = json.loads(json_b)
+
+    sorted_obj_a = sorted(obj_a)
+    sorted_obj_b = sorted(obj_b)
+
     try:
-        assert sorted(obj_a) == sorted(obj_b)
+        assert sorted_obj_a == sorted_obj_b
     except AssertionError as exc:
         # raise a more useful exception that shows *where* the JSON differs
         diff = DeepDiff(sorted(obj_a), sorted(obj_b), ignore_order=True)
+        raise AssertionError(f"JSON not equal: {diff}") from exc
+
+
+def assert_json_is_equal_unsorted(json_a, json_b):
+    """
+    Utility function to compare two JSON objects
+    """
+    # key/values in the generated JSON do not necessarily have the same order
+    # as the test string, even though they are equivalent JSON objects, e.g.,
+    # subarray_id could be defined after dish. Ensure a stable test by
+    # comparing the JSON objects themselves.
+    obj_a = json.loads(json_a)
+    obj_b = json.loads(json_b)
+
+    try:
+        assert obj_a == obj_b
+    except AssertionError as exc:
+        # raise a more useful exception that shows *where* the JSON differs
+        diff = DeepDiff(obj_a, obj_b, ignore_order=True)
         raise AssertionError(f"JSON not equal: {diff}") from exc
 
 
@@ -53,18 +78,57 @@ VALID_OSD_GET_OSD_CYCLE1_RESULT_JSON = load_string_from_file(
     "testfile_get_osd_cycle1.json"
 )
 
-VALID_PROPOSAL_GET_VALIDATE_BODY_JSON = load_string_from_file(
-    "testfile_sample_proposal_get_validation_body.json"
+# VALID_PROPOSAL_GET_VALIDATE_BODY_JSON = load_string_from_file(
+#     "testfile_sample_proposal_get_validation_body.json"
+# )
+
+# VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON = load_string_from_file(
+#     "testfile_sample_proposal_get_validation_result.json"
+# )
+
+# VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND = load_string_from_file(
+#     "testfile_sample_proposal_get_validation_body_target_not_found.json"
+# )
+
+# VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND = load_string_from_file(
+#     "testfile_sample_proposal_get_validation_result_target_not_found.json"
+# )
+
+# New for validate function body
+VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT = load_string_from_file(
+    "testfile_sample_proposal_post_validation_body_no_target_in_result.json"
 )
 
-VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON = load_string_from_file(
-    "testfile_sample_proposal_get_validation_result.json"
+VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET = load_string_from_file(
+    "testfile_sample_proposal_post_validation_body_obs_set_no_target.json"
 )
 
-VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND = load_string_from_file(
-    "testfile_sample_proposal_get_validation_body_target_not_found.json"
+VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS = load_string_from_file(
+    "testfile_sample_proposal_post_validation_body_result_no_obs.json"
 )
 
-VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND = load_string_from_file(
-    "testfile_sample_proposal_get_validation_result_target_not_found.json"
+VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING = load_string_from_file(
+    "testfile_sample_proposal_post_validate_body_passing.json"
+)
+
+
+# result
+VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT = load_string_from_file(
+    "testfile_sample_proposal_post_validation_result_no_target_in_result.json"
+)
+
+VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET = load_string_from_file(
+    "testfile_sample_proposal_post_validation_result_obs_set_no_target.json"
+)
+
+VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS = load_string_from_file(
+    "testfile_sample_proposal_post_validation_result_result_no_obs.json"
+)
+
+VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON = load_string_from_file(
+    "testfile_sample_proposal_post_validate_result.json"
+)
+
+VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING = load_string_from_file(
+    "testfile_sample_proposal_post_validate_result_passing.json"
 )
