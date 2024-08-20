@@ -7,14 +7,14 @@ from ska_oso_pdm import Proposal
 
 def validate_proposal(proposal: Proposal) -> dict:
     """
-    validate targets in a proposal
+    validate proposal
 
     1. check that proposal has at least one obervation set
     2. each observation target should have a valid senscal result
     3. check that each observation sets has at least one target (in result)
 
     Parameters:
-    proposal_str (str): proposal
+    proposal (Proposal): proposal to be validated
 
     Returns:
     dict: result of validation and messages

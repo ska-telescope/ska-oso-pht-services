@@ -7,7 +7,7 @@ import pytest
 import requests
 
 # TODO: add assert_json_is_equal
-from ..unit.util import (  # pylint: disable=W0611
+from ..unit.util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
     VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET,
