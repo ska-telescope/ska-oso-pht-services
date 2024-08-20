@@ -234,11 +234,19 @@ def proposal_validate(body: dict) -> Response:  # pylint: disable=W0613
     LOGGER.debug("POST PROPOSAL validate")
 
     try:
+        print("proposal_validate")
+        print(body)
         # TODO: remove mocked result after refactoring validate function
         # and remove pylint disable
-        # result = validation.validate_proposal(body)
+        transform_body = transform_update_proposal(body)
 
-        result = {"result": True, "validation_errors": []}
+        print("after transform body")
+        prsl = Proposal.model_validate(transform_body)
+
+        print("after Proposal.model_validate")
+        # result = validation.validate_proposal(transform_body)
+        result = validation.validate_proposal(prsl)
+
         return (
             result,
             HTTPStatus.OK,

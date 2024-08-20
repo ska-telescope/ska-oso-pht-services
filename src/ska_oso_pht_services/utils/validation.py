@@ -120,6 +120,7 @@ def old_validate_proposal(proposal) -> dict:
 
     return {"result": result, "validation_errors": messages}
 
+
 def validate_proposal(proposal: Proposal) -> dict:
     """
     validate targets in a proposal
@@ -138,35 +139,69 @@ def validate_proposal(proposal: Proposal) -> dict:
     # osd_data = c.get_osd(1)
     # TODO: replace hard coded cycle id by a parameter
 
-
     validate_result = True
 
     messages = []
     try:
         # check that proposal has at least one obervation set
-        print('start checking at least one obs set')
-        
-        if len(proposal.info.observation_sets)  == 0:
-            messages.append('Proposal has no oberservation sets')
-        
+        print("start checking at least one obs set")
+
+        if len(proposal.info.observation_sets) == 0:
+            validate_result = False
+            messages.append("Proposal has no oberservation sets")
+
         # each observation target should have a valid senscal result
-        print('start checking each observation target should have a valid senscal result')
+        print(
+            "start checking each observation target should have a valid senscal result"
+        )
         for target in proposal.info.targets:
-            
-            print('target')
+            print("target")
             print(target)
-            print('not any(target.target_id == result.target_ref for result in proposal.info.results)')
-            print(not any(target.target_id == result.target_ref for result in proposal.info.results))
-            
-            if(not any(target.target_id == result.target_ref for result in proposal.info.results)):
-                print('not any')
+            print(
+                "not any(target.target_id == result.target_ref for result in"
+                " proposal.info.results)"
+            )
+            print(
+                not any(
+                    target.target_id == result.target_ref
+                    for result in proposal.info.results
+                )
+            )
+
+            if not any(
+                target.target_id == result.target_ref
+                for result in proposal.info.results
+            ):
+                print("not any")
                 validate_result = False
-                messages.append(f'Target {target.target_id} has no valid senscalc result')
-        
+                messages.append(
+                    f"Target {target.target_id} has no valid senscalc result"
+                )
+
+        # # check that each observation sets has at least one target
+        # print('start checking each observation sets has at least one target')
+        # for result in proposal["info"]["results"]:
+        #     if(not any(result["target_ref"] == target["target_id"] for target in proposal["info"]["targets"])):
+        #         validate_result = False
+        #         messages.append(f'Result with Observation Set {result["observation_set_ref"]} has no Target {result["target_ref"]} in targets')
+
+        # check that each observation sets has at least one target
+        print("start checking each observation sets has at least one target")
+        for obs_set in proposal.info.observation_sets:
+            if not any(
+                obs_set.observation_set_id == result.observation_set_ref
+                for result in proposal.info.results
+            ):
+                validate_result = False
+                messages.append(
+                    f"Observation Set {obs_set.observation_set_id} has no Targets in"
+                    " Results"
+                )
+
     except ValueError as err:
-        print('except validate_proposal' + err)
-        messages.append('Exception: ' + str(err))
+        print("except validate_proposal" + err)
+        messages.append("Exception: " + str(err))
         return {"result": False, "validation_errors": messages}
-    print('return messages')
+    print("return messages")
     print(messages)
     return {"result": validate_result, "validation_errors": messages}

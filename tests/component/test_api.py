@@ -9,8 +9,16 @@ import requests
 # TODO: add assert_json_is_equal
 from ..unit.util import (  # pylint: disable=W0611
     VALID_PROPOSAL_DATA_JSON,
-    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
-    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS,
+    assert_json_is_equal_unsorted,
 )
 
 # TODO: revisit test_proposal_put
@@ -116,38 +124,91 @@ def test_proposal_put():
     # assert expected == result
 
 
-# TODO: revisit test for validate endpoint after refactoring with new pdm data
-def test_proposal_validate():
+def test_proposal_validate_no_target_in_result():
     """
     Test that the POST /proposals/validate path receives the request
-    and returns result and messages
+    and returns result and messages for no target in result case
     """
 
     response = requests.post(
         f"{PHT_URL}/proposals/validate",
-        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
         headers={"Content-type": "application/json"},
     )
 
-    result = json.loads(response.content)
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal_unsorted(
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT
+    )
+
+
+def test_proposal_validate_obs_set_no_target():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages for obs set no target case
+    """
+
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET,
+        headers={"Content-type": "application/json"},
+    )
 
     assert response.status_code == HTTPStatus.OK
-    assert result["result"] is True
+    assert_json_is_equal_unsorted(
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET
+    )
 
 
-# def test_proposal_validate_target_not_found():
-#     """
-#     Test that the POST /proposals/validate path receives the request
-#     and returns result and messages
-#     """
+def test_proposal_validate_result_no_obs():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages for result no obs case
+    """
 
-#     response = requests.post(
-#         f"{PHT_URL}/proposals/validate",
-#         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
-#         headers={"Content-type": "application/json"},
-#     )
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS,
+        headers={"Content-type": "application/json"},
+    )
 
-#     result = json.loads(response.content)
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal_unsorted(
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS
+    )
 
-#     assert response.status_code == HTTPStatus.OK
-#     assert result["result"] is False
+
+def test_proposal_validate_result_sample_proposal():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages for using sample proposal case
+    """
+
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_DATA_JSON,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal_unsorted(
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON
+    )
+
+
+def test_proposal_validate_passing():
+    """
+    Test that the POST /proposals/validate path receives the request
+    and returns result and messages for passing case
+    """
+
+    response = requests.post(
+        f"{PHT_URL}/proposals/validate",
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal_unsorted(
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING
+    )

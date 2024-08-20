@@ -1,0 +1,10 @@
+{
+  "result": false,
+  "validation_errors": [
+    "Target M28 has no valid senscalc result",
+    "Target M1 has no valid senscalc result",
+    "Observation Set mid-001 has no Targets in Results",
+    "Observation Set mid-002 has no Targets in Results",
+    "Observation Set low-001 has no Targets in Results"
+  ]
+}
