@@ -118,13 +118,6 @@ def test_proposal_validate_no_target_in_result(client):
         headers={"Content-type": "application/json"},
     )
 
-    print("test_proposal_validate result")
-    print(result.text)
-
-    print("VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT")
-    print(VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT)
-    #    assert 0
-
     assert_json_is_equal_unsorted(
         result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT
     )

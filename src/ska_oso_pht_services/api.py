@@ -221,7 +221,7 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
 
 @error_handler
-def proposal_validate(body: dict) -> Response:  # pylint: disable=W0613
+def proposal_validate(body: dict) -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
@@ -234,17 +234,9 @@ def proposal_validate(body: dict) -> Response:  # pylint: disable=W0613
     LOGGER.debug("POST PROPOSAL validate")
 
     try:
-        print("proposal_validate")
-        print(body)
-        # TODO: remove mocked result after refactoring validate function
-        # and remove pylint disable
         transform_body = transform_update_proposal(body)
 
-        print("after transform body")
         prsl = Proposal.model_validate(transform_body)
-
-        print("after Proposal.model_validate")
-        # result = validation.validate_proposal(transform_body)
         result = validation.validate_proposal(prsl)
 
         return (
