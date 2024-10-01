@@ -357,8 +357,13 @@ def send_email():
     SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "SMTP_PASSWORD")
     data = request.get_json()
     email = data["email"]
-    subject = data["subject"]
-    message = data["message"]
+    prsl_id = data["prsl_id"]
+    subject = f"Invitation to participate in SKAO proposal - {prsl_id}"
+    message = (
+        f"You have been invited to participate in the SKAO proposal with id {prsl_id}."
+        " Kindly click on attached link to accept or reject"
+    )
+
     try:
         # SMTP configuration
         smtp_server = "eu-smtp-outbound-1.mimecast.com"

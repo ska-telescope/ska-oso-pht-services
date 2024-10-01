@@ -244,15 +244,25 @@ paths:
       requestBody:
         content:
           application/json:
-            schema: {}
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: recipient email 
+                prsl_id:
+                  type: string
+                  description: Proposal ID
+              required:
+                - email
+                - prsl_id
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema: {}
-
-              
+              schema:
+                type: object
 components:
   schemas:
     ValidationResponse:
