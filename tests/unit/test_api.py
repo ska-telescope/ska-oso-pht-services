@@ -228,11 +228,11 @@ def test_send_email_success(client, mocker):
 
     # Mock the response of sendmail method
     mock_smtp_instance = mock_smtp.return_value.__enter__.return_value
-    mock_smtp_instance.sendmail.return_value = {}
+    mock_smtp_instance.sendmail.return_value = {"message": "Email sent successfully!"}
 
     # Define the email data to be sent
     response = client.post(
-        "/send-email",
+        "/ska-oso-pht-services/pht/api/v2/send-email",
         json={"email": "recipient@example.com", "prsl_id": "test-prsl-id-123"},
     )
 
@@ -248,7 +248,7 @@ def test_send_email_failure(client, mocker):
 
     # Define the email data to be sent
     response = client.post(
-        "/send-email",
+        "/ska-oso-pht-services/pht/api/v2/send-email",
         json={"email": "recipient@example.com", "prsl_id": "test-prsl-id-123"},
     )
 
