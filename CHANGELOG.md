@@ -10,6 +10,12 @@ Unreleased
 
 * Add send-email endpoint 
 
+2.2.0
+
+*****
+
+* Refactored validate endpoint
+
 2.1.0
 
 *****
