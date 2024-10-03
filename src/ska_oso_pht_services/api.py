@@ -14,7 +14,7 @@ from functools import wraps
 from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
-from flask import Flask, jsonify, request
+from flask import jsonify, request
 from ska_db_oda.domain.query import MatchType, UserQuery
 from ska_oso_pdm import Proposal
 
@@ -364,27 +364,24 @@ def send_email():
         " Kindly click on attached link to accept or reject"
     )
 
-    try:
-        # SMTP configuration
-        smtp_server = "eu-smtp-outbound-1.mimecast.com"
-        smtp_port = 587
-        smtp_user = "proposal-preparation-tool@skao.int"
-        smtp_password = SMTP_PASSWORD
+    # SMTP configuration
+    smtp_server = "eu-smtp-outbound-1.mimecast.com"
+    smtp_port = 587
+    smtp_user = "proposal-preparation-tool@skao.int"
+    smtp_password = SMTP_PASSWORD
 
-        msg = MIMEMultipart()
-        msg["From"] = smtp_user
-        msg["To"] = email
-        msg["Subject"] = subject
+    msg = MIMEMultipart()
+    msg["From"] = smtp_user
+    msg["To"] = email
+    msg["Subject"] = subject
 
-        msg.attach(MIMEText(message, "plain"))
+    msg.attach(MIMEText(message, "plain"))
 
-        # Connect to the SMTP server
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()  # Upgrade the connection to secure
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_user, email, msg.as_string())
-        server.quit()
+    # Connect to the SMTP server
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()  # Upgrade the connection to secure
+    server.login(smtp_user, smtp_password)
+    server.sendmail(smtp_user, email, msg.as_string())
+    server.quit()
 
-        return jsonify({"message": "Email sent successfully!"}), 200
-    except Exception as error:
-        return jsonify({"error": str(error)}), 500
+    return jsonify({"message": "Email sent successfully!"}), 200
