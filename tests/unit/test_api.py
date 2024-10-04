@@ -10,14 +10,20 @@ from unittest import mock
 from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
-from .util import (  # pylint: disable=W0611
+from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
-    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
-    VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
-    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON,
-    VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING,
+    VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING,
+    VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS,
     assert_json_is_equal,
+    assert_json_is_equal_unsorted,
 )
 
 
@@ -105,14 +111,66 @@ def test_proposal_edit(mock_oda, client):
     assert result.status_code == HTTPStatus.OK
 
 
-def test_proposal_validate(client):
+def test_proposal_validate_no_target_in_result(client):
     result = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
-        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON,
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
         headers={"Content-type": "application/json"},
     )
 
-    assert_json_is_equal(result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON)
+    assert_json_is_equal_unsorted(
+        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT
+    )
+    assert result.status_code == HTTPStatus.OK
+
+
+def test_proposal_validate_obs_set_no_target(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v2/proposals/validate",
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert_json_is_equal_unsorted(
+        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET
+    )
+    assert result.status_code == HTTPStatus.OK
+
+
+def test_proposal_validate_result_no_obs(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v2/proposals/validate",
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert_json_is_equal_unsorted(
+        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS
+    )
+    assert result.status_code == HTTPStatus.OK
+
+
+def test_proposal_validate_result_sample_proposal(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v2/proposals/validate",
+        data=VALID_PROPOSAL_DATA_JSON,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert_json_is_equal_unsorted(result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON)
+    assert result.status_code == HTTPStatus.OK
+
+
+def test_proposal_validate_result_passing(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v2/proposals/validate",
+        data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING,
+        headers={"Content-type": "application/json"},
+    )
+
+    assert_json_is_equal_unsorted(
+        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING
+    )
     assert result.status_code == HTTPStatus.OK
 
 

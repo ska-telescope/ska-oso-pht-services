@@ -23,11 +23,7 @@ from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
-from ska_oso_pht_services.utils import (  # pylint: disable=W0611
-    coordinates,
-    s3_bucket,
-    validation,
-)
+from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
 Response = Proposal
 
@@ -224,7 +220,7 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
 
 @error_handler
-def proposal_validate(body: dict) -> Response:  # pylint: disable=W0613
+def proposal_validate(body: dict) -> Response:
     """
     Function that requests to dummy endpoint POST /proposals/validate are mapped to
 
@@ -237,11 +233,11 @@ def proposal_validate(body: dict) -> Response:  # pylint: disable=W0613
     LOGGER.debug("POST PROPOSAL validate")
 
     try:
-        # TODO: remove mocked result after refactoring validate function
-        # and remove pylint disable
-        # result = validation.validate_proposal(body)
+        transform_body = transform_update_proposal(body)
 
-        result = {"result": True, "validation_errors": []}
+        prsl = Proposal.model_validate(transform_body)
+        result = validation.validate_proposal(prsl)
+
         return (
             result,
             HTTPStatus.OK,
