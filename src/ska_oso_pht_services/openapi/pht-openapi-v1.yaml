@@ -264,6 +264,24 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Email sent successfully!"
+              example:
+                message: "Email sent successfully!"
+        "400":
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          description: INTERNAL SERVER ERROR
+          content:
+            text/plain:
+              schema:
+                type: string
 components:
   schemas:
     ValidationResponse:
