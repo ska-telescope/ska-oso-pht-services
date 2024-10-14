@@ -96,7 +96,7 @@ def proposal_get(identifier: str) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of an Proposal and a
-        HTTP status, which the Connexion will wrap in a response
+        HTTP status, which the Connection will wrap in a response
     """
 
     try:
@@ -123,7 +123,7 @@ def proposal_get_list(identifier: str) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of a list of Proposal and a
-        HTTP status, which the Connexion will wrap in a response
+        HTTP status, which the Connection will wrap in a response
     """
 
     try:
@@ -152,7 +152,7 @@ def proposal_create(body) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of an Proposal as it exists in the ODA or error
-        response and a HTTP status, which the Connexion will wrap in a response
+        response and a HTTP status, which the Connection will wrap in a response
     """
     LOGGER.debug("POST PROPOSAL create")
 
@@ -186,7 +186,7 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of an Proposal or error response and a HTTP status,
-        which the Connexion will wrap in a response
+        which the Connection will wrap in a response
     """
     LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
 
@@ -243,7 +243,7 @@ def proposal_validate(body: dict) -> Response:
             HTTPStatus.OK,
         )
     except ValueError as err:
-        LOGGER.exception("ValueError when validaing proposal")
+        LOGGER.exception("ValueError when validating proposal")
         return (
             {"error": f"Bad Request '{err.args[0]}'"},
             HTTPStatus.BAD_REQUEST,

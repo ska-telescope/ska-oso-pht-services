@@ -8,18 +8,19 @@ from typing import Any, Dict
 import prance
 from connexion import App
 from flask import Flask, Response
-from ska_db_oda.rest.flask_oda import FlaskODA
+from ska_db_oda.persistence.unitofwork import unitofwork
+# from ska_db_oda.rest.flask_oda import FlaskODA
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 
-oda = FlaskODA()
+oda = unitofwork()
 
 
 def resolve_openapi_spec() -> Dict[str, Any]:
     """
-    Resolves the $ref in the OpenAPI spec before it is used by Connexion,
-    as Connexion can't parse them.
+    Resolves the $ref in the OpenAPI spec before it is used by Connection,
+    as Connection can't parse them.
     See https://github.com/spec-first/connexion/issues/967
     """
     cwd, _ = os.path.split(__file__)
@@ -31,7 +32,7 @@ def resolve_openapi_spec() -> Dict[str, Any]:
 
 class CustomRequestBodyValidator:  # pylint: disable=too-few-public-methods
     """
-        There is a (another) issue with Connexion where it cannot validate against a
+        There is a (another) issue with Connection where it cannot validate against a
         spec with polymorphism, like the SBDefinition.
     See https://github.com/spec-first/connexion/issues/1569
     As a temporary hack, this basically turns off the validation
@@ -67,7 +68,7 @@ def set_default_headers_on_response(response: Response) -> Response:
 
 def create_app(open_api_spec=None) -> App:
     """
-    Create the Connexion application with required config
+    Create the Connection application with required config
     """
 
     if open_api_spec is None:
@@ -82,7 +83,7 @@ def create_app(open_api_spec=None) -> App:
         open_api_spec,
         arguments={"title": "OpenAPI PHT"},
         # The base path includes the namespace which is known at runtime
-        # to avoid clashes in deployments, for example in CICD
+        # to avoid clashes in deployments, for example in CI/CD
         base_path=API_PATH,
         pythonic_params=True,
         validator_map=validator_map,
