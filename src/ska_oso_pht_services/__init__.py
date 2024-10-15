@@ -8,13 +8,14 @@ from typing import Any, Dict
 import prance
 from connexion import App
 from flask import Flask, Response
-from ska_db_oda.persistence.unitofwork import unitofwork
+from ska_db_oda.persistence.unitofwork import UnitOfWork
+
 # from ska_db_oda.rest.flask_oda import FlaskODA
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 
-oda = unitofwork()
+# oda = UnitOfWork()
 
 
 def resolve_openapi_spec() -> Dict[str, Any]:
@@ -89,7 +90,7 @@ def create_app(open_api_spec=None) -> App:
         validator_map=validator_map,
     )
 
-    oda.init_app(app.app)
+    # oda.init_app(app.app)
 
     app.app.after_request(set_default_headers_on_response)
 

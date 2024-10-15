@@ -37,7 +37,8 @@ def validate_proposal(proposal: Proposal) -> dict:
             ):
                 validate_result = False
                 messages.append(
-                    f"Target {target.target_id} has no valid sensitivity/integration time results or is not linked to an observation"
+                    f"Target {target.target_id} has no valid sensitivity/integration"
+                    " time results or is not linked to an observation"
                 )
 
         # check that each observation sets has at least one target (in result)
@@ -48,8 +49,8 @@ def validate_proposal(proposal: Proposal) -> dict:
             ):
                 validate_result = False
                 messages.append(
-                    f"Observation Set {obs_set.observation_set_id} has no Targets linked in"
-                    " Results"
+                    f"Observation Set {obs_set.observation_set_id} has no Targets"
+                    " linked in Results"
                 )
 
     except ValueError as err:
