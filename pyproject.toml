@@ -39,8 +39,8 @@ connexion = {extras = ["swagger-ui"], version = "^2.14.0"}
 python-dateutil = "^2.8.2"
 gunicorn = "^20.1.0"
 ska-ser-logging = "^0.4.1"
-ska-db-oda = "^5.2.0"
-ska-oso-pdm = "^14.3.0"
+ska-db-oda = "^6.2.0"
+ska-oso-pdm = "^16.0.0"
 prance = {version = "^23.6.21.0", extras = ["osv"]}
 ska-ser-sphinx-theme = "^0.1.2"
 boto3 = "^1.34.62"

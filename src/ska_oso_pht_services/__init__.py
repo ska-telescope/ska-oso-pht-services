@@ -8,12 +8,14 @@ from typing import Any, Dict
 import prance
 from connexion import App
 from flask import Flask, Response
-from ska_db_oda.rest.flask_oda import FlaskODA
+#from ska_db_oda.rest.flask_oda import FlaskODA
+from ska_db_oda.persistence.unitofwork import UnitOfWork
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 
-oda = FlaskODA()
+#oda = FlaskODA()
+oda = UnitOfWork()
 
 
 def resolve_openapi_spec() -> Dict[str, Any]:
