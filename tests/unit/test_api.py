@@ -6,9 +6,13 @@ import json
 from http import HTTPStatus
 from unittest import mock
 
+import numpy as np
+
 # from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
+
+np.float_ = np.float64
 
 from .util import (
     VALID_PROPOSAL_DATA_JSON,
@@ -27,7 +31,7 @@ from .util import (
 )
 
 
-@mock.patch("ska_oso_pht_services.api.oda")
+@mock.patch("ska_oso_pht_services.api.UnitOfWork")
 def test_proposal_create(mock_oda, client):
     """
     Check the proposal_create method returns the expected prsl_id and status code
@@ -50,7 +54,7 @@ def test_proposal_create(mock_oda, client):
     assert response.text == "prp-ska01-202204-01"
 
 
-@mock.patch("ska_oso_pht_services.api.oda")
+@mock.patch("ska_oso_pht_services.api.UnitOfWork")
 def test_proposal_get(mock_oda, client):
     uow_mock = mock.MagicMock()
     uow_mock.prsls.__contains__.return_value = True
@@ -71,7 +75,7 @@ def test_proposal_get(mock_oda, client):
     assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
 
 
-@mock.patch("ska_oso_pht_services.api.oda")
+@mock.patch("ska_oso_pht_services.api.UnitOfWork")
 def test_proposal_get_list(mock_oda, client):
     list_result = json.loads(VALID_PROPOSAL_GET_LIST_RESULT_JSON)
 
@@ -91,7 +95,7 @@ def test_proposal_get_list(mock_oda, client):
     assert len(json.loads(result.text)) == len(list_result)
 
 
-@mock.patch("ska_oso_pht_services.api.oda")
+@mock.patch("ska_oso_pht_services.api.UnitOfWork")
 def test_proposal_edit(mock_oda, client):
     uow_mock = mock.MagicMock()
     uow_mock.prsls.__contains__.return_value = True
