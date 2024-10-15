@@ -13,6 +13,7 @@ from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 np.float_ = np.float64
+np.complex_ = np.complex128
 
 from .util import (
     VALID_PROPOSAL_DATA_JSON,
