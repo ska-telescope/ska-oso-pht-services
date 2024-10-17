@@ -15,16 +15,16 @@ else:
     import logging
 
     from gunicorn import glogging
-    
+
     class UniformLogger(glogging.Logger):
         def setup(self, cfg):
             # override the configuration but inherit gunicorn logging level
             super().setup(cfg)
             configure_logging(level=self.loglevel)
-    
+
             # Override gunicorn format with SKA.
             self._set_handler(self.error_log, cfg.errorlog, get_default_formatter())
-    
+
     # presume being run from gunicorn
     # use gunicorn logging level for app and module loggers
     gunicorn_logger = logging.getLogger("gunicorn.error")

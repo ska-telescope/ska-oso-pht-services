@@ -18,7 +18,7 @@ API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 def resolve_openapi_spec() -> Dict[str, Any]:
     cwd, _ = os.path.split(__file__)
     path = os.path.join(cwd, "./openapi/pht-openapi-v1.yaml")
-    with open(path, 'r', encoding='utf-8') as file:
+    with open(path, "r", encoding="utf-8") as file:
         specification = yaml.safe_load(file)
     validate_spec(specification)
     return specification

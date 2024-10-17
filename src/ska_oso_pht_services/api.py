@@ -240,15 +240,16 @@ def proposal_validate(body: dict) -> Response:
             prsl = Proposal.model_validate(transform_body)
         except Exception as e:
             raise
-        
+
         result = validation.validate_proposal(prsl)
 
         return (result, HTTPStatus.OK)
     except ValueError as err:
         LOGGER.exception("ValueError when validating proposal")
-        res = ({"error": f"Bad Request '{err}'"},
-               HTTPStatus.BAD_REQUEST,
-               )
+        res = (
+            {"error": f"Bad Request '{err}'"},
+            HTTPStatus.BAD_REQUEST,
+        )
         return res
 
 

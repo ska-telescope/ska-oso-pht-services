@@ -31,20 +31,26 @@ def validate_proposal(proposal: Proposal) -> dict:
 
         # each observation target should have a valid sensitivity calculation result
         for target in proposal.info.targets:
-            found = any(target.target_id == result.target_ref for result in proposal.info.result_details)
+            found = any(
+                target.target_id == result.target_ref
+                for result in proposal.info.result_details
+            )
             if not found:
                 validate_result = False
                 messages.append(
-                    f"Target {target.target_id} has no valid sensitivity/integration time results or is not linked to an observation" # noqa
+                    f"Target {target.target_id} has no valid sensitivity/integration time results or is not linked to an observation"  # noqa
                 )
 
         # check that each observation sets has at least one target (in result)
         for obs_set in proposal.info.observation_sets:
-            found = any(obs_set.observation_set_id == result.observation_set_ref for result in proposal.info.result_details)
+            found = any(
+                obs_set.observation_set_id == result.observation_set_ref
+                for result in proposal.info.result_details
+            )
             if not found:
                 validate_result = False
                 messages.append(
-                    f"Observation Set {obs_set.observation_set_id} has no Targets linked in Results" # noqa
+                    f"Observation Set {obs_set.observation_set_id} has no Targets linked in Results"  # noqa
                 )
 
     except ValueError as err:
