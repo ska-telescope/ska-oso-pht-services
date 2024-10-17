@@ -1,3 +1,4 @@
+import astropy.units as u
 from astropy.coordinates import Angle, SkyCoord
 from astroquery.exceptions import RemoteServiceError
 from astroquery.ipac.ned import Ned
@@ -51,8 +52,8 @@ def convert_ra_dec_deg(ra_str: str, dec_str: str):
     Returns:
     tuple: RA and Dec in decimal degrees
     """
-    ra = Angle(ra_str, unit=Angle.hour)
-    dec = Angle(dec_str, unit=Angle.degree)
+    ra = Angle(ra_str, unit=u.hour)
+    dec = Angle(dec_str, unit=u.degree)
 
     return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
 
@@ -71,14 +72,14 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
             and lat, representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
-    coord = SkyCoord(ra, dec, frame="icrs", unit=(Angle.hourangle, Angle.degree))
+    coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.degree))
     # Converting to Galactic frame
     galactic_coord = coord.galactic
 
     return {
         "galactic": {
-            "lon": float(galactic_coord.l.to_string(decimal=True, unit=Angle.degree)),
-            "lat": float(galactic_coord.b.to_string(decimal=True, unit=Angle.degree)),
+            "lon": float(galactic_coord.l.to_string(decimal=True, unit=u.degree)),
+            "lat": float(galactic_coord.b.to_string(decimal=True, unit=u.degree)),
             "velocity": velocity,
             "redshift": redshift,
         }
@@ -147,7 +148,7 @@ def get_coordinates(object_name: str):
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
     coordinates = (
-        SkyCoord(ra, dec, unit=(Angle.hourangle, Angle.degree), frame="icrs")
+        SkyCoord(ra, dec, unit=(u.hourangle, u.degree), frame="icrs")
         .to_string("hmsdms")
         .replace("h", ":")
         .replace("d", ":")
