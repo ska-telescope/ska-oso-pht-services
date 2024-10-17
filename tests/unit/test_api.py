@@ -2,20 +2,6 @@
 Unit tests for ska_oso_pht_services.api
 """
 
-import json
-from http import HTTPStatus
-
-import numpy as np
-
-# from ska_oso_pdm.generated.models.proposal import Proposal
-from ska_oso_pdm import Proposal
-from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
-from unittest.mock import patch, MagicMock
-import pytest
-
-np.float_ = np.float64
-np.complex_ = np.complex128
-
 from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
@@ -31,6 +17,19 @@ from .util import (
     assert_json_is_equal,
     assert_json_is_equal_unsorted,
 )
+import json
+from http import HTTPStatus
+from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pytest
+
+# from ska_oso_pdm.generated.models.proposal import Proposal
+from ska_oso_pdm import Proposal
+from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
+
+np.float_ = np.float64
+np.complex_ = np.complex128
 
 
 @patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
@@ -86,7 +85,8 @@ def test_proposal_get_list(mock_oda, client):
 
     mock_oda.return_value.__enter__.return_value = uow_mock
 
-    response = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
+    response = client.get(
+        "/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
 
     assert response.status_code == HTTPStatus.OK
     assert len(json.loads(response.text)) == len(list_result)
@@ -158,7 +158,8 @@ def test_validate_proposal_result_sample_proposal(client):
     )
 
     assert response.status_code == HTTPStatus.OK
-    assert_json_is_equal_unsorted(response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON)
+    assert_json_is_equal_unsorted(
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON)
 
 
 def test_validate_proposal_result_passing(client):
@@ -286,7 +287,8 @@ def test_send_email_success(client, mocker):
 
     # Mock the response of sendmail method
     mock_smtp_instance = mock_smtp.return_value.__enter__.return_value
-    mock_smtp_instance.sendmail.return_value = {"message": "Email sent successfully!"}
+    mock_smtp_instance.sendmail.return_value = {
+        "message": "Email sent successfully!"}
 
     # Define the email data to be sent
     response = client.post(
