@@ -236,7 +236,11 @@ def proposal_validate(body: dict) -> Response:
     try:
         transform_body = transform_update_proposal(body)
 
-        prsl = Proposal.model_validate(transform_body)
+        try:
+            prsl = Proposal.model_validate(transform_body)
+        except Exception as e:
+            raise
+        
         result = validation.validate_proposal(prsl)
 
         return (

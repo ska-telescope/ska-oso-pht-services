@@ -4,13 +4,14 @@ Unit tests for ska_oso_pht_services.api
 
 import json
 from http import HTTPStatus
-from unittest import mock
 
 import numpy as np
 
 # from ska_oso_pdm.generated.models.proposal import Proposal
 from ska_oso_pdm import Proposal
 from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
+from unittest.mock import patch, MagicMock
+import pytest
 
 np.float_ = np.float64
 np.complex_ = np.complex128
@@ -32,18 +33,17 @@ from .util import (
 )
 
 
-@mock.patch("ska_oso_pht_services.api.UnitOfWork")
+@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
 def test_proposal_create(mock_oda, client):
     """
     Check the proposal_create method returns the expected prsl_id and status code
     """
 
-    uow_mock = mock.MagicMock()
-    uow_mock.prsls.__contains__.return_value = True
+    uow_mock = MagicMock()
     uow_mock.prsls.add.return_value = OPENAPI_CODEC.loads(
         Proposal, VALID_PROPOSAL_DATA_JSON
     )
-    mock_oda.uow.__enter__.return_value = uow_mock
+    mock_oda.return_value.__enter__.return_value = uow_mock
 
     response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals",
@@ -55,15 +55,13 @@ def test_proposal_create(mock_oda, client):
     assert response.text == "prp-ska01-202204-01"
 
 
-@mock.patch("ska_oso_pht_services.api.UnitOfWork")
+@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
 def test_proposal_get(mock_oda, client):
-    uow_mock = mock.MagicMock()
-    uow_mock.prsls.__contains__.return_value = True
+    uow_mock = MagicMock()
     uow_mock.prsls.get.return_value = Proposal.model_validate(
         json.loads(VALID_PROPOSAL_DATA_JSON)
     )
-
-    mock_oda.uow.__enter__.return_value = uow_mock
+    mock_oda.return_value.__enter__.return_value = uow_mock
 
     result = client.get(
         "/ska-oso-pht-services/pht/api/v2/proposals/prp-ska01-202204-01",
@@ -76,7 +74,7 @@ def test_proposal_get(mock_oda, client):
     assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
 
 
-@mock.patch("ska_oso_pht_services.api.UnitOfWork")
+@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
 def test_proposal_get_list(mock_oda, client):
     list_result = json.loads(VALID_PROPOSAL_GET_LIST_RESULT_JSON)
 
@@ -84,11 +82,10 @@ def test_proposal_get_list(mock_oda, client):
     for x in list_result:
         return_value.append(OPENAPI_CODEC.loads(Proposal, json.dumps(x)))
 
-    uow_mock = mock.MagicMock()
-    uow_mock.prsls.__contains__.return_value = True
+    uow_mock = MagicMock()
     uow_mock.prsls.query.return_value = return_value
 
-    mock_oda.uow.__enter__.return_value = uow_mock
+    mock_oda.__enter__.return_value = uow_mock
 
     result = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
 
@@ -96,15 +93,14 @@ def test_proposal_get_list(mock_oda, client):
     assert len(json.loads(result.text)) == len(list_result)
 
 
-@mock.patch("ska_oso_pht_services.api.UnitOfWork")
+@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
 def test_proposal_edit(mock_oda, client):
-    uow_mock = mock.MagicMock()
-    uow_mock.prsls.__contains__.return_value = True
+    uow_mock = MagicMock()
     uow_mock.prsls.get.return_value = OPENAPI_CODEC.loads(
         Proposal, VALID_PROPOSAL_DATA_JSON
     )
 
-    mock_oda.uow.__enter__.return_value = uow_mock
+    mock_oda.__enter__.return_value = uow_mock
 
     result = client.put(
         "/ska-oso-pht-services/pht/api/v2/proposals/prp-ska01-202204-01",
@@ -179,18 +175,18 @@ def test_proposal_validate_result_passing(client):
     assert result.status_code == HTTPStatus.OK
 
 
-# TODO: uncomment/revisit test for validate endpoint after refactoring with new pdm data
-# def test_proposal_validate_target_not_found(client):
-#     result = client.post(
-#         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
-#         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
-#         headers={"Content-type": "application/json"},
-#     )
+@pytest.mark.skip(reason="revisit test for validate endpoint after refactoring with new pdm data")
+def test_proposal_validate_target_not_found(client):
+    result = client.post(
+        "/ska-oso-pht-services/pht/api/v2/proposals/validate",
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+        headers={"Content-type": "application/json"},
+    )
 
-#     assert_json_is_equal(
-#         result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
-#     )
-#     assert result.status_code == HTTPStatus.OK
+    assert_json_is_equal(
+        result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
+    )
+    assert result.status_code == HTTPStatus.OK
 
 
 class TestGetSignedUrl:
