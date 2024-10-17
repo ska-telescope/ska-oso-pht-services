@@ -5,7 +5,6 @@ Connexion maps the function name to the operationId in the OpenAPI document path
 """
 import json
 import logging
-import os
 import os.path
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -236,10 +235,7 @@ def proposal_validate(body: dict) -> Response:
     try:
         transform_body = transform_update_proposal(body)
 
-        try:
-            prsl = Proposal.model_validate(transform_body)
-        except Exception as e:
-            raise
+        prsl = Proposal.model_validate(transform_body)
 
         result = validation.validate_proposal(prsl)
 
