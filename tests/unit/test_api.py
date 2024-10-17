@@ -82,8 +82,7 @@ def test_proposal_get_list(mock_oda, client):
 
     mock_oda.return_value.__enter__.return_value = uow_mock
 
-    response = client.get(
-        "/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
+    response = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
 
     assert response.status_code == HTTPStatus.OK
     assert len(json.loads(response.text)) == len(list_result)
@@ -287,8 +286,7 @@ def test_send_email_success(client, mocker):
 
     # Mock the response of sendmail method
     mock_smtp_instance = mock_smtp.return_value.__enter__.return_value
-    mock_smtp_instance.sendmail.return_value = {
-        "message": "Email sent successfully!"}
+    mock_smtp_instance.sendmail.return_value = {"message": "Email sent successfully!"}
 
     # Define the email data to be sent
     response = client.post(
