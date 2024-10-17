@@ -5,32 +5,15 @@ ska_oso_pht_services
 import os
 from typing import Any, Dict
 
-import prance
 from connexion import App
 from flask import Flask, Response
 from ska_db_oda.persistence.unitofwork import UnitOfWork
 import yaml
 from openapi_spec_validator import validate_spec
 
-# from ska_db_oda.rest.flask_oda import FlaskODA
-
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 
-# oda = UnitOfWork()
-
-
-def resolve_openapi_spec_old() -> Dict[str, Any]:
-    """
-    Resolves the $ref in the OpenAPI spec before it is used by Connection,
-    as Connection can't parse them.
-    See https://github.com/spec-first/connexion/issues/967
-    """
-    cwd, _ = os.path.split(__file__)
-    path = os.path.join(cwd, "./openapi/pht-openapi-v1.yaml")
-    parser = prance.ResolvingParser(path, lazy=True, strict=True)
-    parser.parse()
-    return parser.specification
 
 def resolve_openapi_spec() -> Dict[str, Any]:
     cwd, _ = os.path.split(__file__)
