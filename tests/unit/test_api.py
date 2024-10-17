@@ -63,15 +63,14 @@ def test_proposal_get(mock_oda, client):
     )
     mock_oda.return_value.__enter__.return_value = uow_mock
 
-    result = client.get(
+    response = client.get(
         "/ska-oso-pht-services/pht/api/v2/proposals/prp-ska01-202204-01",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
 
-    assert result.status_code == HTTPStatus.OK
-
-    assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal(response.text, VALID_PROPOSAL_DATA_JSON)
 
 
 @patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
@@ -85,12 +84,12 @@ def test_proposal_get_list(mock_oda, client):
     uow_mock = MagicMock()
     uow_mock.prsls.query.return_value = return_value
 
-    mock_oda.__enter__.return_value = uow_mock
+    mock_oda.return_value.__enter__.return_value = uow_mock
 
-    result = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
+    response = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
 
-    assert result.status_code == HTTPStatus.OK
-    assert len(json.loads(result.text)) == len(list_result)
+    assert response.status_code == HTTPStatus.OK
+    assert len(json.loads(response.text)) == len(list_result)
 
 
 @patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
@@ -100,93 +99,93 @@ def test_proposal_edit(mock_oda, client):
         Proposal, VALID_PROPOSAL_DATA_JSON
     )
 
-    mock_oda.__enter__.return_value = uow_mock
+    mock_oda.return_value.__enter__.return_value = uow_mock
 
-    result = client.put(
+    response = client.put(
         "/ska-oso-pht-services/pht/api/v2/proposals/prp-ska01-202204-01",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
 
-    assert_json_is_equal(result.text, VALID_PROPOSAL_DATA_JSON)
-    assert result.status_code == HTTPStatus.OK
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal(response.text, VALID_PROPOSAL_DATA_JSON)
 
 
-def test_proposal_validate_no_target_in_result(client):
-    result = client.post(
+def test_validate_proposal_no_target_in_result(client):
+    response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_NO_TARGET_IN_RESULT,
         headers={"Content-type": "application/json"},
     )
 
+    assert response.status_code == HTTPStatus.OK
     assert_json_is_equal_unsorted(
-        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_NO_TARGET_IN_RESULT
     )
-    assert result.status_code == HTTPStatus.OK
 
 
-def test_proposal_validate_obs_set_no_target(client):
-    result = client.post(
+def test_validate_proposal_obs_set_no_target(client):
+    response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_OBS_SET_NO_TARGET,
         headers={"Content-type": "application/json"},
     )
 
+    assert response.status_code == HTTPStatus.OK
     assert_json_is_equal_unsorted(
-        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_OBS_SET_NO_TARGET
     )
-    assert result.status_code == HTTPStatus.OK
 
 
-def test_proposal_validate_result_no_obs(client):
-    result = client.post(
+def test_validate_proposal_result_no_obs(client):
+    response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS,
         headers={"Content-type": "application/json"},
     )
 
+    assert response.status_code == HTTPStatus.OK
     assert_json_is_equal_unsorted(
-        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_RESULT_NO_OBS
     )
-    assert result.status_code == HTTPStatus.OK
 
 
-def test_proposal_validate_result_sample_proposal(client):
-    result = client.post(
+def test_validate_proposal_result_sample_proposal(client):
+    response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_DATA_JSON,
         headers={"Content-type": "application/json"},
     )
 
-    assert_json_is_equal_unsorted(result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON)
-    assert result.status_code == HTTPStatus.OK
+    assert response.status_code == HTTPStatus.OK
+    assert_json_is_equal_unsorted(response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON)
 
 
-def test_proposal_validate_result_passing(client):
-    result = client.post(
+def test_validate_proposal_result_passing(client):
+    response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_PASSING,
         headers={"Content-type": "application/json"},
     )
 
+    assert response.status_code == HTTPStatus.OK
     assert_json_is_equal_unsorted(
-        result.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING
+        response.text, VALID_PROPOSAL_POST_VALIDATE_RESULT_JSON_PASSING
     )
-    assert result.status_code == HTTPStatus.OK
 
 
 @pytest.mark.skip(reason="revisit test for validate endpoint after refactoring with new pdm data")
-def test_proposal_validate_target_not_found(client):
-    result = client.post(
+def test_validate_proposal_target_not_found(client):
+    response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
         data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
         headers={"Content-type": "application/json"},
     )
 
+    assert response.status_code == HTTPStatus.OK
     assert_json_is_equal(
-        result.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
+        response.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
     )
-    assert result.status_code == HTTPStatus.OK
 
 
 class TestGetSignedUrl:
@@ -296,7 +295,7 @@ def test_send_email_success(client, mocker):
     )
 
     # Assert that the response status code is 200 (success)
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatus.OK
     assert b"Email sent successfully" in response.data
 
 
@@ -312,5 +311,5 @@ def test_send_email_failure(client, mocker):
     )
 
     # Assert that the response status code is 500 (internal server error)
-    assert response.status_code == 500
+    assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
     assert b"SMTP connection error" in response.data

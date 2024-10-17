@@ -243,16 +243,13 @@ def proposal_validate(body: dict) -> Response:
         
         result = validation.validate_proposal(prsl)
 
-        return (
-            result,
-            HTTPStatus.OK,
-        )
+        return (result, HTTPStatus.OK)
     except ValueError as err:
         LOGGER.exception("ValueError when validating proposal")
-        return (
-            {"error": f"Bad Request '{err.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
+        res = ({"error": f"Bad Request '{err}'"},
+               HTTPStatus.BAD_REQUEST,
+               )
+        return res
 
 
 @error_handler
