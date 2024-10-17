@@ -59,7 +59,7 @@ pycodestyle = "^2.8.0"
 isort = "^5.10.1"
 pylint-junit = "^0.3.2"
 flake8 = "^4.0.1"
-deepdiff = "^5.8.1"
+deepdiff = "^8.0.1"
 pytest-mock = "^3.14.0"
 
 [tool.poetry.group.docs]

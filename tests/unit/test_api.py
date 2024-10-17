@@ -6,7 +6,6 @@ import json
 from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
-import numpy as np
 import pytest
 
 # from ska_oso_pdm.generated.models.proposal import Proposal
@@ -28,9 +27,6 @@ from .util import (
     assert_json_is_equal,
     assert_json_is_equal_unsorted,
 )
-
-np.float_ = np.float64
-np.complex_ = np.complex128
 
 
 @patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
@@ -86,7 +82,8 @@ def test_proposal_get_list(mock_oda, client):
 
     mock_oda.return_value.__enter__.return_value = uow_mock
 
-    response = client.get("/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
+    response = client.get(
+        "/ska-oso-pht-services/pht/api/v2/proposals/list/DefaultUser")
 
     assert response.status_code == HTTPStatus.OK
     assert len(json.loads(response.text)) == len(list_result)
@@ -182,13 +179,13 @@ def test_validate_proposal_result_passing(client):
 def test_validate_proposal_target_not_found(client):
     response = client.post(
         "/ska-oso-pht-services/pht/api/v2/proposals/validate",
-        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,
+        data=VALID_PROPOSAL_GET_VALIDATE_BODY_JSON_TARGET_NOT_FOUND,  # noqa
         headers={"Content-type": "application/json"},
     )
 
     assert response.status_code == HTTPStatus.OK
     assert_json_is_equal(
-        response.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND
+        response.text, VALID_PROPOSAL_GET_VALIDATE_RESULT_JSON_TARGET_NOT_FOUND  # noqa
     )
 
 
@@ -290,7 +287,8 @@ def test_send_email_success(client, mocker):
 
     # Mock the response of sendmail method
     mock_smtp_instance = mock_smtp.return_value.__enter__.return_value
-    mock_smtp_instance.sendmail.return_value = {"message": "Email sent successfully!"}
+    mock_smtp_instance.sendmail.return_value = {
+        "message": "Email sent successfully!"}
 
     # Define the email data to be sent
     response = client.post(
