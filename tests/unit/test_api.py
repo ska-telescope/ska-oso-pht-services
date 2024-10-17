@@ -2,6 +2,17 @@
 Unit tests for ska_oso_pht_services.api
 """
 
+import json
+from http import HTTPStatus
+from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pytest
+
+# from ska_oso_pdm.generated.models.proposal import Proposal
+from ska_oso_pdm import Proposal
+from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
+
 from .util import (
     VALID_PROPOSAL_DATA_JSON,
     VALID_PROPOSAL_GET_LIST_RESULT_JSON,
@@ -17,16 +28,6 @@ from .util import (
     assert_json_is_equal,
     assert_json_is_equal_unsorted,
 )
-import json
-from http import HTTPStatus
-from unittest.mock import MagicMock, patch
-
-import numpy as np
-import pytest
-
-# from ska_oso_pdm.generated.models.proposal import Proposal
-from ska_oso_pdm import Proposal
-from ska_oso_pdm.openapi import CODEC as OPENAPI_CODEC
 
 np.float_ = np.float64
 np.complex_ = np.complex128
