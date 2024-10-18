@@ -47,8 +47,9 @@ def test_proposal_create():
         headers={"Content-type": "application/json"},
     )
 
+    curTime = datetime.today().strftime("%Y%m%d")
+    assert f"prsl-t0001-{curTime}" in response.text
     assert response.status_code == HTTPStatus.OK
-    assert f"prsl-t0001-{datetime.today().strftime('%Y%m%d')}" in response.text
 
     test_prsl_id = response.text
 
