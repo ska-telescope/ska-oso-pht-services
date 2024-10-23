@@ -280,7 +280,7 @@ $defs:
     type: object
   Integration:
     properties:
-      supplied_type:
+      suppied_type:
         const: integration_time
         default: integration_time
         enum:
@@ -843,7 +843,7 @@ $defs:
           mapping:
             integration_time: '#/$defs/Integration'
             sensitivity: '#/$defs/Sensitivity'
-          propertyName: supplied_type
+          propertyName: suppied_type
         oneOf:
         - $ref: '#/$defs/Integration'
         - $ref: '#/$defs/Sensitivity'
@@ -877,7 +877,7 @@ $defs:
     type: string
   Sensitivity:
     properties:
-      supplied_type:
+      suppied_type:
         const: sensitivity
         default: sensitivity
         enum:

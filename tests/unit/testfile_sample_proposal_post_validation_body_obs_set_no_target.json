@@ -73,7 +73,7 @@
               "unit": ""
             },
             "supplied": {
-              "supplied_type": "sensitivity",
+              "suppied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {

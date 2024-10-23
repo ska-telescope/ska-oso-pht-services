@@ -1,3 +1,5 @@
+import traceback
+
 from ska_oso_pdm import Proposal
 
 # from ska_oso_pht_services.api_clients.osd_api import osd_client
@@ -9,8 +11,8 @@ def validate_proposal(proposal: Proposal) -> dict:
     """
     validate proposal
 
-    1. check that proposal has at least one obervation set
-    2. each observation target should have a valid senscal result
+    1. check that proposal has at least one observation set
+    2. each observation target should have a valid sensitivity calculation result
     3. check that each observation sets has at least one target (in result)
 
     Parameters:
@@ -24,35 +26,36 @@ def validate_proposal(proposal: Proposal) -> dict:
 
     messages = []
     try:
-        # check that proposal has at least one obervation set
+        # check that proposal has at least one observation set
         if len(proposal.info.observation_sets) == 0:
             validate_result = False
-            messages.append("Proposal has no oberservation sets")
+            messages.append("This proposal has no observation sets")
 
-        # each observation target should have a valid senscal result
+        # each observation target should have a valid sensitivity calculation result
         for target in proposal.info.targets:
-            if not any(
+            found = any(
                 target.target_id == result.target_ref
-                for result in proposal.info.results
-            ):
+                for result in proposal.info.result_details
+            )
+            if not found:
                 validate_result = False
                 messages.append(
-                    f"Target {target.target_id} has no valid senscalc result"
+                    f"Target {target.target_id} has no valid sensitivity/integration time results or is not linked to an observation"  # noqa
                 )
 
         # check that each observation sets has at least one target (in result)
         for obs_set in proposal.info.observation_sets:
-            if not any(
+            found = any(
                 obs_set.observation_set_id == result.observation_set_ref
-                for result in proposal.info.results
-            ):
+                for result in proposal.info.result_details
+            )
+            if not found:
                 validate_result = False
                 messages.append(
-                    f"Observation Set {obs_set.observation_set_id} has no Targets in"
-                    " Results"
+                    f"Observation Set {obs_set.observation_set_id} has no Targets linked in Results"  # noqa
                 )
 
     except ValueError as err:
-        messages.append("Exception: " + str(err))
+        messages.append("Exception: " + str(err) + traceback.print_exc())
         return {"result": False, "validation_errors": messages}
     return {"result": validate_result, "validation_errors": messages}

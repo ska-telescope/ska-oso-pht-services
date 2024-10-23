@@ -5,28 +5,26 @@ ska_oso_pht_services
 import os
 from typing import Any, Dict
 
-import prance
+import yaml
 from connexion import App
 from flask import Flask, Response
-from ska_db_oda.rest.flask_oda import FlaskODA
+from openapi_spec_validator import validate_spec
+from ska_db_oda.persistence.unitofwork import UnitOfWork
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
 
-oda = FlaskODA()
-
 
 def resolve_openapi_spec() -> Dict[str, Any]:
     """
-    Resolves the $ref in the OpenAPI spec before it is used by Connexion,
-    as Connexion can't parse them.
-    See https://github.com/spec-first/connexion/issues/967
+    Resolves the $ref in the OpenAPI spec
     """
     cwd, _ = os.path.split(__file__)
     path = os.path.join(cwd, "./openapi/pht-openapi-v1.yaml")
-    parser = prance.ResolvingParser(path, lazy=True, strict=True)
-    parser.parse()
-    return parser.specification
+    with open(path, "r", encoding="utf-8") as file:
+        specification = yaml.safe_load(file)
+        validate_spec(specification)
+    return specification
 
 
 class CustomRequestBodyValidator:  # pylint: disable=too-few-public-methods
@@ -87,8 +85,6 @@ def create_app(open_api_spec=None) -> App:
         pythonic_params=True,
         validator_map=validator_map,
     )
-
-    oda.init_app(app.app)
 
     app.app.after_request(set_default_headers_on_response)
 

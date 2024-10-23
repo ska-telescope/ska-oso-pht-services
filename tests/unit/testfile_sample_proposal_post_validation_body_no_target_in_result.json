@@ -75,7 +75,7 @@
                         "unit": ""
                     },
                     "supplied": {
-                        "supplied_type": "integration_time",
+                        "suppied_type": "integration_time",
                         "value": 0.0,
                         "unit": "",
                         "quantity": {

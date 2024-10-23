@@ -165,7 +165,6 @@ def test_proposal_validate_result_no_obs():
     Test that the POST /proposals/validate path receives the request
     and returns result and messages for result no obs case
     """
-
     response = requests.post(
         f"{PHT_URL}/proposals/validate",
         data=VALID_PROPOSAL_POST_VALIDATE_BODY_JSON_RESULT_NO_OBS,

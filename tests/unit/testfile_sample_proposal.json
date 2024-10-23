@@ -140,7 +140,7 @@
             "unit": ""
           },
           "supplied": {
-            "supplied_type": "integration_time",
+            "suppied_type": "integration_time",
             "value": 0.0,
             "unit": "",
             "quantity": {
@@ -179,7 +179,7 @@
             "unit": ""
           },
           "supplied": {
-            "supplied_type": "sensitivity",
+            "suppied_type": "sensitivity",
             "value": 0.0,
             "unit": "",
             "quantity": {
@@ -215,7 +215,7 @@
             "unit": ""
           },
           "supplied": {
-            "supplied_type": "integration_time",
+            "suppied_type": "integration_time",
             "value": 0.0,
             "unit": "",
             "quantity": {
@@ -251,7 +251,7 @@
             "unit": ""
           },
           "supplied": {
-            "supplied_type": "sensitivity",
+            "suppied_type": "sensitivity",
             "value": 0.0,
             "unit": "",
             "quantity": {
@@ -293,7 +293,7 @@
         "observation_set_ref": "low-002",
         "target_ref": "1",
         "result_details": {
-          "supplied_type": "sensitivity",
+          "suppied_type": "sensitivity",
           "weighted_continuum_sensitivity": {
             "value": 0.0,
             "unit": ""
