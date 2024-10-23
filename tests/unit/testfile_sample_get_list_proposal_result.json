@@ -106,6 +106,7 @@
       "investigators": [
         {
           "investigator_id": "prp-ska01-202204-01",
+	  "status": "pending",
           "given_name": "Tony",
           "family_name": "Bennet",
           "email": "somewhere.vague@example.com",
@@ -140,7 +141,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -179,7 +180,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -215,7 +216,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -251,7 +252,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -278,8 +279,8 @@
             "mid-001",
             "low-001"
           ],
-          "image_size": "IMAGE SIZE",
-          "pixel_size": "PIXEL SIZE",
+          "image_size": {"value": 0.0, "unit": "deg"},
+          "pixel_size": {"value": 0.0, "unit": "deg"},
           "weighting": "WEIGHTING"
         }
       ],
@@ -439,6 +440,7 @@
       "investigators": [
         {
           "investigator_id": "prp-ska01-202204-01",
+	  "status": "pending",
           "given_name": "Tony",
           "family_name": "Bennet",
           "email": "somewhere.vague@example.com",
@@ -473,7 +475,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -512,7 +514,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -548,7 +550,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -584,7 +586,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -611,8 +613,8 @@
             "mid-001",
             "low-001"
           ],
-          "image_size": "IMAGE SIZE",
-          "pixel_size": "PIXEL SIZE",
+          "image_size": {"value": 0.0, "unit": "deg"},
+          "pixel_size": {"value": 0.0, "unit": "deg"},
           "weighting": "WEIGHTING"
         }
       ],
@@ -772,6 +774,7 @@
       "investigators": [
         {
           "investigator_id": "prp-ska01-202204-01",
+	  "status": "pending",
           "given_name": "Tony",
           "family_name": "Bennet",
           "email": "somewhere.vague@example.com",
@@ -806,7 +809,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -845,7 +848,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -881,7 +884,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -917,7 +920,7 @@
               "unit": ""
             },
             "supplied": {
-              "type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -944,8 +947,8 @@
             "mid-001",
             "low-001"
           ],
-          "image_size": "IMAGE SIZE",
-          "pixel_size": "PIXEL SIZE",
+          "image_size": {"value": 0.0, "unit": "deg"},
+          "pixel_size": {"value": 0.0, "unit": "deg"},
           "weighting": "WEIGHTING"
         }
       ],
