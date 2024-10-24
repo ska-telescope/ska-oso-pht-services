@@ -28,7 +28,7 @@ rest:
       host: ~
       port: ~
       user: ~
-      password: secretpassword # TODO BTN-2449 will extract this
+      password: localpassword # TODO BTN-2449 will extract this
       db:
         name: ~
   use_skuid: true
