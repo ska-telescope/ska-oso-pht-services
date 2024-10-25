@@ -9,7 +9,6 @@ import yaml
 from connexion import App
 from flask import Flask, Response
 from openapi_spec_validator import validate_spec
-from ska_db_oda.persistence.unitofwork import UnitOfWork
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"

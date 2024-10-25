@@ -1892,8 +1892,8 @@ annotated-types = ">=0.6.0"
 email-validator = {version = ">=2.0.0", optional = true, markers = "extra == \"email\""}
 pydantic-core = "2.23.4"
 typing-extensions = [
-    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
     {version = ">=4.6.1", markers = "python_version < \"3.13\""},
+    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
 ]
 
 [package.extras]
@@ -2068,8 +2068,8 @@ files = [
 astroid = ">=3.2.2,<=3.3.0-dev0"
 colorama = {version = ">=0.4.5", markers = "sys_platform == \"win32\""}
 dill = [
-    {version = ">=0.3.7", markers = "python_version >= \"3.12\""},
     {version = ">=0.2", markers = "python_version < \"3.11\""},
+    {version = ">=0.3.7", markers = "python_version >= \"3.12\""},
     {version = ">=0.3.6", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
 ]
 isort = ">=4.2.5,<5.13.0 || >5.13.0,<6"
@@ -2591,13 +2591,13 @@ files = [
 
 [[package]]
 name = "ska-db-oda"
-version = "6.2.0"
+version = "6.2.1"
 description = "SKA Database OSO Data Archive"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "ska_db_oda-6.2.0-py3-none-any.whl", hash = "sha256:5d2e6673da21a95320f0daaea9e6665737bc12273eacd5369a31c3ba20b2e175"},
-    {file = "ska_db_oda-6.2.0.tar.gz", hash = "sha256:6177918dd1de92b7c3b1d0acdd2563ee018dd1583050da685d5153f847cb7a70"},
+    {file = "ska_db_oda-6.2.1-py3-none-any.whl", hash = "sha256:178d4c15927da888081f29df14e08f2147074d66ab9f483c70955094b2801952"},
+    {file = "ska_db_oda-6.2.1.tar.gz", hash = "sha256:16f1998494eb46169150ae85991b29393986e4b4a31e838fbefbe5134f3a2a74"},
 ]
 
 [package.dependencies]
@@ -2608,7 +2608,7 @@ psycopg-pool = ">=3.1.1,<4.0.0"
 pydantic = ">=2.7,<3.0"
 python-dateutil = ">=2.8.2,<3.0.0"
 requests = ">=2.27.1,<3.0.0"
-ska-oso-pdm = "16.0.0"
+ska-oso-pdm = ">=16.0.1,<17.0.0"
 ska-ser-logging = ">=0.4.1,<0.5.0"
 ska-ser-skuid = ">=3.3.3,<4.0.0"
 
@@ -2619,13 +2619,13 @@ reference = "ska-nexus"
 
 [[package]]
 name = "ska-oso-pdm"
-version = "16.0.0"
+version = "16.0.1"
 description = "SKA Project Data Model serialisation library"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "ska_oso_pdm-16.0.0-py3-none-any.whl", hash = "sha256:7a1673755351145e2a2a1e6e2f23edcc951ea3cf0d883d014f1d313651eb83c4"},
-    {file = "ska_oso_pdm-16.0.0.tar.gz", hash = "sha256:db0ce8a64981ed76b267cc9dc72a4596379738d582c7ac4ec7565880ef5eea9b"},
+    {file = "ska_oso_pdm-16.0.1-py3-none-any.whl", hash = "sha256:ce1af47c21d695659c4b06f58cb2748923a3265d387a88a3bafcdf0b605a5bae"},
+    {file = "ska_oso_pdm-16.0.1.tar.gz", hash = "sha256:e562ec1c28912a4870775a7545ec8773a3598c4bdb86a13272038e32630076c8"},
 ]
 
 [package.dependencies]
@@ -3367,4 +3367,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4a447973e25ef84a4024442e1f964b24e435e3ed2dfcd9cc3dc6c2223d7f3bba"
+content-hash = "45b23a7c5204b17ff3a065d065bfb8c9888f86885ad55501ea68c8194fe8bd88"

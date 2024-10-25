@@ -137,7 +137,7 @@
 						"unit": ""
 					},
 					"supplied": {
-						"suppied_type": "integration_time",
+						"supplied_type": "integration_time",
 						"value": 0.0,
 						"unit": "",
 						"quantity": {
@@ -173,7 +173,7 @@
 						"unit": ""
 					},
 					"supplied": {
-						"suppied_type": "sensitivity",
+						"supplied_type": "sensitivity",
 						"value": 0.0,
 						"unit": "",
 						"quantity": {

@@ -141,7 +141,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -180,7 +180,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -216,7 +216,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -252,7 +252,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -294,7 +294,7 @@
           "observation_set_ref": "low-002",
           "target_ref": "1",
           "result_details": {
-            "suppied_type": "sensitivity",
+            "supplied_type": "sensitivity",
             "weighted_continuum_sensitivity": {
               "value": 0.0,
               "unit": ""
@@ -475,7 +475,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -514,7 +514,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -550,7 +550,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -586,7 +586,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -628,7 +628,7 @@
           "observation_set_ref": "low-002",
           "target_ref": "1",
           "result_details": {
-            "suppied_type": "sensitivity",
+            "supplied_type": "sensitivity",
             "weighted_continuum_sensitivity": {
               "value": 0.0,
               "unit": ""
@@ -809,7 +809,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -848,7 +848,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -884,7 +884,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "integration_time",
+              "supplied_type": "integration_time",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -920,7 +920,7 @@
               "unit": ""
             },
             "supplied": {
-              "suppied_type": "sensitivity",
+              "supplied_type": "sensitivity",
               "value": 0.0,
               "unit": "",
               "quantity": {
@@ -962,7 +962,7 @@
           "observation_set_ref": "low-002",
           "target_ref": "1",
           "result_details": {
-            "suppied_type": "sensitivity",
+            "supplied_type": "sensitivity",
             "weighted_continuum_sensitivity": {
               "value": 0.0,
               "unit": ""
