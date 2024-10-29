@@ -9,7 +9,7 @@ import yaml
 from connexion import App
 from flask import Flask, Response
 from openapi_spec_validator import validate_spec
-from ska_db_oda.persistence import oda
+from ska_oso_pht_services.flaskoda import oda
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")
 API_PATH = f"/{KUBE_NAMESPACE}/pht/api/v2"
@@ -83,7 +83,7 @@ def create_app(open_api_spec=None) -> App:
         validator_map=validator_map,
     )
 
-    # oda.init_app(app.app)
+    oda.init_app(app.app)
 
     app.app.after_request(set_default_headers_on_response)
 
