@@ -9,6 +9,7 @@ import yaml
 from connexion import App
 from flask import Flask, Response
 from openapi_spec_validator import validate_spec
+
 from ska_oso_pht_services.flaskoda import oda
 
 KUBE_NAMESPACE = os.getenv("KUBE_NAMESPACE", "ska-oso-pht-services")

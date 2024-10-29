@@ -47,8 +47,8 @@ def test_proposal_create(mock_oda, client):
         headers={"Content-type": "application/json"},
     )
 
-    assert response.status_code == HTTPStatus.OK
     assert response.text == "prp-ska01-202204-01"
+    assert response.status_code == HTTPStatus.OK
 
 
 @patch("ska_oso_pht_services.api.oda.uow", autospec=True)

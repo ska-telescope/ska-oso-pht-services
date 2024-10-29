@@ -2672,27 +2672,28 @@ name = "ska-db-oda"
 version = "6.2.1"
 description = "SKA Database OSO Data Archive"
 optional = false
-python-versions = "^3.10"
-files = []
-develop = false
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "ska_db_oda-6.2.1-py3-none-any.whl", hash = "sha256:178d4c15927da888081f29df14e08f2147074d66ab9f483c70955094b2801952"},
+    {file = "ska_db_oda-6.2.1.tar.gz", hash = "sha256:16f1998494eb46169150ae85991b29393986e4b4a31e838fbefbe5134f3a2a74"},
+]
 
 [package.dependencies]
-fastapi = "^0.111.0"
-fire = "^0.5.0"
-psycopg = {version = "^3.0.15", extras = ["binary"]}
-psycopg-pool = "^3.1.1"
-pydantic = "^2.7"
-python-dateutil = "^2.8.2"
-requests = "^2.27.1"
-ska-oso-pdm = "^16.0.1"
-ska-ser-logging = "^0.4.1"
-ska-ser-skuid = "^3.3.3"
+fastapi = ">=0.111.0,<0.112.0"
+fire = ">=0.5.0,<0.6.0"
+psycopg = {version = ">=3.0.15,<4.0.0", extras = ["binary"]}
+psycopg-pool = ">=3.1.1,<4.0.0"
+pydantic = ">=2.7,<3.0"
+python-dateutil = ">=2.8.2,<3.0.0"
+requests = ">=2.27.1,<3.0.0"
+ska-oso-pdm = ">=16.0.1,<17.0.0"
+ska-ser-logging = ">=0.4.1,<0.5.0"
+ska-ser-skuid = ">=3.3.3,<4.0.0"
 
 [package.source]
-type = "git"
-url = "https://gitlab.com/ska-telescope/db/ska-db-oda.git"
-reference = "btn-2510-connection-pool"
-resolved_reference = "de3b4f81627ae30d97a30117aff63b87607dfc3a"
+type = "legacy"
+url = "https://artefact.skao.int/repository/pypi-internal/simple"
+reference = "ska-nexus"
 
 [[package]]
 name = "ska-oso-pdm"
@@ -3448,4 +3449,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "0e85eb59fd955643e06ea36aa8db13537d49b6f5195a74c9c75e1f447e60097e"
+content-hash = "911ae439278d2b38d2699a9c66eecde66ab8ae3edfee0ef77402e0b493843874"
