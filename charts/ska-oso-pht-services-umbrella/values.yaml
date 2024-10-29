@@ -7,6 +7,8 @@ global:
 ska-db-oda-umbrella:
   ska-db-oda:
     enabled: true
+    secretProvider:
+      enabled: true
     rest:
       enabled: true
       ingress:
