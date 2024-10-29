@@ -29,7 +29,7 @@ from .util import (
 )
 
 
-@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
+@patch("ska_oso_pht_services.api.oda.uow", autospec=True)
 def test_proposal_create(mock_oda, client):
     """
     Check the proposal_create method returns the expected prsl_id and status code
@@ -51,7 +51,7 @@ def test_proposal_create(mock_oda, client):
     assert response.text == "prp-ska01-202204-01"
 
 
-@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
+@patch("ska_oso_pht_services.api.oda.uow", autospec=True)
 def test_proposal_get(mock_oda, client):
     uow_mock = MagicMock()
     uow_mock.prsls.get.return_value = Proposal.model_validate(
@@ -69,7 +69,7 @@ def test_proposal_get(mock_oda, client):
     assert_json_is_equal(response.text, VALID_PROPOSAL_DATA_JSON)
 
 
-@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
+@patch("ska_oso_pht_services.api.oda.uow", autospec=True)
 def test_proposal_get_list(mock_oda, client):
     list_result = json.loads(VALID_PROPOSAL_GET_LIST_RESULT_JSON)
 
@@ -88,7 +88,7 @@ def test_proposal_get_list(mock_oda, client):
     assert len(json.loads(response.text)) == len(list_result)
 
 
-@patch("ska_oso_pht_services.api.UnitOfWork", autospec=True)
+@patch("ska_oso_pht_services.api.oda.uow", autospec=True)
 def test_proposal_edit(mock_oda, client):
     uow_mock = MagicMock()
     uow_mock.prsls.get.return_value = OPENAPI_CODEC.loads(

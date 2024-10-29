@@ -14,8 +14,8 @@ from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify, request
+from ska_db_oda.persistence import oda
 from ska_db_oda.persistence.domain.query import MatchType, UserQuery
-from ska_db_oda.persistence.unitofwork import UnitOfWork
 from ska_oso_pdm import Proposal
 
 # from ska_oso_pht_services import oda
@@ -101,7 +101,7 @@ def proposal_get(identifier: str) -> Response:
 
     try:
         LOGGER.debug("GET PROPOSAL prsl_id: %s", identifier)
-        with UnitOfWork() as uow:
+        with oda.uow() as uow:
             retrieved_prsl = uow.prsls.get(identifier)
         # TODO: revisit Url is not JSON serializable error using model_dump()
         return json.loads(retrieved_prsl.model_dump_json()), HTTPStatus.OK
@@ -128,7 +128,7 @@ def proposal_get_list(identifier: str) -> Response:
 
     try:
         LOGGER.debug("GET PROPOSAL LIST query: %s", identifier)
-        with UnitOfWork() as uow:
+        with oda.uow() as uow:
             query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
             prsl = uow.prsls.query(query_param)
         # TODO: revisit Url is not JSON serializable error using model_dump()
@@ -161,7 +161,7 @@ def proposal_create(body) -> Response:
 
         prsl = Proposal.model_validate(transform_body)  # test transformed
 
-        with UnitOfWork() as uow:
+        with oda.uow() as uow:
             updated_prsl = uow.prsls.add(prsl)
             uow.commit()
         return (
@@ -201,7 +201,7 @@ def proposal_edit(body: dict, identifier: str) -> Response:
                 HTTPStatus.UNPROCESSABLE_ENTITY,
             )
 
-        with UnitOfWork() as uow:
+        with oda.uow() as uow:
             uow.prsls.add(prsl)
             uow.commit()
             updated_prsl = uow.prsls.get(identifier)
