@@ -39,8 +39,8 @@ connexion = {extras = ["swagger-ui"], version = "^2.14.0"}
 python-dateutil = "^2.8.2"
 gunicorn = "^20.1.0"
 ska-ser-logging = "^0.4.1"
-# ska-db-oda = "^6.2.0"
-ska-db-oda = { git = "https://gitlab.com/ska-telescope/db/ska-db-oda.git", branch = "btn-2510-connection-pool" }
+ska-db-oda = "^6.2.1"
+# ska-db-oda = { git = "https://gitlab.com/ska-telescope/db/ska-db-oda.git", branch = "btn-2510-connection-pool" }
 # ska-db-oda = {path = "/home/andrey/repos/ska-db-oda/", develop = false }
 
 ska-oso-pdm = "^16.0.1"

@@ -2,7 +2,6 @@ import logging
 import os
 
 from flask import _app_ctx_stack, current_app  # pylint: disable=no-name-in-module
-
 from ska_db_oda.persistence.unitofwork.filesystemunitofwork import FilesystemUnitOfWork
 from ska_db_oda.persistence.unitofwork.postgresunitofwork import (
     PostgresUnitOfWork,
