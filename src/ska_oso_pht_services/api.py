@@ -14,7 +14,7 @@ from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify, request
-from ska_db_oda.persistence import oda
+from ska_oso_pht_services.flaskoda import oda
 from ska_db_oda.persistence.domain.query import MatchType, UserQuery
 from ska_oso_pdm import Proposal
 
