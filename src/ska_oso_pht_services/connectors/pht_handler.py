@@ -20,6 +20,9 @@ def transform_update_proposal(data: dict) -> dict:
     dict: The transformed and updated data dictionary.
     """
 
+    if not data:
+        return {}
+
     # Constructing and returning the updated data
     if data["submitted_by"] != "":
         # Constructing and returning the updated data
