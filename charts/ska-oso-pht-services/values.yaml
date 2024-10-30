@@ -20,7 +20,7 @@ rest:
   image:
     registry: artefact.skao.int
     image: ska-oso-pht-services
-    tag: 2.2.0 # Defaults to the chart appVersion if not set
+    tag: ~ # Defaults to the chart appVersion if not set
     pullPolicy: IfNotPresent
   oda:
     backendType: postgres
@@ -28,7 +28,7 @@ rest:
       host: ~
       port: ~
       user: ~
-      password: localpassword # TODO BTN-2449 will extract this
+      password: secretpassword # TODO BTN-2449 will extract this. For local dev use localpassword 
       db:
         name: ~
   use_skuid: true
@@ -51,7 +51,7 @@ affinity: {}
 tolerations: []
 
 secretProvider:
-  enabled: false
+  enabled: true # for local dev mark false
   provider:
     name: "vault"
     vaultAddress: "https://vault.skao.int"
