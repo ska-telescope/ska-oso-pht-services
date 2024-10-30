@@ -72,13 +72,15 @@ def error_handler(api_func):
             )
         except ValueError as ve:
             return (
-                jsonify({"error": "Value Error", "status": 400, "message": str(ve)}),
+                jsonify({"error": "Value Error",
+                        "status": 400, "message": str(ve)}),
                 400,
             )
         except Exception as e:  # pylint: disable=broad-except
             return (
                 jsonify(
-                    {"error": "Internal Server Error", "status": 500, "message": str(e)}
+                    {"error": "Internal Server Error",
+                        "status": 500, "message": str(e)}
                 ),
                 500,
             )
@@ -106,11 +108,9 @@ def proposal_get(identifier: str) -> Response:
         # TODO: revisit Url is not JSON serializable error using model_dump()
         return json.loads(retrieved_prsl.model_dump_json()), HTTPStatus.OK
     except KeyError:
-        LOGGER.exception("KeyError when adding Proposal to the ODA")
-        return (
-            {"error": f"Proposal with ID {identifier} not found "},
-            HTTPStatus.NOT_FOUND,
-        )
+        msg = f"Proposal List with query {identifier} not found "
+        LOGGER.exception(f"proposal_get -> {msg}")
+        return {"error": msg}, HTTPStatus.NOT_FOUND
 
 
 @error_handler
@@ -129,16 +129,15 @@ def proposal_get_list(identifier: str) -> Response:
     try:
         LOGGER.debug("GET PROPOSAL LIST query: %s", identifier)
         with oda.uow() as uow:
-            query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
+            query_param = UserQuery(
+                user=identifier, match_type=MatchType.EQUALS)
             prsl = uow.prsls.query(query_param)
         # TODO: revisit Url is not JSON serializable error using model_dump()
         return [json.loads(x.model_dump_json()) for x in prsl], HTTPStatus.OK
     except KeyError:
-        LOGGER.exception("KeyError when adding Proposal to the ODA")
-        return (
-            {"error": f"Proposal List with query {identifier} not found "},
-            HTTPStatus.NOT_FOUND,
-        )
+        msg = f"Proposal List with query {identifier} not found "
+        LOGGER.exception(f"proposal_get_list -> {msg}")
+        return {"error": msg}, HTTPStatus.NOT_FOUND
 
 
 @error_handler
@@ -156,24 +155,20 @@ def proposal_create(body) -> Response:
     """
     LOGGER.debug("POST PROPOSAL create")
 
+    transform_body = transform_create_proposal(body)
+
     try:
-        transform_body = transform_create_proposal(body)
-
         prsl = Proposal.model_validate(transform_body)  # test transformed
+    except ValueError as e:
+        msg = f"Validation error '{e}'"
+        LOGGER.exception(f"proposal_create -> {msg}")
+        return {"error": msg}, HTTPStatus.BAD_REQUEST
 
-        with oda.uow() as uow:
-            updated_prsl = uow.prsls.add(prsl)
-            uow.commit()
-        return (
-            updated_prsl.prsl_id,
-            HTTPStatus.OK,
-        )
-    except ValueError as err:
-        LOGGER.exception("ValueError when adding Proposal to the ODA")
-        return (
-            {"error": f"Bad Request '{err.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
+    with oda.uow() as uow:
+        updated_prsl = uow.prsls.add(prsl)
+        uow.commit()
+
+    return updated_prsl.prsl_id, HTTPStatus.OK
 
 
 @error_handler
@@ -190,33 +185,26 @@ def proposal_edit(body: dict, identifier: str) -> Response:
     """
     LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
 
+    transform_body = transform_update_proposal(body)
+
     try:
-        transform_body = transform_update_proposal(body)
-
         prsl = Proposal.model_validate(transform_body)  # test transformed
+    except ValueError as e:
+        msg = f"Validation error '{e}'"
+        LOGGER.exception(f"proposal_edit -> {msg}")
+        return {"error": msg}, HTTPStatus.BAD_REQUEST
 
-        if prsl.prsl_id != identifier:
-            return (
-                {"error": "Unprocessable Entity, mismatched Proposal ID"},
-                HTTPStatus.UNPROCESSABLE_ENTITY,
-            )
+    if prsl.prsl_id != identifier:
+        return {"error": "Body and Proposal ID do not match"}, HTTPStatus.UNPROCESSABLE_ENTITY
 
-        with oda.uow() as uow:
-            uow.prsls.add(prsl)
-            uow.commit()
-            updated_prsl = uow.prsls.get(identifier)
-        return (
-            # TODO: revisit Url is not JSON serializable error using model_dump()
-            json.loads(updated_prsl.model_dump_json()),
-            HTTPStatus.OK,
-        )
+    with oda.uow() as uow:
+        uow.prsls.add(prsl)
+        uow.commit()
+        updated_prsl = uow.prsls.get(identifier)
 
-    except ValueError as err:
-        LOGGER.exception("ValueError when adding Proposal to the ODA")
-        return (
-            {"error": f"Bad Request '{err.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
+    # TODO: revisit Url is not JSON serializable error using model_dump()
+    res = json.loads(updated_prsl.model_dump_json())
+    return res, HTTPStatus.OK
 
 
 @error_handler
@@ -239,14 +227,11 @@ def proposal_validate(body: dict) -> Response:
 
         result = validation.validate_proposal(prsl)
 
-        return (result, HTTPStatus.OK)
-    except ValueError as err:
-        LOGGER.exception("ValueError when validating proposal")
-        res = (
-            {"error": f"Bad Request '{err}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
-        return res
+        return result, HTTPStatus.OK
+    except ValueError as e:
+        msg = f"Validation error '{e}'"
+        LOGGER.exception(f"proposal_validate -> {msg}")
+        return {"error": msg}, HTTPStatus.BAD_REQUEST
 
 
 @error_handler
@@ -349,7 +334,6 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
 
 @error_handler
 def send_email():
-    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "SMTP_PASSWORD")
     data = request.get_json()
     email = data["email"]
     prsl_id = data["prsl_id"]
@@ -363,7 +347,7 @@ def send_email():
     smtp_server = "eu-smtp-outbound-1.mimecast.com"
     smtp_port = 587
     smtp_user = "proposal-preparation-tool@skao.int"
-    smtp_password = SMTP_PASSWORD
+    smtp_password = os.getenv("SMTP_PASSWORD", "SMTP_PASSWORD")
 
     msg = MIMEMultipart()
     msg["From"] = smtp_user

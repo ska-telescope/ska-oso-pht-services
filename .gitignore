@@ -45,3 +45,4 @@ PrivateRules.mak
 
 .project
 .pydevproject
+.settings
