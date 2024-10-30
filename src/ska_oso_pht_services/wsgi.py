@@ -13,6 +13,7 @@ app = create_app()
 if __name__ == "__main__":
     # TEMP: hacking pydevd plugin path. Otherwise it won't handle space(s)
     import sys
+
     argv = []
     for a in sys.orig_argv:
         if "pydevd" in a:
@@ -33,8 +34,7 @@ else:
             configure_logging(level=self.loglevel)
 
             # Override gunicorn format with SKA.
-            self._set_handler(self.error_log, cfg.errorlog,
-                              get_default_formatter())
+            self._set_handler(self.error_log, cfg.errorlog, get_default_formatter())
 
     # presume being run from gunicorn
     # use gunicorn logging level for app and module loggers

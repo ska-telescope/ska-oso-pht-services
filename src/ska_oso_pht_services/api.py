@@ -72,15 +72,13 @@ def error_handler(api_func):
             )
         except ValueError as ve:
             return (
-                jsonify({"error": "Value Error",
-                        "status": 400, "message": str(ve)}),
+                jsonify({"error": "Value Error", "status": 400, "message": str(ve)}),
                 400,
             )
         except Exception as e:  # pylint: disable=broad-except
             return (
                 jsonify(
-                    {"error": "Internal Server Error",
-                        "status": 500, "message": str(e)}
+                    {"error": "Internal Server Error", "status": 500, "message": str(e)}
                 ),
                 500,
             )
@@ -129,8 +127,7 @@ def proposal_get_list(identifier: str) -> Response:
     try:
         LOGGER.debug("GET PROPOSAL LIST query: %s", identifier)
         with oda.uow() as uow:
-            query_param = UserQuery(
-                user=identifier, match_type=MatchType.EQUALS)
+            query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
             prsl = uow.prsls.query(query_param)
         # TODO: revisit Url is not JSON serializable error using model_dump()
         return [json.loads(x.model_dump_json()) for x in prsl], HTTPStatus.OK
@@ -195,7 +192,9 @@ def proposal_edit(body: dict, identifier: str) -> Response:
         return {"error": msg}, HTTPStatus.BAD_REQUEST
 
     if prsl.prsl_id != identifier:
-        return {"error": "Body and Proposal ID do not match"}, HTTPStatus.UNPROCESSABLE_ENTITY
+        return {
+            "error": "Body and Proposal ID do not match"
+        }, HTTPStatus.UNPROCESSABLE_ENTITY
 
     with oda.uow() as uow:
         uow.prsls.add(prsl)
