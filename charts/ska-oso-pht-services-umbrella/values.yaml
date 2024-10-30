@@ -8,7 +8,7 @@ ska-db-oda-umbrella:
   ska-db-oda:
     enabled: true
     secretProvider:
-      enabled: false
+      enabled: true # mark false for local dev
     rest:
       enabled: true
       ingress:
