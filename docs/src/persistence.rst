@@ -23,7 +23,7 @@ This means by default is does not persist past the lifetime of the pod. It is in
 Entities can also be manually added to a mounted filesystem and accessed through the API.
 
 Setting the value to ``rest`` will use an implementation which accesses a remote instance of the ODA REST Client.
-The ``url`` value must also be set to the URL for the API, eg ``http://ska-db-oda-rest-test:5000/ska-oso-pht-services/api/v1``.
+The ``url`` value must also be set to the URL for the API, eg ``http://ska-db-oda-rest-test:5000/ska-oso-pht-services/api/v2``.
 The pod will access the URL from within the Kubernetes cluster, so can use the ODA service address if they are deployed to the same namespace.
 
 The ``memory`` implementation serves a similar purpose to the filesystem, acting as an even more lightweight development environment.

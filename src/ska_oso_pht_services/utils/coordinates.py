@@ -53,7 +53,7 @@ def convert_ra_dec_deg(ra_str: str, dec_str: str):
     tuple: RA and Dec in decimal degrees
     """
     ra = Angle(ra_str, unit=u.hour)
-    dec = Angle(dec_str, unit=u.deg)
+    dec = Angle(dec_str, unit=u.degree)
 
     return {"ra": round(ra.degree, 3), "dec": round(dec.degree, 3)}
 
@@ -72,7 +72,7 @@ def convert_to_galactic(ra: str, dec: str, velocity: float, redshift: float):
             and lat, representing the Galactic coordinates as floats in degrees.
     """
     # Creating a SkyCoord object with the given RA and DEC
-    coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.deg))
+    coord = SkyCoord(ra, dec, frame="icrs", unit=(u.hourangle, u.degree))
     # Converting to Galactic frame
     galactic_coord = coord.galactic
 
@@ -148,7 +148,7 @@ def get_coordinates(object_name: str):
         ra = result_table_ned["RA"][0]
         dec = result_table_ned["DEC"][0]
     coordinates = (
-        SkyCoord(ra, dec, unit=(u.hourangle, u.deg), frame="icrs")
+        SkyCoord(ra, dec, unit=(u.hourangle, u.degree), frame="icrs")
         .to_string("hmsdms")
         .replace("h", ":")
         .replace("d", ":")

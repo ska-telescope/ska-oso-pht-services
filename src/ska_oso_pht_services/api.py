@@ -5,7 +5,6 @@ Connexion maps the function name to the operationId in the OpenAPI document path
 """
 import json
 import logging
-import os
 import os.path
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -15,14 +14,15 @@ from http import HTTPStatus
 
 from astroquery.exceptions import RemoteServiceError
 from flask import jsonify, request
-from ska_db_oda.domain.query import MatchType, UserQuery
+from ska_db_oda.persistence.domain.query import MatchType, UserQuery
 from ska_oso_pdm import Proposal
 
-from ska_oso_pht_services import oda
+# from ska_oso_pht_services import oda
 from ska_oso_pht_services.connectors.pht_handler import (
     transform_create_proposal,
     transform_update_proposal,
 )
+from ska_oso_pht_services.flaskoda import oda
 from ska_oso_pht_services.utils import coordinates, s3_bucket, validation
 
 Response = Proposal
@@ -96,21 +96,19 @@ def proposal_get(identifier: str) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of an Proposal and a
-        HTTP status, which the Connexion will wrap in a response
+        HTTP status, which the Connection will wrap in a response
     """
 
     try:
         LOGGER.debug("GET PROPOSAL prsl_id: %s", identifier)
-        with oda.uow as uow:
+        with oda.uow() as uow:
             retrieved_prsl = uow.prsls.get(identifier)
         # TODO: revisit Url is not JSON serializable error using model_dump()
         return json.loads(retrieved_prsl.model_dump_json()), HTTPStatus.OK
     except KeyError:
-        LOGGER.exception("KeyError when adding Proposal to the ODA")
-        return (
-            {"error": f"Proposal with ID {identifier} not found "},
-            HTTPStatus.NOT_FOUND,
-        )
+        msg = f"Proposal List with query {identifier} not found "
+        LOGGER.exception(f"proposal_get -> {msg}")
+        return {"error": msg}, HTTPStatus.NOT_FOUND
 
 
 @error_handler
@@ -123,22 +121,20 @@ def proposal_get_list(identifier: str) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of a list of Proposal and a
-        HTTP status, which the Connexion will wrap in a response
+        HTTP status, which the Connection will wrap in a response
     """
 
     try:
         LOGGER.debug("GET PROPOSAL LIST query: %s", identifier)
-        with oda.uow as uow:
+        with oda.uow() as uow:
             query_param = UserQuery(user=identifier, match_type=MatchType.EQUALS)
             prsl = uow.prsls.query(query_param)
         # TODO: revisit Url is not JSON serializable error using model_dump()
         return [json.loads(x.model_dump_json()) for x in prsl], HTTPStatus.OK
     except KeyError:
-        LOGGER.exception("KeyError when adding Proposal to the ODA")
-        return (
-            {"error": f"Proposal List with query {identifier} not found "},
-            HTTPStatus.NOT_FOUND,
-        )
+        msg = f"Proposal List with query {identifier} not found "
+        LOGGER.exception(f"proposal_get_list -> {msg}")
+        return {"error": msg}, HTTPStatus.NOT_FOUND
 
 
 @error_handler
@@ -152,28 +148,24 @@ def proposal_create(body) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of an Proposal as it exists in the ODA or error
-        response and a HTTP status, which the Connexion will wrap in a response
+        response and a HTTP status, which the Connection will wrap in a response
     """
     LOGGER.debug("POST PROPOSAL create")
 
+    transform_body = transform_create_proposal(body)
+
     try:
-        transform_body = transform_create_proposal(body)
-
         prsl = Proposal.model_validate(transform_body)  # test transformed
+    except ValueError as e:
+        msg = f"Validation error '{e}'"
+        LOGGER.exception(f"proposal_create -> {msg}")
+        return {"error": msg}, HTTPStatus.BAD_REQUEST
 
-        with oda.uow as uow:
-            updated_prsl = uow.prsls.add(prsl)
-            uow.commit()
-        return (
-            updated_prsl.prsl_id,
-            HTTPStatus.OK,
-        )
-    except ValueError as err:
-        LOGGER.exception("ValueError when adding Proposal to the ODA")
-        return (
-            {"error": f"Bad Request '{err.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
+    with oda.uow() as uow:
+        updated_prsl = uow.prsls.add(prsl)
+        uow.commit()
+
+    return updated_prsl.prsl_id, HTTPStatus.OK
 
 
 @error_handler
@@ -186,37 +178,32 @@ def proposal_edit(body: dict, identifier: str) -> Response:
 
     :param identifier: identifier of the Proposal
     :return: a tuple of an Proposal or error response and a HTTP status,
-        which the Connexion will wrap in a response
+        which the Connection will wrap in a response
     """
     LOGGER.debug("PUT PROPOSAL edit prsl_id: %s", identifier)
 
+    transform_body = transform_update_proposal(body)
+
     try:
-        transform_body = transform_update_proposal(body)
-
         prsl = Proposal.model_validate(transform_body)  # test transformed
+    except ValueError as e:
+        msg = f"Validation error '{e}'"
+        LOGGER.exception(f"proposal_edit -> {msg}")
+        return {"error": msg}, HTTPStatus.BAD_REQUEST
 
-        if prsl.prsl_id != identifier:
-            return (
-                {"error": "Unprocessable Entity, mismatched Proposal ID"},
-                HTTPStatus.UNPROCESSABLE_ENTITY,
-            )
+    if prsl.prsl_id != identifier:
+        return {
+            "error": "Body and Proposal ID do not match"
+        }, HTTPStatus.UNPROCESSABLE_ENTITY
 
-        with oda.uow as uow:
-            uow.prsls.add(prsl)
-            uow.commit()
-            updated_prsl = uow.prsls.get(identifier)
-        return (
-            # TODO: revisit Url is not JSON serializable error using model_dump()
-            json.loads(updated_prsl.model_dump_json()),
-            HTTPStatus.OK,
-        )
+    with oda.uow() as uow:
+        uow.prsls.add(prsl)
+        uow.commit()
+        updated_prsl = uow.prsls.get(identifier)
 
-    except ValueError as err:
-        LOGGER.exception("ValueError when adding Proposal to the ODA")
-        return (
-            {"error": f"Bad Request '{err.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
+    # TODO: revisit Url is not JSON serializable error using model_dump()
+    res = json.loads(updated_prsl.model_dump_json())
+    return res, HTTPStatus.OK
 
 
 @error_handler
@@ -236,18 +223,14 @@ def proposal_validate(body: dict) -> Response:
         transform_body = transform_update_proposal(body)
 
         prsl = Proposal.model_validate(transform_body)
+
         result = validation.validate_proposal(prsl)
 
-        return (
-            result,
-            HTTPStatus.OK,
-        )
-    except ValueError as err:
-        LOGGER.exception("ValueError when validaing proposal")
-        return (
-            {"error": f"Bad Request '{err.args[0]}'"},
-            HTTPStatus.BAD_REQUEST,
-        )
+        return result, HTTPStatus.OK
+    except ValueError as e:
+        msg = f"Validation error '{e}'"
+        LOGGER.exception(f"proposal_validate -> {msg}")
+        return {"error": msg}, HTTPStatus.BAD_REQUEST
 
 
 @error_handler
@@ -350,7 +333,6 @@ def get_systemcoordinates(identifier: str, reference_frame: str) -> Response:
 
 @error_handler
 def send_email():
-    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "SMTP_PASSWORD")
     data = request.get_json()
     email = data["email"]
     prsl_id = data["prsl_id"]
@@ -364,7 +346,7 @@ def send_email():
     smtp_server = "eu-smtp-outbound-1.mimecast.com"
     smtp_port = 587
     smtp_user = "proposal-preparation-tool@skao.int"
-    smtp_password = SMTP_PASSWORD
+    smtp_password = os.getenv("SMTP_PASSWORD", "SMTP_PASSWORD")
 
     msg = MIMEMultipart()
     msg["From"] = smtp_user

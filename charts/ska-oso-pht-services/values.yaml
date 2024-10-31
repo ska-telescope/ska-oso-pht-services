@@ -23,9 +23,17 @@ rest:
     tag: ~ # Defaults to the chart appVersion if not set
     pullPolicy: IfNotPresent
   oda:
-    backendType: rest
-    url: ~ # Defaults to the ODA Kubernetes service address if not set
+    backendType: postgres
+    postgres: # The below values are used to set environment variables that are used in the ODA Repository. If they are not set then the defaults defined by the ODA will be used.
+      host: ~
+      port: ~
+      user: ~
+      password: secretpassword # TODO BTN-2449 will extract this. For local dev use localpassword 
+      db:
+        name: ~
   use_skuid: true
+  skuid:
+    url:
   resources:
     requests:
       cpu: 100m
@@ -43,7 +51,7 @@ affinity: {}
 tolerations: []
 
 secretProvider:
-  enabled: true
+  enabled: true # for local dev mark false
   provider:
     name: "vault"
     vaultAddress: "https://vault.skao.int"
