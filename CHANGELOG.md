@@ -8,22 +8,22 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *****
 
-* Tagging as a minor release due to the issues with 2.3.0 tag
+* Tagging as a minor release due to the issues with 2.3.0 tag not having correct changelog
+* [BREAKING] Updates to ska-db-oda ^6.2.1 from 5.2.0. This is a breaking change as it is also using PDM objects in the request bodies of the API. See ODA change log for details on model and table changes.
+* Updated the dependencies. PDM is now inferred from ODA, not referenced directly.
+* Updated to use  UnitOfWork from ODA 
+
 
 2.3.1
 
 *****
 
-* Released the previous version due to the tag 2.3.0 already been pushed
+* Released the previous version due to the tag 2.3.0 already been pushed with incorrect changelog
 
 2.3.0
 *****
 
-* [BREAKING] Updates to ska-db-oda ^6.2.1 from 5.2.0. This is a breaking change as it is also using PDM objects in the request bodies of the API. See ODA change log for details on model and table changes.
 * Add send-email endpoint 
-* Updated the dependencies. PDM is now inferred from ODA, not referenced directly.
-* Added better error handling
-* Updated to use Flask application instead of UnitOfWork from ODA due to the incompatibilities
 
 2.2.0
 
