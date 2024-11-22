@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Unreleased
 *****
+
+2.4.1
+
+*****
 * Updates to ska-db-oda ^6.3.1
 
 2.4.0
