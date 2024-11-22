@@ -59,8 +59,7 @@
           "array_details": {
             "array": "ska_low",
             "subarray": "aa0.5",
-            "number_of_stations": 1,
-            "spectral_averaging": "DUMMY"
+            "number_of_stations": 1
           },
           "observation_type_details": {
             "observation_type": "zoom",
@@ -83,7 +82,9 @@
             },
             "spectral_resolution": "DUMMY",
             "effective_resolution": "DUMMY",
-            "image_weighting": "DUMMY"
+            "image_weighting": "DUMMY",
+            "robust" : "DUMMY",
+            "spectral_averaging": "DUMMY"
           },
           "details": "LOW + Zoom"
         }
